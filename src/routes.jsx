@@ -1,5 +1,7 @@
-import { DashboardPage } from './pages/dashboard/DashboardPage';
+import { DashboardPage } from "./pages/dashboard/DashboardPage";
+import Event from "./pages/event/Event";
 
 export const routes = [
-    {path: '/*', element: <DashboardPage/>}
-]
+  { path: "/eventos", element: <Event /> },
+  { path: "/*", element: <DashboardPage /> },
+];

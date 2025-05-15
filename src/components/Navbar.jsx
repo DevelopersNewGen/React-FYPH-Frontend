@@ -15,12 +15,13 @@ import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices
 import HistoryIcon from '@mui/icons-material/History';
 import LogoutIcon from '@mui/icons-material/Logout';
 import HelpIcon from '@mui/icons-material/Help';
+import { useNavigate } from 'react-router-dom'; 
 
 const pagesAdmin = ['Hoteles', 'Usuarios', 'Solicitudes', "Estadisticas"];
 const pagesHost = ["Reservaciones", "Usuarios", "Habitaciones", "Servicios"]
 const pagesUser = ["Hoteles", "Eventos"]
 
-const role = "USER_ROLE" // cambiar por respuesta de hook
+const role = "HOST_ROLE" // cambiar por respuesta de hook
 const isLogged = true // cambiar por respuesta del hook
 
 
@@ -29,14 +30,17 @@ const settings = [{icon: MiscellaneousServicesIcon, text: "Perfil"},{icon: Histo
 
 export const ResponsiveAppBar = () => {
   const [anchorElUser, setAnchorElUser] = useState(null);
-
+  const navigate = useNavigate(); // Hook para navegación
 
   const handleOpenUserMenu = (event) => { // abre menu de avatar
     setAnchorElUser(event.currentTarget);
   };
 
-  const handlePages = () => { // accion de links de navbar
-  };
+  const handlePages = (page) => { // accion de links de navbar
+    if (page === "Habitaciones") {
+      navigate('/habitaciones');
+  }
+}
 
   const handleCloseUserMenu = () => { // cierra menu de avatar
     setAnchorElUser(null);
@@ -92,7 +96,7 @@ export const ResponsiveAppBar = () => {
                   {pagesUser.map((page) => (
                     <Button
                       key={page}
-                      onClick={handlePages}
+                      onClick={() => handlePages(page)}
                       sx={{ my: 2, color: 'white', display: 'block' }}
                     >
                       {page}
@@ -104,7 +108,7 @@ export const ResponsiveAppBar = () => {
                   {pagesHost.map((page) => (
                     <Button
                       key={page}
-                      onClick={handlePages}
+                      onClick={() => handlePages(page)}
                       sx={{ my: 2, color: 'white', display: 'block' }}
                     >
                       {page}
@@ -116,7 +120,7 @@ export const ResponsiveAppBar = () => {
                   {pagesAdmin.map((page) => (
                     <Button
                       key={page}
-                      onClick={handlePages}
+                      onClick={() => handlePages(page)}
                       sx={{ my: 2, color: 'white', display: 'block' }}
                     >
                       {page}

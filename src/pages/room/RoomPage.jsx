@@ -1,5 +1,7 @@
 import React from 'react';
 import { ResponsiveAppBar } from '../../components/Navbar.jsx';
+import RoomCard from '../../components/room/RoomCard.jsx';
+import './Room.css'; 
 
 const role = "HOST_ROLE"; 
 
@@ -16,13 +18,9 @@ export const RoomPage = () => {
     );
   } else if (role === "HOST_ROLE") {
     roleTexts = (
-      <>
-        <p>Como <strong>Anfitrión</strong> puedes administrar tus propias habitaciones.</p>
-        <p>Gestiona reservas y disponibilidad fácilmente.</p>
-        <p>Actualiza la información y servicios de tus habitaciones.</p>
-      </>
+      <RoomCard />
     );
-  } else if (role === "USER_ROLE") {
+  } else if (role === "CLIENT_ROLE") {
     roleTexts = (
       <>
         <p>Como <strong>Usuario</strong> puedes ver y reservar habitaciones disponibles.</p>
@@ -39,11 +37,13 @@ export const RoomPage = () => {
   }
 
   return (
-    <div>
-      <div>
-        <ResponsiveAppBar />
+    <div className="room-page-container">
+      <ResponsiveAppBar />
+      <div className="room-header">
         <h1>Habitaciones</h1>
         <p>Bienvenido a la página de habitaciones.</p>
+      </div>
+      <div className="room-card-wrapper">
         {roleTexts}
       </div>
     </div>

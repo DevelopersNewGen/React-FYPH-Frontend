@@ -1,7 +1,6 @@
 import React from 'react';
 import { ResponsiveAppBar } from '../../components/Navbar.jsx';
 import RoomDetails from '../../components/room/RoomDetails.jsx';
-import RoomDetailsClient from '../../components/room/RoomDetailsClient.jsx';
 import './Room.css'; 
 
 const role = "CLIENT_ROLE"; 

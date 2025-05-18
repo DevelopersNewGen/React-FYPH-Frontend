@@ -1,21 +1,30 @@
-import { useState, useMemo } from "react";
-
-const mockEvents = [
-  { id: 1, nombre: "Evento 1", reservado: true },
-  { id: 2, nombre: "Evento 2", reservado: false },
-  { id: 3, nombre: "Evento 3", reservado: true },
-  { id: 4, nombre: "Evento 4", reservado: false },
-];
+import { useState, useMemo, useEffect } from "react";
+import { getEvents } from "../../services/api.jsx";
 
 export function useEventFilter() {
   const [filter, setFilter] = useState("todos");
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const data = await getEvents();
+        setEvents(data.events || []);
+      } catch (error) {
+        setEvents([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchEvents();
+  }, []);
 
   const eventosFiltrados = useMemo(() => {
-    if (filter === "reservados") return mockEvents.filter((e) => e.reservado);
-    if (filter === "no-reservados")
-      return mockEvents.filter((e) => !e.reservado);
-    return mockEvents;
-  }, [filter]);
+    if (filter === "reservados") return events.filter((e) => e.reservado);
+    if (filter === "no-reservados") return events.filter((e) => !e.reservado);
+    return events;
+  }, [filter, events]);
 
-  return { filter, setFilter, eventosFiltrados };
+  return { filter, setFilter, eventosFiltrados, loading };
 }

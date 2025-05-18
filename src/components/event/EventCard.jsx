@@ -13,7 +13,13 @@ import { useEventCarousel } from "../../shared/hooks/useEventCarousel.jsx";
 const IMAGEN_EVENTO_DEFAULT =
   "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80";
 
-export function EventCard({ nombre, reservado, imagenes = [] }) {
+const IMAGENES_DEMO = [
+  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80"
+];
+
+export function EventCard({ eid, name, reservado, imagenes = IMAGENES_DEMO }) {
   const { current, handlePrev, handleNext } = useEventCarousel(imagenes);
 
   const mostrarImagen =
@@ -26,7 +32,7 @@ export function EventCard({ nombre, reservado, imagenes = [] }) {
           component="img"
           height="180"
           image={mostrarImagen}
-          alt={nombre}
+          alt={name}
         />
         {imagenes.length > 1 && (
           <>
@@ -57,7 +63,7 @@ export function EventCard({ nombre, reservado, imagenes = [] }) {
       </div>
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          {nombre}
+          {name}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           {reservado ? "Reservado" : "No reservado"}

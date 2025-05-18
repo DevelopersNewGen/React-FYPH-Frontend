@@ -5,7 +5,7 @@ import ResponsiveAppBar from "../../components/Navbar.jsx";
 import "./event.css";
 
 const Event = () => {
-  const { filter, setFilter, eventosFiltrados } = useEventFilter();
+  const { filter, setFilter, eventosFiltrados, loading } = useEventFilter();
 
   return (
     <>
@@ -22,7 +22,11 @@ const Event = () => {
             <option value="no-reservados">No reservados</option>
           </select>
         </div>
-        <EventList eventos={eventosFiltrados} />
+        {loading ? (
+          <div>Cargando eventos...</div>
+        ) : (
+          <EventList eventos={eventosFiltrados} />
+        )}
       </div>
     </>
   );

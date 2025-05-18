@@ -5,7 +5,7 @@ export function EventList({ eventos }) {
   return (
     <>
       {eventos.map((evento) => (
-        <EventCard key={evento.id} {...evento} />
+        <EventCard key={evento.eid} {...evento} />
       ))}
     </>
   );

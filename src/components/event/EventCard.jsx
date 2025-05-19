@@ -9,6 +9,7 @@ import IconButton from "@mui/material/IconButton";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { useEventCarousel } from "../../shared/hooks/useEventCarousel.jsx";
+import { useNavigate } from "react-router-dom";
 
 const IMAGEN_EVENTO_DEFAULT =
   "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80";
@@ -19,14 +20,15 @@ const IMAGENES_DEMO = [
   "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80"
 ];
 
-export function EventCard({ eid, name, reservado, imagenes = IMAGENES_DEMO }) {
+export function EventCard({ eid, name, category, imagenes = IMAGENES_DEMO }) {
   const { current, handlePrev, handleNext } = useEventCarousel(imagenes);
+   const navigate = useNavigate();
 
   const mostrarImagen =
     imagenes.length > 0 ? imagenes[current] : IMAGEN_EVENTO_DEFAULT;
 
   return (
-    <Card sx={{ maxWidth: "500px", width: "100%", marginBottom: 2 }}>
+    <Card sx={{ maxWidth: "400px", width: "100%", marginBottom: 2 }}>
       <div style={{ position: "relative" }}>
         <CardMedia
           component="img"
@@ -66,11 +68,13 @@ export function EventCard({ eid, name, reservado, imagenes = IMAGENES_DEMO }) {
           {name}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          {reservado ? "Reservado" : "No reservado"}
+          Categoría: {category}
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Ver detalles</Button>
+         <Button size="small" onClick={() => navigate(`/eventos/${eid}`)}>
+          Ver detalles
+        </Button>
         <Button size="small">Reservar</Button>
       </CardActions>
     </Card>

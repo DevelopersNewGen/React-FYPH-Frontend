@@ -5,7 +5,7 @@ import ResponsiveAppBar from "../../components/Navbar.jsx";
 import "./event.css";
 
 const Event = () => {
-  const { filter, setFilter, eventosFiltrados, loading } = useEventFilter();
+  const { filter, setFilter, eventosFiltrados, loading, categorias } = useEventFilter();
 
   return (
     <>
@@ -17,9 +17,13 @@ const Event = () => {
             onChange={(e) => setFilter(e.target.value)}
             className="event-select"
           >
-            <option value="todos">Todos</option>
-            <option value="reservados">Reservados</option>
-            <option value="no-reservados">No reservados</option>
+            {categorias.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat === "todos"
+                  ? "Todas las categorías"
+                  : cat.charAt(0).toUpperCase() + cat.slice(1)}
+              </option>
+            ))}
           </select>
         </div>
         {loading ? (

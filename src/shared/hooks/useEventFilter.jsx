@@ -1,6 +1,8 @@
 import { useState, useMemo, useEffect } from "react";
 import { getEvents } from "../../services/api.jsx";
 
+const CATEGORIES = ["todos", "weding", "party", "business", "other"];
+
 export function useEventFilter() {
   const [filter, setFilter] = useState("todos");
   const [events, setEvents] = useState([]);
@@ -21,10 +23,9 @@ export function useEventFilter() {
   }, []);
 
   const eventosFiltrados = useMemo(() => {
-    if (filter === "reservados") return events.filter((e) => e.reservado);
-    if (filter === "no-reservados") return events.filter((e) => !e.reservado);
-    return events;
+    if (filter === "todos") return events;
+    return events.filter((e) => e.category === filter);
   }, [filter, events]);
 
-  return { filter, setFilter, eventosFiltrados, loading };
+  return { filter, setFilter, eventosFiltrados, loading, categorias: CATEGORIES };
 }

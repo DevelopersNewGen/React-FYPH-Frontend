@@ -1,33 +1,49 @@
-import React from 'react';
-import HotelCard from '../../components/hotel/hotelCard';
-import {ResponsiveAppBar} from '../../components/Navbar.jsx';
+import React, { useEffect, useState } from "react"
+import HotelCard from "../../components/hotel/hotelCard"
+import { ResponsiveAppBar } from "../../components/Navbar.jsx"
+import { getHotels } from "../../service/index.js"
+import "./Hotel.css"
 
 export const HotelPage = () => {
-  const hotels = [
-    {
-      id: 1,
-      name: 'Hotel Paradise',
-      location: 'Ciudad de Guatemala',
-      description: 'Un hotel de lujo con todas las comodidades.',
-      pricePerNight: 500,
-      images: ['https://via.placeholder.com/345x180?text=Hotel+1']
-    },
-    {
-      id: 2,
-      name: 'Hotel Vista Hermosa',
-      location: 'Antigua Guatemala',
-      description: 'Hermosas vistas y excelente servicio.',
-      pricePerNight: 300,
-      images: ['https://via.placeholder.com/345x180?text=Hotel+2']
+  const [hotels, setHotels] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    const fetchHotels = async () => {
+      try {
+        const data = await getHotels()
+        console.log("Datos recibidos de la API:", data) // Verifica qué devuelve la API
+        setHotels(data.hotels || []) // Asegúrate de que sea un array
+      } catch (err) {
+        setError("Error al cargar los hoteles. Inténtalo de nuevo más tarde.")
+      } finally {
+        setLoading(false)
+      }
     }
-  ];
+
+    fetchHotels()
+  }, [])
 
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', justifyContent: 'center', padding: '16px' }}>
+    <div className="room-page-container">
       <ResponsiveAppBar />
-      {hotels.map((hotel) => (
-        <HotelCard key={hotel.id} hotel={hotel} />
-      ))}
+      <header className="room-header">
+        <h1>Hoteles Disponibles</h1>
+      </header>
+      {loading ? (
+        <p>Cargando hoteles...</p>
+      ) : error ? (
+        <p>{error}</p>
+      ) : Array.isArray(hotels) && hotels.length > 0 ? (
+        <div className="room-list-grid">
+          {hotels.map((hotel) => (
+            <HotelCard key={hotel.hid} hotel={hotel} />
+          ))}
+        </div>
+      ) : (
+        <p>No hay hoteles disponibles.</p>
+      )}
     </div>
-  );
-};
+  )
+}

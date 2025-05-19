@@ -6,7 +6,7 @@ const apiClient = axios.create({
     httpsAgent: false
 })
 
-apiClient.interceptors.request.use(
+/*apiClient.interceptors.request.use(
     (config) => {
         const userDetails = localStorage.getItem("user")
 
@@ -20,3 +20,13 @@ apiClient.interceptors.request.use(
         return Promise.reject(e)
     }
 )
+*/
+
+export const getHotels = async () => {
+  try {
+    const response = await apiClient.get("/hotels/")
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}

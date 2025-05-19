@@ -2,10 +2,15 @@ import React from "react";
 import { useEventFilter } from "../../shared/hooks/useEventFilter.jsx";
 import { EventList } from "../../components/event/EventList.jsx";
 import ResponsiveAppBar from "../../components/Navbar.jsx";
+import AddEventButton from "../../components/event/AddEventButton.jsx";
+import { useNavigate } from "react-router-dom";
 import "./event.css";
 
 const Event = () => {
-  const { filter, setFilter, eventosFiltrados, loading, categorias } = useEventFilter();
+  const { filter, setFilter, eventosFiltrados, loading, categorias } =
+    useEventFilter();
+  const navigate = useNavigate();
+  const role = "USER_ROLE";
 
   return (
     <>
@@ -25,6 +30,10 @@ const Event = () => {
               </option>
             ))}
           </select>
+          <AddEventButton
+            role={role}
+            onClick={() => navigate("/eventos/nuevo")}
+          />
         </div>
         {loading ? (
           <div>Cargando eventos...</div>

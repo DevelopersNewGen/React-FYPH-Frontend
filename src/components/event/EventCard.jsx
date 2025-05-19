@@ -17,18 +17,18 @@ const IMAGEN_EVENTO_DEFAULT =
 const IMAGENES_DEMO = [
   "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
   "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80",
-  "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80"
+  "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80",
 ];
 
 export function EventCard({ eid, name, category, imagenes = IMAGENES_DEMO }) {
   const { current, handlePrev, handleNext } = useEventCarousel(imagenes);
-   const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const mostrarImagen =
     imagenes.length > 0 ? imagenes[current] : IMAGEN_EVENTO_DEFAULT;
 
   return (
-    <Card sx={{ maxWidth: "400px", width: "100%", marginBottom: 2 }}>
+    <Card sx={{ maxWidth: "500px", width: "100%", marginBottom: 2 }}>
       <div style={{ position: "relative" }}>
         <CardMedia
           component="img"
@@ -72,10 +72,9 @@ export function EventCard({ eid, name, category, imagenes = IMAGENES_DEMO }) {
         </Typography>
       </CardContent>
       <CardActions>
-         <Button size="small" onClick={() => navigate(`/eventos/${eid}`)}>
+        <Button size="small" onClick={() => navigate(`/eventos/${eid}`)}>
           Ver detalles
         </Button>
-        <Button size="small">Reservar</Button>
       </CardActions>
     </Card>
   );

@@ -6,21 +6,21 @@ const apiClient = axios.create({
     httpsAgent: false
 })
 
-/*apiClient.interceptors.request.use(
-    (config) => {
-        const userDetails = localStorage.getItem("user")
+apiClient.interceptors.request.use(
+  (config) => {
+    const userDetails = localStorage.getItem("user")
 
-        if(userDetails){
-            const token = JSON.parse(userDetails).token
-            config.headers.Authorization = `Bearer ${token}`
-        }
-        return config
-    },
-    (e) => {
-        return Promise.reject(e)
+    if (userDetails) {
+      const token = JSON.parse(userDetails).token
+      config.headers.Authorization = `Bearer ${token}`
     }
+    return config
+  },
+  (e) => {
+    return Promise.reject(e)
+  }
 )
-*/
+
 
 export const getHotels = async () => {
   try {

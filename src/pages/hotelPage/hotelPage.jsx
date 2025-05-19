@@ -13,8 +13,7 @@ export const HotelPage = () => {
     const fetchHotels = async () => {
       try {
         const data = await getHotels()
-        console.log("Datos recibidos de la API:", data) // Verifica qué devuelve la API
-        setHotels(data.hotels || []) // Asegúrate de que sea un array
+        setHotels(data.hotels || []) 
       } catch (err) {
         setError("Error al cargar los hoteles. Inténtalo de nuevo más tarde.")
       } finally {

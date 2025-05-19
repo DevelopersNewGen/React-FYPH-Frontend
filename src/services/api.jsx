@@ -34,7 +34,7 @@ export const getRooms = async () => {
 
 export const getRoomById = async (rid) => {
     try {
-        return await apiClient.get(`/rooms/${rid}`);
+        return await apiClient.get(`/rooms/getRoomById/${rid}`);
     } catch (e) {
         return {
             error: true,

@@ -1,35 +1,16 @@
 import React from 'react';
-import { ResponsiveAppBar } from '../../components/Navbar.jsx';
-import RoomDetails from '../../components/room/RoomDetails.jsx';
-import './Room.css'; 
+import { ResponsiveAppBar } from '../../components/Navbar';
+import { useRoomDetails } from '../../shared/hooks/useRoomDetails';
+import './RoomDetails';
+import RoomDetailsComponent from '../../components/room/RoomDetails';
 
-const role = "CLIENT_ROLE"; 
-
-export const RoomDetailsPage = () => {
-  let content;
-
-  if (role === "ADMIN_ROLE" || role === "HOST_ROLE") {
-    content = <RoomDetails />;
-  } else if (role === "CLIENT_ROLE") {
-    content = <RoomDetailsClient />;
-  } else {
-    content = (
-      <p>Por favor inicia sesión para ver información personalizada.</p>
-    );
-  }
+export default function RoomDetailsPage() {
+  const { room, loading } = useRoomDetails();
 
   return (
-    <div className="room-page-container">
+    <div>
       <ResponsiveAppBar />
-      <div className="room-header">
-        <h1>Detalles de la Habitación</h1>
-        <p>Consulta la información detallada de la habitación seleccionada.</p>
-      </div>
-      <div className="room-card-wrapper">
-        {content}
-      </div>
+      <RoomDetailsComponent room={room} loading={loading} />
     </div>
   );
-};
-
-export default RoomDetailsPage;
+}

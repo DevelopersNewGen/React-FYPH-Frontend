@@ -1,23 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import {
+  Card,
+  CardActions,
+  CardContent,
+  Button,
+  Typography,
+  Box,
+  IconButton,
+} from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { useNavigate } from 'react-router-dom';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import { Box, IconButton } from '@mui/material';
 
 export default function RoomCard({ room, showAddButton }) {
-  const [current, setCurrent] = React.useState(0);
+  const [current, setCurrent] = useState(0);
   const navigate = useNavigate();
+  const role = localStorage.getItem('role') || 'HOST_ROLE';
 
-  const role = localStorage.getItem('role') || "HOST_ROLE";
-
-  const images = room?.images?.length > 0 ? room.images : [
-    
-  ];
+  const images = room?.images?.length > 0 ? room.images : [];
 
   const handlePrev = () => {
     setCurrent((prev) => (prev === 0 ? images.length - 1 : prev - 1));
@@ -35,7 +35,11 @@ export default function RoomCard({ room, showAddButton }) {
     navigate('/habitaciones/agregar');
   };
 
-  if (showAddButton && (role === "ADMIN_ROLE" || role === "HOST_ROLE") && (!room || Object.keys(room).length === 0)) {
+  if (
+    showAddButton &&
+    (role === 'ADMIN_ROLE' || role === 'HOST_ROLE') &&
+    (!room || Object.keys(room).length === 0)
+  ) {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 16 }}>
         <Button
@@ -49,9 +53,8 @@ export default function RoomCard({ room, showAddButton }) {
       </div>
     );
   }
-  if (!room || Object.keys(room).length === 0) {
-    return null;
-  }
+
+  if (!room || Object.keys(room).length === 0) return null;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 16 }}>
@@ -90,7 +93,9 @@ export default function RoomCard({ room, showAddButton }) {
           </Typography>
         </CardContent>
         <CardActions>
-          <Button size="small" onClick={handleDetails}>Ver detalles</Button>
+          <Button size="small" onClick={handleDetails}>
+            Ver detalles
+          </Button>
         </CardActions>
       </Card>
     </div>

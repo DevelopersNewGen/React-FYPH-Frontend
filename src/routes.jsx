@@ -6,6 +6,6 @@ import RoomAddPage from './pages/room/RoomAdd';
 export const routes = [
     { path: '/*', element: <DashboardPage /> },
     { path: '/habitaciones', element: <RoomPage /> },
-    { path: '/habitaciones/detalles', element: <RoomDetails /> },
+    { path: '/habitaciones/detalles/:rid', element: <RoomDetails /> },
     { path: '/habitaciones/agregar', element: <RoomAddPage /> }
 ];

@@ -3,7 +3,6 @@ import { Box, Button, TextField, Typography, Paper } from '@mui/material';
 import Link from '@mui/joy/Link';
 
 
-
 export const Login = ({switchAuthHandler} ) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -11,13 +10,11 @@ export const Login = ({switchAuthHandler} ) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Aquí iría la lógica de autenticación
     if (!username || !password) {
       setError('Por favor, complete ambos campos.');
       return;
     }
     setError('');
-    // ...login logic...
   };
 
   return (

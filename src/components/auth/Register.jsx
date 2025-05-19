@@ -82,7 +82,7 @@ export const Register = ({ switchAuthHandler }) => {
 
   const handleRegister = (event) =>{
     event.preventDefault();
-    register(formState.email.value, formState.password.value, formState.username.value);
+    register( formState.username.value, formState.email.value, formState.password.value );
   }
 
   const isSubmitDisabled =

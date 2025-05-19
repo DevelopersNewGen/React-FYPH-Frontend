@@ -2,14 +2,14 @@ import { useNavigate } from "react-router-dom"
 import { register as registerRequest } from '../../services'
 import toast from "react-hot-toast"
 import { useState } from "react"
+
 export const useRegister = () => {
     const [isLoading, setIsLoading] = useState(false)
 
     const navigate = useNavigate()
 
     const register = async (name, email, password) => {
-
-        setIsLoading(true);
+        setIsLoading(true)
 
         const response = await registerRequest({
             name,
@@ -18,16 +18,28 @@ export const useRegister = () => {
         })
 
         setIsLoading(false)
-        console.log(response)
+
         if (response.error) {
-            toast.error(response.e?.response?.data.errors?.[0]?.msg || "Error  al registrarse")
-        } else {
-            toast.success(response.data.message)
+            const errorMessage = response.e?.response?.data?.message || "Error al registrarse"
+            toast.error(errorMessage)
+            return
         }
 
-        const { userDetails } = response.data
+        if (!response.data) {
+            toast.error("La respuesta del servidor no contiene datos")
+            return
+        }
 
+        const { name: userName, email: userEmail} = response.data
+
+        if (!userName || !userEmail) {
+            toast.error("No se pudo obtener la información del usuario")
+            return
+        }
+
+        const userDetails = { name: userName, email: userEmail  }
         localStorage.setItem("user", JSON.stringify(userDetails))
+        toast.success(response.data.message)
         navigate("/")
     }
 

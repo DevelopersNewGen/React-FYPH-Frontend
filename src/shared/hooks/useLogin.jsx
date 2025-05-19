@@ -26,10 +26,16 @@ export const useLogin = () => {
             toast.success(response.data.message)
         }
 
-        const { userDetails } = response.data;
+        const { name: userName, email: userEmail, id } = response.data
 
-        localStorage.setItem('user', JSON.stringify(userDetails))
+        if (!userName || !userEmail || !id) {
+            toast.error("No se pudo obtener la información del usuario")
+            return
+        }
 
+        const userDetails = { name: userName, email: userEmail}
+        localStorage.setItem("user", JSON.stringify(userDetails))
+        toast.success(response.data.message)
         navigate("/")
     }
 

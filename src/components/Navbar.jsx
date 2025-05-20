@@ -15,13 +15,15 @@ import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices
 import HistoryIcon from '@mui/icons-material/History';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom'; 
+import { useUserDetails } from '../shared/hooks';
 
 const pagesAdmin = ['Hoteles', 'Usuarios', 'Solicitudes', "Estadisticas"];
 const pagesHost = ["Reservaciones", "Usuarios", "Habitaciones", "Servicios"]
-const pagesUser = [""]
+const pagesUser = [" "]
 
-const role = "CLIENT_ROLE" // cambiar por respuesta de hook
-const isLogged = true // cambiar por respuesta del hook
+const user = JSON.parse(localStorage.getItem("user"));
+const role = user?.role || null;
+const img = user?.img;
 
 
 const settings = [{icon: MiscellaneousServicesIcon, text: "Perfil"},{icon: HistoryIcon, text:"Reservaciones"}, 
@@ -30,6 +32,7 @@ const settings = [{icon: MiscellaneousServicesIcon, text: "Perfil"},{icon: Histo
 export const ResponsiveAppBar = () => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const navigate = useNavigate(); // Hook para navegación
+  const {isLogged, logout} = useUserDetails();
 
   const handleOpenUserMenu = (event) => { // abre menu de avatar
     setAnchorElUser(event.currentTarget);
@@ -48,7 +51,7 @@ export const ResponsiveAppBar = () => {
       navigate("/reservations")
     } else if (setting.text === "Cerrar sesion") {
       navigate("/")
-      // hook para logout
+      logout
     } else if (setting.text === "Ayuda") {
       navigate("/help")
     }
@@ -65,7 +68,7 @@ export const ResponsiveAppBar = () => {
             variant="h6"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="/"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -83,7 +86,7 @@ export const ResponsiveAppBar = () => {
             variant="h5"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="/"
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
@@ -138,10 +141,10 @@ export const ResponsiveAppBar = () => {
                   ))}
                 </Box>
               ) : null}
-              <Box sx={{ flexGrow: 0 }}>
+              <Box sx={{ flexGrow: 0,  ml: "auto" }}>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                    <Avatar alt="Remy Sharp" src={img} />
                   </IconButton>
                 </Tooltip>
                 <Menu
@@ -173,21 +176,13 @@ export const ResponsiveAppBar = () => {
             </>
           ) : (
             <>
-              <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                <Button
-                  onClick={handlePages}
-                  sx={{ my: 2, color: 'white', display: 'block' }}
-                >
-                  Hoteles
-                </Button>
-              </Box>
-              <Box sx={{ flexGrow: 0 }}>
+              <Box sx={{ flexGrow: 0, ml: "auto"}}>
                 <Tooltip title="Open settings">
                   <Typography
                     variant="h6"
                     noWrap
                     component="a"
-                    href="#app-bar-with-responsive-menu"
+                    href="/auth"
                     sx={{
                       mr: 2,
                       display: { xs: 'none', md: 'flex' },

@@ -23,19 +23,13 @@ export const useLogin = () => {
         if(response.error){
             toast.error(response.e?.response?.data || "Error iniciar sesión")
         }else{
-            toast.success(response.data.message)
+            toast.success(response.data.msg)
         }
 
-        const { name: userName, email: userEmail, id } = response.data
+        const { userDetails } = response.data;
 
-        if (!userName || !userEmail || !id) {
-            toast.error("No se pudo obtener la información del usuario")
-            return
-        }
+        localStorage.setItem('user', JSON.stringify(userDetails))
 
-        const userDetails = { name: userName, email: userEmail}
-        localStorage.setItem("user", JSON.stringify(userDetails))
-        toast.success(response.data.message)
         navigate("/")
     }
 

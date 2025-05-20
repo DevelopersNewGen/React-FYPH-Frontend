@@ -1,21 +1,69 @@
 import React, { useState } from 'react';
 import { Box, Button, TextField, Typography, Paper } from '@mui/material';
 import Link from '@mui/joy/Link';
-
+import PropTypes from "prop-types";
+import {
+  validateEmail,
+  validatePassword,
+  validateEmailMessage,
+} from "../../shared/validators";
+import {useLogin} from "../../shared/hooks"
 
 export const Login = ({switchAuthHandler} ) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const { login, isLoading } = useLogin();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!username || !password) {
-      setError('Por favor, complete ambos campos.');
-      return;
-    }
-    setError('');
+  const [formState, setFormState] = useState({
+    email: {
+      value: "",
+      isValid: false,
+      showError: false,
+    },
+    password: {
+      value: "",
+      isValid: false,
+      showError: false,
+    },
+  });
+
+  const handleInputValueChange = (value, field) => {
+    setFormState((prevState) => ({
+      ...prevState,
+      [field]: {
+        ...prevState[field],
+        value,
+      },
+    }));
   };
+
+  const handleInputValidationOnBlur = (value, field) => {
+    let isValid = false;
+    switch (field) {
+      case "email":
+        isValid = validateEmail(value);
+        break;
+      case "password":
+        isValid = validatePassword(value);
+        break;
+      default:
+        break;
+    }
+    setFormState((prevState) => ({
+      ...prevState,
+      [field]: {
+        ...prevState[field],
+        isValid,
+        showError: !isValid,
+      },
+    }));
+  };
+
+  const handleLogin = (event) => {
+    event.preventDefault();
+    login(formState.email.value, formState.password.value);
+  };
+
+  const isSubmitDisabled =
+    isLoading || !formState.email.isValid || !formState.password.isValid;
 
   return (
     <Box
@@ -29,36 +77,38 @@ export const Login = ({switchAuthHandler} ) => {
         <Typography variant="h5" mb={2} align="center">
           Iniciar Sesión
         </Typography>
-        <form onSubmit={handleSubmit}>
+        <form >
           <TextField
-            label="Usuario"
-            variant="outlined"
+            label="Correo electrónico"
+            type="email"
             fullWidth
+            required
             margin="normal"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            variant="outlined"
+            value={formState.email.value}
+            onChange={e => handleInputValueChange(e.target.value, "email")}
             autoFocus
-          />
+            helperText={validateEmailMessage}
+            onBlur={e => handleInputValidationOnBlur(e.target.value, "email")}
+          />  
           <TextField
             label="Contraseña"
             type="password"
-            variant="outlined"
             fullWidth
+            required
             margin="normal"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={formState.password.value}
+            onChange={e => handleInputValueChange(e.target.value, "password")}
+            onBlur={e => handleInputValidationOnBlur(e.target.value, "password")}
           />
-          {error && (
-            <Typography color="error" variant="body2" mt={1}>
-              {error}
-            </Typography>
-          )}
           <Button
             type="submit"
             variant="contained"
             color="primary"
             fullWidth
             sx={{ mt: 2 }}
+            onClick={handleLogin}
+            disabled={isSubmitDisabled}
           >
             Entrar
           </Button>

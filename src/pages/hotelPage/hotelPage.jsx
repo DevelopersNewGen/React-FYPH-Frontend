@@ -1,47 +1,32 @@
-import React, { useEffect, useState } from "react"
-import HotelCard from "../../components/hotel/hotelCard"
+import React from "react"
+import HotelCard from "../../components/hotel/hotelCard.jsx"
 import { ResponsiveAppBar } from "../../components/Navbar.jsx"
-import { getHotels } from "../../service/index.js"
+import { useHotelList } from "../../shared/hooks/useHotelList.jsx"
 import "./Hotel.css"
 
 export const HotelPage = () => {
-  const [hotels, setHotels] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-
-  useEffect(() => {
-    const fetchHotels = async () => {
-      try {
-        const data = await getHotels()
-        setHotels(data.hotels || []) 
-      } catch (err) {
-        setError("Error al cargar los hoteles. Inténtalo de nuevo más tarde.")
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchHotels()
-  }, [])
+  const { hotels, loading, error } = useHotelList()
 
   return (
-    <div className="room-page-container">
+    <div className="hotel-page-container">
       <ResponsiveAppBar />
-      <header className="room-header">
+      <header className="hotel-header">
         <h1>Hoteles Disponibles</h1>
       </header>
-      {loading ? (
-        <p>Cargando hoteles...</p>
-      ) : error ? (
-        <p>{error}</p>
-      ) : Array.isArray(hotels) && hotels.length > 0 ? (
-        <div className="room-list-grid">
-          {hotels.map((hotel) => (
-            <HotelCard key={hotel.hid} hotel={hotel} />
+
+      {loading && <p className="loading">Cargando hoteles...</p>}
+      {error && <p className="error">{error}</p>}
+
+      {!loading && !error && hotels.length === 0 && (
+        <p>No hay hoteles disponibles.</p>
+      )}
+
+      {!loading && !error && hotels.length > 0 && (
+        <div className="hotel-list-grid">
+          {hotels.map(hotel => (
+            <HotelCard key={hotel.hid || hotel.id || hotel._id} hotel={hotel} />
           ))}
         </div>
-      ) : (
-        <p>No hay hoteles disponibles.</p>
       )}
     </div>
   )

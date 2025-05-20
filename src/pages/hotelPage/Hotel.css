@@ -1,60 +1,59 @@
-/* Reset y base para que todo ocupe ancho completo */
-html, body, #root {
-  margin: 0;
-  padding: 0;
+.card-details {
   width: 100%;
-  height: 100%;
+  max-width: 450px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.15);
+  padding: 20px;
   box-sizing: border-box;
+  color: #222;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Contenedor principal de la página */
-.room-page-container {
-  max-width: 1200px;          /* Máximo ancho de la página */
-  margin: 0 auto;             /* Centra horizontalmente */
-  padding: 32px 20px;         /* Espaciado alrededor */
-  background: #fff;
-  min-height: 100vh;
+.card-details h1, .card-details h2, .card-details h3 {
+  margin: 8px 0;
+}
+
+.card-details img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+  margin-bottom: 20px;
+  user-select: none;
+}
+
+/* Controles del carrusel */
+.carousel-controls {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  box-sizing: border-box;
+  justify-content: space-between;
+  margin-bottom: 16px;
 }
 
-/* Header centrado */
-.room-header {
-  text-align: center;
-  margin-bottom: 24px;
-  width: 100%;
-  padding: 0 10px;
+.carousel-button {
+  background-color: #0078d4;
+  border: none;
+  color: rgb(0, 0, 0);
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  user-select: none;
+  transition: background-color 0.2s ease-in-out;
 }
 
-/* Wrapper de las tarjetas */
-.room-card-wrapper {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  padding: 0 10px;
-  box-sizing: border-box;
+.carousel-button:hover {
+  background-color: #005ea1;
 }
 
-/* Grid de habitaciones */
-.room-list-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  width: 100%;
-  justify-items: center;
-  box-sizing: border-box;
+.card-details ul {
+  padding-left: 20px;
 }
 
-@media (max-width: 1100px) {
-  .room-list-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 700px) {
-  .room-list-grid {
-    grid-template-columns: 1fr;
-  }
+.card-details strong {
+  display: block;
+  margin-top: 12px;
+  margin-bottom: 6px;
+  font-weight: 700;
 }

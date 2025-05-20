@@ -1,55 +1,69 @@
-import React, { useState } from "react"
-import AppBar from "@mui/material/AppBar"
-import Box from "@mui/material/Box"
-import Toolbar from "@mui/material/Toolbar"
-import IconButton from "@mui/material/IconButton"
-import Typography from "@mui/material/Typography"
-import Menu from "@mui/material/Menu"
-import Container from "@mui/material/Container"
-import Avatar from "@mui/material/Avatar"
-import Button from "@mui/material/Button"
-import Tooltip from "@mui/material/Tooltip"
-import MenuItem from "@mui/material/MenuItem"
-import AdbIcon from "@mui/icons-material/Adb"
-import MiscellaneousServicesIcon from "@mui/icons-material/MiscellaneousServices"
-import HistoryIcon from "@mui/icons-material/History"
-import LogoutIcon from "@mui/icons-material/Logout"
-import HelpIcon from "@mui/icons-material/Help"
-import { useNavigate } from "react-router-dom"
+import React, { useState } from "react";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import Menu from "@mui/material/Menu";
+import Container from "@mui/material/Container";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import Tooltip from "@mui/material/Tooltip";
+import MenuItem from "@mui/material/MenuItem";
+import AdbIcon from "@mui/icons-material/Adb";
+import MiscellaneousServicesIcon from "@mui/icons-material/MiscellaneousServices";
+import HistoryIcon from "@mui/icons-material/History";
+import LogoutIcon from "@mui/icons-material/Logout";
+import HelpIcon from "@mui/icons-material/Help";
+import { useNavigate } from "react-router-dom";
+import { useUserDetails } from "../shared/hooks";
 
-const pagesAdmin = ["Hoteles", "Usuarios", "Solicitudes", "Estadisticas"]
-const pagesHost = ["Reservaciones", "Usuarios", "Habitaciones", "Servicios"]
-const pagesUser = ["Hoteles", "Eventos"]
+const pagesAdmin = ["Hoteles", "Usuarios", "Solicitudes", "Estadisticas"];
+const pagesHost = ["Reservaciones", "Usuarios", "Habitaciones", "Servicios"];
+const pagesUser = [" "];
 
-const role = "USER_ROLE" // cambiar por respuesta de hook
-const isLogged = true // cambiar por respuesta del hook
+const user = JSON.parse(localStorage.getItem("user"));
+const role = user?.role || null;
+const img = user?.img;
 
 const settings = [
   { icon: MiscellaneousServicesIcon, text: "Perfil" },
   { icon: HistoryIcon, text: "Reservaciones" },
   { icon: LogoutIcon, text: "Cerrar sesion" },
-  { icon: HelpIcon, text: "Ayuda" },
-]
+  { icon: HelpIcon, text: "Ayuda" }
+];
 
 export const ResponsiveAppBar = () => {
-  const [anchorElUser, setAnchorElUser] = useState(null)
-  const navigate = useNavigate()
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  const navigate = useNavigate();
+  const { isLogged, logout } = useUserDetails();
 
   const handleOpenUserMenu = (event) => {
-    // abre menu de avatar
-    setAnchorElUser(event.currentTarget)
-  }
+    setAnchorElUser(event.currentTarget);
+  };
 
   const handlePages = (page) => {
     if (page === "Hoteles") {
-      navigate("/hotels")
+      navigate("/hotels");
+    } else if (page === "Usuarios") {
+      navigate("/user");
     }
-  }
+  };
 
-  const handleCloseUserMenu = () => {
-    // cierra menu de avatar
-    setAnchorElUser(null)
-  }
+  const handleCloseUserMenu = (setting) => {
+    if (setting.text === "Perfil") {
+      navigate("/profile");
+    } else if (setting.text === "Reservaciones") {
+      navigate("/reservations");
+    } else if (setting.text === "Cerrar sesion") {
+      logout();
+      navigate("/");
+    } else if (setting.text === "Ayuda") {
+      navigate("/help");
+    }
+
+    setAnchorElUser(null);
+  };
 
   return (
     <AppBar position="fixed">
@@ -60,7 +74,7 @@ export const ResponsiveAppBar = () => {
             variant="h6"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="/"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -68,17 +82,18 @@ export const ResponsiveAppBar = () => {
               fontWeight: 700,
               letterSpacing: ".3rem",
               color: "inherit",
-              textDecoration: "none",
+              textDecoration: "none"
             }}
           >
             FYPH
           </Typography>
+
           <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
           <Typography
             variant="h5"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="/"
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
@@ -87,7 +102,7 @@ export const ResponsiveAppBar = () => {
               fontWeight: 700,
               letterSpacing: ".3rem",
               color: "inherit",
-              textDecoration: "none",
+              textDecoration: "none"
             }}
           >
             FYPH
@@ -95,7 +110,7 @@ export const ResponsiveAppBar = () => {
 
           {isLogged ? (
             <>
-              {role === "USER_ROLE" ? (
+              {role === "CLIENT_ROLE" ? (
                 <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
                   {pagesUser.map((page) => (
                     <Button
@@ -112,7 +127,7 @@ export const ResponsiveAppBar = () => {
                   {pagesHost.map((page) => (
                     <Button
                       key={page}
-                      onClick={handlePages}
+                      onClick={() => handlePages(page)}
                       sx={{ my: 2, color: "white", display: "block" }}
                     >
                       {page}
@@ -124,7 +139,7 @@ export const ResponsiveAppBar = () => {
                   {pagesAdmin.map((page) => (
                     <Button
                       key={page}
-                      onClick={handlePages}
+                      onClick={() => handlePages(page)}
                       sx={{ my: 2, color: "white", display: "block" }}
                     >
                       {page}
@@ -132,10 +147,11 @@ export const ResponsiveAppBar = () => {
                   ))}
                 </Box>
               ) : null}
-              <Box sx={{ flexGrow: 0 }}>
+
+              <Box sx={{ flexGrow: 0, ml: "auto" }}>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                    <Avatar alt="user" src={img} />
                   </IconButton>
                 </Tooltip>
                 <Menu
@@ -144,27 +160,27 @@ export const ResponsiveAppBar = () => {
                   anchorEl={anchorElUser}
                   anchorOrigin={{
                     vertical: "top",
-                    horizontal: "right",
+                    horizontal: "right"
                   }}
                   keepMounted
                   transformOrigin={{
                     vertical: "top",
-                    horizontal: "right",
+                    horizontal: "right"
                   }}
                   open={Boolean(anchorElUser)}
-                  onClose={handleCloseUserMenu}
+                  onClose={() => setAnchorElUser(null)}
                 >
                   {settings.map((setting) => (
                     <MenuItem
                       key={typeof setting === "string" ? setting : setting.text}
-                      onClick={handleCloseUserMenu}
+                      onClick={() => handleCloseUserMenu(setting)}
                     >
                       <Typography
                         sx={{
                           textAlign: "center",
                           display: "flex",
                           alignItems: "center",
-                          gap: 1,
+                          gap: 1
                         }}
                       >
                         {typeof setting === "object" && setting.icon && (
@@ -180,27 +196,30 @@ export const ResponsiveAppBar = () => {
           ) : (
             <>
               <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-                <Button onClick={handlePages} sx={{ my: 2, color: "white", display: "block" }}>
+                <Button
+                  onClick={() => handlePages("Hoteles")}
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
                   Hoteles
                 </Button>
               </Box>
-              <Box sx={{ flexGrow: 0 }}>
-                <Tooltip title="Open settings">
+              <Box sx={{ flexGrow: 0, ml: "auto" }}>
+                <Tooltip title="Iniciar sesión">
                   <Typography
                     variant="h6"
                     noWrap
                     component="a"
-                    href="#app-bar-with-responsive-menu"
+                    href="/auth"
                     sx={{
                       mr: 2,
                       display: { xs: "none", md: "flex" },
                       fontFamily: "monospace",
                       fontWeight: 400,
                       color: "inherit",
-                      textDecoration: "none",
+                      textDecoration: "none"
                     }}
                   >
-                    Iniciar sesion
+                    Iniciar sesión
                   </Typography>
                 </Tooltip>
               </Box>
@@ -209,7 +228,5 @@ export const ResponsiveAppBar = () => {
         </Toolbar>
       </Container>
     </AppBar>
-  )
-}
-
-export default ResponsiveAppBar
+  );
+};

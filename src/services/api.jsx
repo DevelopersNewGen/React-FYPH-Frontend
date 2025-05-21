@@ -1,3 +1,4 @@
+
 import axios from 'axios';
 
 const apiClient = axios.create({
@@ -50,4 +51,15 @@ export const login = async (data) => {
             e
         };
     }
+  
+  export const getEvents = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/events/`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+
 };
+  
+  

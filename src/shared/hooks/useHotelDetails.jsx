@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { getHotelById } from "../../service/index.js"
+import { getHotelById } from "../../services/index.js"
 
 export const useHotelDetails = (hotelId) => {
   const [hotel, setHotel] = useState(null)

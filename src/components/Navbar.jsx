@@ -25,6 +25,7 @@ const user = JSON.parse(localStorage.getItem("user"));
 const role = user?.role || null;
 const img = user?.img;
 
+console.log(img)
 
 const settings = [{icon: MiscellaneousServicesIcon, text: "Perfil"},{icon: HistoryIcon, text:"Reservaciones"}, 
             {icon: LogoutIcon, text:"Cerrar sesion"} ];
@@ -50,8 +51,7 @@ export const ResponsiveAppBar = () => {
     } else if (setting.text === "Reservaciones") {
       navigate("/reservations")
     } else if (setting.text === "Cerrar sesion") {
-      navigate("/")
-      logout
+      logout();
     } else if (setting.text === "Ayuda") {
       navigate("/help")
     }
@@ -144,7 +144,7 @@ export const ResponsiveAppBar = () => {
               <Box sx={{ flexGrow: 0,  ml: "auto" }}>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="Remy Sharp" src={img} />
+                    <Avatar src={img} />
                   </IconButton>
                 </Tooltip>
                 <Menu

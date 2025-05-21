@@ -1,9 +1,14 @@
-import { DashboardPage } from "./pages/dashboard/DashboardPage";
+
+import { DashboardPage } from './pages/dashboard/DashboardPage';
+import { UserPage } from './pages/userPage/UserPage';
+import { AuthPage } from './pages/authPage/AuthPage';
 import Event from "./pages/event/Event";
 import EventDetail from "./pages/event/EventDetail";
 
 export const routes = [
-  { path: "/eventos", element: <Event /> },
-  { path: "/*", element: <DashboardPage /> },
-  { path: "/eventos/:eid", element: <EventDetail />}
-];
+    {path: '/*', element: <DashboardPage/>},
+    {path: "/user", element: <UserPage/>},
+    {path: "/auth", element: <AuthPage/>},
+    { path: "/eventos", element: <Event /> },
+    { path: "/eventos/:eid", element: <EventDetail />}
+]

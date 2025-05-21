@@ -1,7 +1,7 @@
 import React from "react";
 import { useEventFilter } from "../../shared/hooks/useEventFilter.jsx";
 import { EventList } from "../../components/event/EventList.jsx";
-import ResponsiveAppBar from "../../components/Navbar.jsx";
+import { ResponsiveAppBar } from "../../components/Navbar.jsx";
 import AddEventButton from "../../components/event/AddEventButton.jsx";
 import { useNavigate } from "react-router-dom";
 import "./event.css";
@@ -10,7 +10,7 @@ const Event = () => {
   const { filter, setFilter, eventosFiltrados, loading, categorias } =
     useEventFilter();
   const navigate = useNavigate();
-  const role = "USER_ROLE";
+  role = "CLIENT_ROLE";
 
   return (
     <>

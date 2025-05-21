@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getEvents } from "../../services/api.jsx";
+import { getEvents } from "../../services/index.js";
 
 const IMAGEN_EVENTO_DEFAULT =
   "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80";

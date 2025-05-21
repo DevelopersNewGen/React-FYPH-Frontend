@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom"
-import { register as registerRequest } from '../../services'
+import { register as registerRequest } from '../../services/'
 import toast from "react-hot-toast"
 import { useState } from "react"
 

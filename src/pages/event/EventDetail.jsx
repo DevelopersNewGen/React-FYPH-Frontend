@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import ResponsiveAppBar from "../../components/Navbar.jsx";
+import { ResponsiveAppBar } from "../../components/Navbar.jsx";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import { useEventDetail } from "../../shared/hooks/useEventDetail.jsx";

@@ -51,15 +51,15 @@ export const login = async (data) => {
             e
         };
     }
+}
   
-  export const getEvents = async () => {
+ export const getEvents = async () => {
   try {
-    const response = await axios.get(`${API_URL}/events/`);
+    const response = await apiClient.get("/events/");
     return response.data;
   } catch (error) {
     throw error;
   }
-
 };
   
   

@@ -18,8 +18,8 @@ import { useNavigate } from 'react-router-dom';
 import { useUserDetails } from '../shared/hooks';
 
 const pagesAdmin = ['Hoteles', 'Usuarios', 'Solicitudes', "Estadisticas"];
-const pagesHost = ["Reservaciones", "Usuarios", "Habitaciones", "Servicios"]
-const pagesUser = [" "]
+const pagesHost = ["Reservaciones", "Usuarios", "Habitaciones", "Servicios"];
+const pagesUser = ["Hoteles", "Eventos"];
 
 const user = JSON.parse(localStorage.getItem("user"));
 const role = user?.role || null;
@@ -40,10 +40,12 @@ export const ResponsiveAppBar = () => {
   };
 
   const handlePages = (page) => { // accion de links de navbar
-    if (page === "Usuarios") {
-      navigate("/user")
-    }
-  };
+     if (page === "Usuarios") {
+    navigate("/user")
+  } else if (page === "Eventos") {
+    navigate("/eventos");
+  }
+};
 
   const handleCloseUserMenu = (setting) => { // cierra menu de avatar
     if (setting.text === "Perfil") {

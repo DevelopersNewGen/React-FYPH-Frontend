@@ -13,12 +13,24 @@ export default function HotelCard({ hotel }) {
   const [current, setCurrent] = React.useState(0);
   const navigate = useNavigate();
 
+  let user = null;
+  try {
+    user = JSON.parse(localStorage.getItem("user"));
+  } catch {
+    user = null;
+  }
+  const role = user?.role || null;
+
   const images = hotel?.images?.length > 0 ? hotel.images : [
     "https://via.placeholder.com/345x180?text=Sin+imagen"
   ];
 
   const handlePrev = () => {
     setCurrent((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  };
+
+  const handleAddHotel = () => {
+
   };
 
   const handleNext = () => {
@@ -33,12 +45,27 @@ export default function HotelCard({ hotel }) {
     return null;
   }
 
-  return (
+
+  /*return (
+    
     <Card 
       sx={{ maxWidth: 345, cursor: 'pointer', transition: 'transform 0.3s ease', ':hover': { transform: 'scale(1.03)', boxShadow: 6 } }}
       onClick={handleDetails}
       elevation={3}
     >
+    {(role === "ADMIN_ROLE" || role === "HOST_ROLE") && (
+          <Box sx={{ display: "flex", gap: 2, justifyContent: "center", mt: 4 }}>
+            <Button variant="contained" color="primary" onClick={handleAddHotel}>
+              Agregar hotel
+            </Button>
+            <Button variant="outlined" color="warning" onClick={handleEditHotel}>
+              Editar
+            </Button>
+            <Button variant="outlined" color="error" onClick={handleDeleteHotel}>
+              Eliminar
+            </Button>
+          </Box>
+        )}
       <Box sx={{ position: "relative" }}>
         <img
           src={images[current]}
@@ -77,4 +104,4 @@ export default function HotelCard({ hotel }) {
       </CardActions>
     </Card>
   )
-}
+}*/

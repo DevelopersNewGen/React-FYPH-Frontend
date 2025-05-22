@@ -6,17 +6,22 @@ import { useHotelList } from '../../shared/hooks/useHotelList.jsx';
 export const DashboardPage = () => {
   const { hotels, loading, error } = useHotelList();
 
-  const user = JSON.parse(localStorage.getItem("user") || '{}');
-const role = user.role || null;
+  let user = null;
+  try {
+    user = JSON.parse(localStorage.getItem("user"));
+  } catch {
+    user = null;
+  }
+  const role = user?.role || null;
 
-if (role !== "USER_ROLE") {
-  return (
-    <>
-      <ResponsiveAppBar />
-      <p style={{ padding: "1rem" }}>No tienes permiso para ver esta sección.</p>
-    </>
-  );
-}
+  if (role !== "CLIENT_ROLE") {
+    return (
+      <>
+        <ResponsiveAppBar />
+        <p style={{ padding: "1rem" }}>No tienes permiso para ver esta sección.</p>
+      </>
+    );
+  }
 
   return (
     <>

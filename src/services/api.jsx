@@ -58,4 +58,25 @@ export const createRoom = async (formData) => {
     }
 };
 
+export const createReservation = async (rid, reservationData) => {
+    try {
+        return await apiClient.post(`/reservations/createReser/${rid}`, reservationData);
+    } catch (e) {
+        return {
+            error: true,
+            e
+        };
+    }
+};
 
+export const getReservationsByRoom = async (rid) => {
+  try {
+    return await apiClient.get(`/reservations/listReserByRoom/${rid}`
+    );
+  } catch (e) {
+    return {
+      error: true,
+      e
+    };
+  }
+};

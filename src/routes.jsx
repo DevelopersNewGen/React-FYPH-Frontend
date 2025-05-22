@@ -9,7 +9,7 @@ export const routes = [
     { path: '/*', element: <DashboardPage /> },
     { path: '/habitaciones', element: <RoomPage /> },
     { path: '/habitaciones/detalles/:rid', element: <RoomDetails /> },
-    { path: '/habitaciones/agregar', element: <RoomAddPage /> }
+    { path: '/habitaciones/agregar', element: <RoomAddPage /> },
     {path: "/user", element: <UserPage/>},
     {path: "/auth", element: <AuthPage/>}
 ];

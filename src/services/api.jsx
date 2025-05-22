@@ -51,3 +51,52 @@ export const login = async (data) => {
         };
     }
 };
+
+export const getRooms = async () => {
+    try {
+        return await apiClient.get('/rooms/getRooms');
+    } catch (e) {
+        return {
+            error: true,
+            e
+        };
+    }
+};
+
+export const getRoomById = async (rid) => {
+    try {
+        return await apiClient.get(`/rooms/getRoomById/${rid}`);
+    } catch (e) {
+        return {
+            error: true,
+            e
+        };
+    }
+};
+
+export const createRoom = async (formData) => {
+    try {
+        return await apiClient.post('/rooms/createRoom', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+    } catch (e) {
+        return {
+            error: true,
+            e
+        };
+    }
+};
+
+export const getHotels = async () => {
+    try {
+        return await apiClient.get('/hotels/');
+    } catch (e) {
+        return {
+            error: true,
+            e
+        };
+    }
+};
+

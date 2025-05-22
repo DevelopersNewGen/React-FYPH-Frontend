@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useRoomAdd } from '../../shared/hooks/useRoomAdd';
+import { useHotels } from '../../shared/hooks/useHotels'; // importa el hook
 import {
   Box,
   Button,
@@ -15,13 +16,16 @@ import {
 
 export default function RoomAdd() {
   const { handleAddRoom, isLoading } = useRoomAdd();
+  const { hotels, loadingHotels } = useHotels(); // usa el hook aquí
+
   const [form, setForm] = useState({
-    name: '',
+    numRoom: '',
     type: '',
     capacity: '',
     pricePerDay: '',
     description: '',
-    images: []
+    images: [],
+    hotel: ''
   });
 
   const handleChange = (e) => {
@@ -69,9 +73,9 @@ export default function RoomAdd() {
         Agregar Habitación
       </Typography>
       <TextField
-        name="name"
-        label="Nombre"
-        value={form.name}
+        name="numRoom" // <-- Cambia 'name' por 'numRoom'
+        label="Número de habitación"
+        value={form.numRoom}
         onChange={handleChange}
         required
         fullWidth
@@ -86,10 +90,10 @@ export default function RoomAdd() {
           onChange={handleChange}
         >
           <MenuItem value=""><em>Selecciona un tipo</em></MenuItem>
-          <MenuItem value="individual">Individual</MenuItem>
-          <MenuItem value="doble">Doble</MenuItem>
-          <MenuItem value="suite">Suite</MenuItem>
-          <MenuItem value="familiar">Familiar</MenuItem>
+          <MenuItem value="SINGLE">SINGLE</MenuItem>
+          <MenuItem value="DOUBLE">DOUBLE</MenuItem>
+          <MenuItem value="SUITE">SUITE</MenuItem>
+          <MenuItem value="DELUXE">DELUXE</MenuItem>
         </Select>
       </FormControl>
       <TextField
@@ -120,6 +124,25 @@ export default function RoomAdd() {
         minRows={3}
         fullWidth
       />
+      <FormControl fullWidth required sx={{ mb: 2 }}>
+        <InputLabel id="hotel-label">Hotel</InputLabel>
+        <Select
+          labelId="hotel-label"
+          name="hotel"
+          value={form.hotel}
+          label="Hotel"
+          onChange={handleChange}
+          disabled={loadingHotels}
+        >
+          <MenuItem value=""><em>Selecciona un hotel</em></MenuItem>
+          {hotels.map(hotel => (
+            <MenuItem key={hotel.hid} value={hotel.hid}>
+              {hotel.name}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
       <Stack spacing={1}>
         <InputLabel htmlFor="images">Imágenes</InputLabel>
         <OutlinedInput

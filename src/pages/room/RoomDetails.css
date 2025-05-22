@@ -1,4 +1,4 @@
-.event-detail-container {
+.room-detail-container {
   max-width: 1200px;
   margin: 2rem auto;
   padding: 2rem;
@@ -12,26 +12,26 @@
   position: relative;
 }
 
-.event-left {
+.room-left {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-.event-title {
+.room-title {
   font-size: 2rem;
   font-weight: bold;
   color: #111;
   margin-top: 2.5rem;
 }
 
-.event-location {
+.room-location {
   font-size: 1rem;
   color: #444;
   margin-bottom: 1rem;
 }
 
-.event-options {
+.room-options {
   background-color: #006494;
   color: white;
   border-radius: 1rem;
@@ -41,22 +41,22 @@
   gap: 1.2rem;
 }
 
-.event-options p {
+.room-options p {
   margin: 0;
 }
 
-.event-options b {
+.room-options b {
   font-weight: 600;
 }
 
-.event-right {
+.room-right {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
 }
 
-.event-images-main {
+.room-images-main {
   width: 100%;
   max-width: 100%;
   height: 280px;
@@ -65,14 +65,14 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-.event-images-preview {
+.room-images-preview {
   display: flex;
   gap: 1.2rem;
   justify-content: center;
   width: 100%;
 }
 
-.event-images-preview img {
+.room-images-preview img {
   width: 120px;
   height: 80px;
   object-fit: cover;
@@ -82,7 +82,7 @@
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-.event-images-preview img:hover {
+.room-images-preview img:hover {
   transform: scale(1.05);
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
 }
@@ -107,6 +107,16 @@
   background-color: #1b263b;
 }
 
-.event-page-wrapper {
+.room-page-wrapper {
   position: relative;
+}
+
+.room-status-available {
+  color: #32cd32;
+  font-weight: bold;
+}
+
+.room-status-unavailable {
+  color: #c62828;
+  font-weight: bold;
 }

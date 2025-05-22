@@ -15,7 +15,8 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 export default function RoomCard({ room, showAddButton }) {
   const [current, setCurrent] = useState(0);
   const navigate = useNavigate();
-  const role = localStorage.getItem('role') || 'HOST_ROLE';
+  const user = JSON.parse(localStorage.getItem('user'));
+  const role = user?.role; // Ahora obtiene el rol real del usuario
 
   const images = room?.images?.length > 0 ? room.images : [];
 
@@ -80,7 +81,7 @@ export default function RoomCard({ room, showAddButton }) {
         </Box>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            {room.name}
+            {room.numRoom}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
             {room.type} · Capacidad: {room.capacity}

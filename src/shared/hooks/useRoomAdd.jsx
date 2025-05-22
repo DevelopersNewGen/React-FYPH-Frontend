@@ -12,7 +12,13 @@ export const useRoomAdd = () => {
     const res = await createRoom(formData);
 
     if (res.error) {
-      toast.error(res.e?.response?.data?.message || 'Error al crear la habitación');
+      // Si hay errores de validación de campos
+      const errors = res.e?.response?.data?.errors;
+      if (Array.isArray(errors)) {
+        errors.forEach(err => toast.error(err.msg));
+      } else {
+        toast.error(res.e?.response?.data?.message || 'Error al crear la habitación');
+      }
       setIsLoading(false);
       return false;
     }

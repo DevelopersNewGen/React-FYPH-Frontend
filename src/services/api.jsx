@@ -105,4 +105,15 @@ export const createUser = async (uid, data) => {
             e
         };  
     }
+}  
+
+export const getRole = async () => {
+    try {
+        return await apiClient.get(`/users/getRole`)
+    } catch (e) {
+       return {
+            error: true,
+            e
+        };  
+    }
 }

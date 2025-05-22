@@ -17,9 +17,9 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom'; 
 import { useUserDetails } from '../shared/hooks';
 
-const pagesAdmin = ['Hoteles', 'Usuarios', 'Solicitudes', "Estadisticas"];
-const pagesHost = ["Reservaciones", "Usuarios", "Habitaciones", "Servicios"]
-const pagesUser = [" "]
+const pagesAdmin = ['Hoteles', 'Usuarios', 'Solicitudes', "Estadisticas", "Eventos"];
+const pagesHost = ["Reservaciones", "Usuarios", "Habitaciones", "Servicios"];
+const pagesUser = ["Hoteles", "Eventos"];
 
 const user = JSON.parse(localStorage.getItem("user"));
 const role = user?.role || null;
@@ -32,7 +32,7 @@ const settings = [{icon: MiscellaneousServicesIcon, text: "Perfil"},{icon: Histo
 
 export const ResponsiveAppBar = () => {
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const navigate = useNavigate(); // Hook para navegación
+  const navigate = useNavigate(); // Hook para navegaciÃ³n
   const {isLogged, logout} = useUserDetails();
 
   const handleOpenUserMenu = (event) => { // abre menu de avatar
@@ -40,10 +40,12 @@ export const ResponsiveAppBar = () => {
   };
 
   const handlePages = (page) => { // accion de links de navbar
-    if (page === "Usuarios") {
-      navigate("/user")
-    }
-  };
+     if (page === "Usuarios") {
+    navigate("/user")
+  } else if (page === "Eventos") {
+    navigate("/eventos");
+  }
+};
 
   const handleCloseUserMenu = (setting) => { // cierra menu de avatar
     if (setting.text === "Perfil") {
@@ -51,8 +53,7 @@ export const ResponsiveAppBar = () => {
     } else if (setting.text === "Reservaciones") {
       navigate("/reservations")
     } else if (setting.text === "Cerrar sesion") {
-      navigate("/")
-      logout
+      logout();
     } else if (setting.text === "Ayuda") {
       navigate("/help")
     }
@@ -145,7 +146,7 @@ export const ResponsiveAppBar = () => {
               <Box sx={{ flexGrow: 0,  ml: "auto" }}>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="Remy Sharp" src={img} />
+                    <Avatar src={img} />
                   </IconButton>
                 </Tooltip>
                 <Menu

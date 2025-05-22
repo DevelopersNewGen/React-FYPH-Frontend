@@ -10,7 +10,8 @@ const Event = () => {
   const { filter, setFilter, eventosFiltrados, loading, categorias } =
     useEventFilter();
   const navigate = useNavigate();
-  role = "CLIENT_ROLE";
+  const user = JSON.parse(localStorage.getItem("user"));
+  const role = user?.role || null;
 
   return (
     <>

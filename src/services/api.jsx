@@ -62,4 +62,35 @@ export const login = async (data) => {
   }
 };
   
-  
+export const createEvent = async (data) => {
+  try {
+    return await apiClient.post("/events/createEvent", data);
+  } catch (e) {
+    return {
+      error: true,
+      e
+    };
+  }
+};
+
+export const updateEvent = async (eid, data) => {
+  try {
+    return await apiClient.put(`/events/editEvent/${eid}`, data);
+  } catch (e) {
+    return {
+      error: true,
+      e
+    };
+  }
+};
+
+export const deleteEvent = async (eid) => {
+  try {
+    return await apiClient.delete(`/events/deleteEvent/${eid}`);
+  } catch (e) {
+    return {
+      error: true,
+      e
+    };
+  }
+};

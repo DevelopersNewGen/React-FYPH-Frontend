@@ -17,7 +17,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom'; 
 import { useUserDetails } from '../shared/hooks';
 
-const pagesAdmin = ['Hoteles', 'Usuarios', 'Solicitudes', "Estadisticas"];
+const pagesAdmin = ['Hoteles', 'Usuarios', 'Solicitudes', "Estadisticas", "Eventos"];
 const pagesHost = ["Reservaciones", "Usuarios", "Habitaciones", "Servicios"];
 const pagesUser = ["Hoteles", "Eventos"];
 

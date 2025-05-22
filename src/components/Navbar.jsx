@@ -16,6 +16,8 @@ import HistoryIcon from '@mui/icons-material/History';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom'; 
 import { useUserDetails } from '../shared/hooks';
+import "../components/navbar.css";
+
 
 const pagesAdmin = ['Hoteles', 'Usuarios', 'Solicitudes', "Estadisticas", "Eventos"];
 const pagesHost = ["Reservaciones", "Usuarios", "Habitaciones", "Servicios"];
@@ -62,15 +64,16 @@ export const ResponsiveAppBar = () => {
   };
 
   return (
-    <AppBar position="fixed">
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+    <AppBar position="fixed" className="navbar-appbar">
+      <Container maxWidth="xl"  className="navbar-container">
+        <Toolbar disableGutters className="navbar-toolbar">
+         <img src="/logo.svg" alt="Logo" style={{ height: 40 }} className="navbar-logo" />
           <Typography
             variant="h6"
             noWrap
             component="a"
             href="/"
+            className="navbar-title desktop"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -88,6 +91,7 @@ export const ResponsiveAppBar = () => {
             variant="h5"
             noWrap
             component="a"
+            className="navbar-title desktop"
             href="/"
             sx={{
               mr: 2,
@@ -107,11 +111,12 @@ export const ResponsiveAppBar = () => {
           {isLogged ? (
             <>
               {role === "CLIENT_ROLE" ? (
-                <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                <Box className="navbar-pages" sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                   {pagesUser.map((page) => (
                     <Button
                       key={page}
                       onClick={() => handlePages(page)}
+                      className="navbar-page-button"
                       sx={{ my: 2, color: 'white', display: 'block' }}
                     >
                       {page}
@@ -119,11 +124,12 @@ export const ResponsiveAppBar = () => {
                   ))}
                 </Box>
               ) : role === "HOST_ROLE" ? (
-                <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                <Box className="navbar-pages" sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                   {pagesHost.map((page) => (
                     <Button
                       key={page}
                       onClick={() => handlePages(page)}
+                      className="navbar-page-button"
                       sx={{ my: 2, color: 'white', display: 'block' }}
                     >
                       {page}
@@ -131,11 +137,12 @@ export const ResponsiveAppBar = () => {
                   ))}
                 </Box>
               ) : role === "ADMIN_ROLE" ? (
-                <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                <Box className="navbar-pages"  sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                   {pagesAdmin.map((page) => (
                     <Button
                       key={page}
                       onClick={() => handlePages(page)}
+                      className="navbar-page-button"
                       sx={{ my: 2, color: 'white', display: 'block' }}
                     >
                       {page}
@@ -143,13 +150,14 @@ export const ResponsiveAppBar = () => {
                   ))}
                 </Box>
               ) : null}
-              <Box sx={{ flexGrow: 0,  ml: "auto" }}>
+              <Box className="navbar-userbox"   sx={{ flexGrow: 0,  ml: "auto" }}>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar src={img} />
+                    <Avatar src={img}  className="navbar-avatar"  />
                   </IconButton>
                 </Tooltip>
                 <Menu
+                  className="navbar-menu"
                   sx={{ mt: '45px' }}
                   id="menu-appbar"
                   anchorEl={anchorElUser}
@@ -166,9 +174,9 @@ export const ResponsiveAppBar = () => {
                   onClose={handleCloseUserMenu}
                 >
                   {settings.map((setting) => (
-                    <MenuItem key={typeof setting === "string" ? setting : setting.text} onClick={() => handleCloseUserMenu(setting)}>
-                      <Typography sx={{ textAlign: 'center', display: 'flex', alignItems: 'center', gap: 1 }}>
-                        {typeof setting === "object" && setting.icon && <setting.icon sx={{ mr: 1 }} />}
+                    <MenuItem key={typeof setting === "string" ? setting : setting.text} onClick={() => handleCloseUserMenu(setting)} className="navbar-menuitem">
+                      <Typography  className="navbar-menuitem-text"  sx={{ textAlign: 'center', display: 'flex', alignItems: 'center', gap: 1 }}>
+                        {typeof setting === "object" && setting.icon && <setting.icon sx={{ mr: 1 }} className="navbar-menuitem-icon" />}
                         {typeof setting === "object" ? setting.text : setting}
                       </Typography>
                     </MenuItem>
@@ -178,13 +186,14 @@ export const ResponsiveAppBar = () => {
             </>
           ) : (
             <>
-              <Box sx={{ flexGrow: 0, ml: "auto"}}>
+              <Box className="navbar-loginbox" sx={{ flexGrow: 0, ml: "auto"}}>
                 <Tooltip title="Open settings">
                   <Typography
                     variant="h6"
                     noWrap
                     component="a"
                     href="/auth"
+                    className="navbar-login-link"
                     sx={{
                       mr: 2,
                       display: { xs: 'none', md: 'flex' },

@@ -12,6 +12,7 @@ import {
   validateUsernameMessage,
 } from "../../shared/validators";
 import { useRegister } from "../../shared/hooks";
+import "../../assets/auth.css";
 
 export const Register = ({ switchAuthHandler }) => {
   const { register, isLoading } = useRegister();
@@ -90,15 +91,13 @@ export const Register = ({ switchAuthHandler }) => {
     !formState.passwordConfirm.isValid;
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <Paper elevation={3} sx={{ p: 4, minWidth: 320 }}>
-        <Typography variant="h5" mb={2} align="center">
+    <Box className="auth-container">
+      <video className="auth-video" autoPlay loop muted>
+        <source src="https://res.cloudinary.com/daherc5uz/video/upload/v1747674005/s37bwfvyccqqzsvvnazj.mp4" type="video/mp4" />
+      </video>
+
+      <Paper className="auth-form" elevation={3} sx={{ p: 4, minWidth: 320 }}>
+        <Typography className="auth-title"  variant="h5" mb={2} align="center">
           Crear cuenta
         </Typography>
         <form onSubmit={handleRegister}>
@@ -108,6 +107,7 @@ export const Register = ({ switchAuthHandler }) => {
             fullWidth
             required
             margin="normal"
+             className={formState.email.showError ? "glass-input custom-error" : "glass-input"}
             value={formState.email.value}
             onChange={(e) => handleInputValueChange(e.target.value, "email")}
             onBlur={(e) => handleInputValidationOnBlur(e.target.value, "email")}
@@ -119,6 +119,7 @@ export const Register = ({ switchAuthHandler }) => {
             fullWidth
             required
             margin="normal"
+             className={formState.email.showError ? "glass-input custom-error" : "glass-input"}
             value={formState.name.value}
             onChange={(e) => handleInputValueChange(e.target.value, "name")}
             onBlur={(e) => handleInputValidationOnBlur(e.target.value, "name")}
@@ -131,6 +132,7 @@ export const Register = ({ switchAuthHandler }) => {
             fullWidth
             required
             margin="normal"
+             className={formState.email.showError ? "glass-input custom-error" : "glass-input"}
             value={formState.password.value}
             onChange={(e) => handleInputValueChange(e.target.value, "password")}
             onBlur={(e) => handleInputValidationOnBlur(e.target.value, "password")}
@@ -143,6 +145,7 @@ export const Register = ({ switchAuthHandler }) => {
             fullWidth
             required
             margin="normal"
+             className={formState.email.showError ? "glass-input custom-error" : "glass-input"}
             value={formState.passwordConfirm.value}
             onChange={(e) => handleInputValueChange(e.target.value, "passwordConfirm")}
             onBlur={(e) => handleInputValidationOnBlur(e.target.value, "passwordConfirm")}
@@ -153,6 +156,7 @@ export const Register = ({ switchAuthHandler }) => {
             type="submit"
             variant="contained"
             color="primary"
+            className="glass-button"
             fullWidth
             disabled={isSubmitDisabled}
             sx={{ mt: 2 }}
@@ -165,6 +169,7 @@ export const Register = ({ switchAuthHandler }) => {
           disabled={false}
           underline="always"
           variant="plain"
+          className="glass-link"
           onClick={switchAuthHandler}
           sx={{ display: "block", mt: 2, textAlign: "center" }}
         >

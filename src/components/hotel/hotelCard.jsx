@@ -14,6 +14,7 @@ export default function HotelCard({ hotel }) {
   const navigate = useNavigate();
 
   const images = hotel?.images?.length > 0 ? hotel.images : [
+    "https://via.placeholder.com/345x180?text=Sin+imagen"
   ];
 
   const handlePrev = () => {
@@ -41,7 +42,7 @@ export default function HotelCard({ hotel }) {
       <Box sx={{ position: "relative" }}>
         <img
           src={images[current]}
-          alt={`Hotel ${hotel.name} imagen ${current + 1}`}
+          alt={`Hotel ${hotel.name || "Sin nombre"} imagen ${current + 1}`}
           height="180"
           width="100%"
           style={{ objectFit: "cover", borderTopLeftRadius: 4, borderTopRightRadius: 4 }}
@@ -59,16 +60,16 @@ export default function HotelCard({ hotel }) {
       </Box>
       <CardContent>
         <Typography gutterBottom variant="h5" component="div" noWrap title={hotel.name}>
-          {hotel.name}
+          {hotel.name || "Sin nombre"}
         </Typography>
         <Typography variant="body2" sx={{ color: "text.secondary", mb: 1 }} noWrap title={hotel.location}>
-          {hotel.location}
+          {hotel.location || "Sin ubicación"}
         </Typography>
         <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap title={hotel.description}>
-          {hotel.description}
+          {hotel.description || "Sin descripción"}
         </Typography>
         <Typography variant="body2" sx={{ color: "text.primary", mt: 1, fontWeight: '600' }}>
-          Desde Q{hotel.pricePerNight} / noche
+          Desde Q{hotel.pricePerNight ?? "?"} / noche
         </Typography>
       </CardContent>
       <CardActions>

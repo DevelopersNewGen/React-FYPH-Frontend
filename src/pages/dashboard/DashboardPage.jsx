@@ -1,11 +1,9 @@
 import React from 'react';
 import { ResponsiveAppBar } from '../../components/Navbar.jsx';
-import { CardHotelDash } from "../../components/dashboardHotel/CardHotelDash.jsx";
+import HotelCard from "../../components/hotel/hotelCard.jsx";
 import { useHotelList } from '../../shared/hooks/useHotelList.jsx';
 
 export const DashboardPage = () => {
-  const { hotels, loading, error } = useHotelList();
-
   let user = null;
   try {
     user = JSON.parse(localStorage.getItem("user"));
@@ -14,11 +12,27 @@ export const DashboardPage = () => {
   }
   const role = user?.role || null;
 
-  if (role !== "CLIENT_ROLE") {
+  // Solo carga hoteles si hay usuario logueado
+  const { hotels, loading, error } = user ? useHotelList() : { hotels: [], loading: false, error: null };
+
+  // Handlers de ejemplo para los botones
+  const handleAddHotel = () => {
+    alert("Agregar hotel (implementa la lógica aquí)");
+  };
+  const handleEditHotel = (hotelId) => {
+    alert(`Editar hotel ${hotelId} (implementa la lógica aquí)`);
+  };
+  const handleDeleteHotel = (hotelId) => {
+    alert(`Eliminar hotel ${hotelId} (implementa la lógica aquí)`);
+  };
+
+  if (!user) {
     return (
       <>
         <ResponsiveAppBar />
-        <p style={{ padding: "1rem" }}>No tienes permiso para ver esta sección.</p>
+        <div style={{ padding: "1rem", textAlign: "center" }}>
+          <h1>Debes iniciar sesión para ver los hoteles</h1>
+        </div>
       </>
     );
   }
@@ -30,7 +44,28 @@ export const DashboardPage = () => {
         <h1>Hoteles disponibles</h1>
         {loading && <p>Cargando hoteles...</p>}
         {error && <p>Error: {error}</p>}
-        {!loading && !error && <CardHotelDash hotels={hotels} />}
+
+        {(role === "ADMIN_ROLE" || role === "HOST_ROLE") && (
+          <button onClick={handleAddHotel} style={{ marginBottom: "1rem" }}>
+            Agregar hotel
+          </button>
+        )}
+
+        {!loading && !error && (
+          <div className="hotel-list-grid">
+            {hotels.map(hotel => (
+              <div key={hotel.hid || hotel.id || hotel._id} style={{ position: "relative" }}>
+                <HotelCard hotel={hotel} />
+                {(role === "ADMIN_ROLE" || role === "HOST_ROLE") && (
+                  <div style={{ marginTop: "0.5rem", display: "flex", gap: "0.5rem", justifyContent: "center" }}>
+                    <button onClick={() => handleEditHotel(hotel.hid || hotel.id || hotel._id)}>Editar</button>
+                    <button onClick={() => handleDeleteHotel(hotel.hid || hotel.id || hotel._id)}>Eliminar</button>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </>
   );

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { getHotels } from "../../services/index.js"
+import { getHotels } from "../../services"
 
 export const useHotelList = () => {
   const [hotels, setHotels] = useState([])
@@ -10,7 +10,8 @@ export const useHotelList = () => {
     const fetchHotels = async () => {
       try {
         const data = await getHotels()
-        setHotels(data.hotels || []) 
+        console.log("Respuesta hoteles:", data) // <-- Agrega esto
+        setHotels(data.hotels || [])
       } catch (err) {
         setError("Error al cargar los hoteles. Inténtalo de nuevo más tarde.")
       } finally {

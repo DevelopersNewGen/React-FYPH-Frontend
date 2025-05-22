@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useEventFilter } from "../../shared/hooks/useEventFilter.jsx";
 import { EventList } from "../../components/event/EventList.jsx";
 import { ResponsiveAppBar } from "../../components/Navbar.jsx";
@@ -7,11 +7,14 @@ import { useNavigate } from "react-router-dom";
 import "./event.css";
 
 const Event = () => {
-  const { filter, setFilter, eventosFiltrados, loading, categorias } =
-    useEventFilter();
+  const { filter, setFilter, eventosFiltrados, loading, categorias, refetch } = useEventFilter();
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
   const role = user?.role || null;
+
+  
+  const handleEventUpdated = () => refetch && refetch();
+  const handleEventDeleted = () => refetch && refetch();
 
   return (
     <>
@@ -39,7 +42,12 @@ const Event = () => {
         {loading ? (
           <div>Cargando eventos...</div>
         ) : (
-          <EventList eventos={eventosFiltrados} />
+          <EventList
+            eventos={eventosFiltrados}
+            onEventUpdated={handleEventUpdated}
+            onEventDeleted={handleEventDeleted}
+            role={role}
+          />
         )}
       </div>
     </>

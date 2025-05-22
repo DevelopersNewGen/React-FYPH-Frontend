@@ -8,7 +8,7 @@ import {
     createUser
 } from "../../services";
 
-export const useUser = () => {
+export const useUserAdmin = () => {
     const [users, setUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 

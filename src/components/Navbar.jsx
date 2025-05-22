@@ -15,16 +15,14 @@ import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices
 import HistoryIcon from '@mui/icons-material/History';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom'; 
-import { useUserDetails } from '../shared/hooks';
+import { useUser, useUserDetails } from '../shared/hooks';
 
 const pagesAdmin = ['Hoteles', 'Usuarios', 'Solicitudes', "Estadisticas"];
 const pagesHost = ["Reservaciones", "Usuarios", "Habitaciones", "Servicios"]
 const pagesUser = [" "]
 
 const user = JSON.parse(localStorage.getItem("user"));
-const role = user?.role || null;
 const img = user?.img;
-
 
 const settings = [{icon: MiscellaneousServicesIcon, text: "Perfil"},{icon: HistoryIcon, text:"Reservaciones"}, 
             {icon: LogoutIcon, text:"Cerrar sesion"} ];
@@ -33,6 +31,7 @@ export const ResponsiveAppBar = () => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const navigate = useNavigate(); // Hook para navegación
   const {isLogged, logout} = useUserDetails();
+  const {role, isLoading} = useUser();
 
   const handleOpenUserMenu = (event) => { // abre menu de avatar
     setAnchorElUser(event.currentTarget);

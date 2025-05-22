@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRoomAdd } from '../../shared/hooks/useRoomAdd';
 import { useHotels } from '../../shared/hooks/useHotels'; // importa el hook
 import {
@@ -13,8 +13,9 @@ import {
   Select,
   FormControl
 } from '@mui/material';
+import PropTypes from 'prop-types';
 
-export default function RoomAdd() {
+export default function RoomAdd({ initialData, onSubmit, isEdit, onCancel }) {
   const { handleAddRoom, isLoading } = useRoomAdd();
   const { hotels, loadingHotels } = useHotels(); // usa el hook aquí
 
@@ -27,6 +28,15 @@ export default function RoomAdd() {
     images: [],
     hotel: ''
   });
+
+  useEffect(() => {
+    if (initialData) {
+      setForm({
+        ...initialData,
+        images: [], 
+      });
+    }
+  }, [initialData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -49,7 +59,11 @@ export default function RoomAdd() {
         formData.append(key, value);
       }
     });
-    await handleAddRoom(formData);
+    if (onSubmit) {
+      await onSubmit(formData);
+    } else {
+      await handleAddRoom(formData);
+    }
   };
 
   return (
@@ -57,23 +71,24 @@ export default function RoomAdd() {
       component="form"
       onSubmit={handleSubmit}
       sx={{
-        maxWidth: 400,
+        width: '100%',
+        maxWidth: 700,
         mx: 'auto',
-        mt: 4,
-        p: 3,
+        mt: 0,
+        p: 0,
         bgcolor: 'background.paper',
         borderRadius: 2,
-        boxShadow: 3,
+        boxShadow: 0,
         display: 'flex',
         flexDirection: 'column',
         gap: 2
       }}
     >
       <Typography variant="h5" fontWeight={600} align="center" mb={2}>
-        Agregar Habitación
+        {isEdit ? 'Editar Habitación' : 'Agregar Habitación'}
       </Typography>
       <TextField
-        name="numRoom" // <-- Cambia 'name' por 'numRoom'
+        name="numRoom" 
         label="Número de habitación"
         value={form.numRoom}
         onChange={handleChange}
@@ -160,8 +175,25 @@ export default function RoomAdd() {
         disabled={isLoading}
         sx={{ mt: 2 }}
       >
-        {isLoading ? 'Agregando...' : 'Agregar'}
+        {isEdit ? 'Guardar Cambios' : isLoading ? 'Agregando...' : 'Agregar'}
       </Button>
+      {isEdit && (
+        <Button
+          variant="outlined"
+          color="secondary"
+          sx={{ mt: 1 }}
+          onClick={onCancel}
+        >
+          Cancelar
+        </Button>
+      )}
     </Box>
   );
 }
+
+RoomAdd.propTypes = {
+  initialData: PropTypes.object,
+  onSubmit: PropTypes.func,
+  isEdit: PropTypes.bool,
+  onCancel: PropTypes.func,
+};

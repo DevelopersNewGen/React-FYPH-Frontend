@@ -28,7 +28,19 @@ export function EventCard({ eid, name, category, imagenes = IMAGENES_DEMO }) {
     imagenes.length > 0 ? imagenes[current] : IMAGEN_EVENTO_DEFAULT;
 
   return (
-    <Card sx={{ maxWidth: "500px", width: "100%", marginBottom: 2 }}>
+    <Card
+      className="event-card"
+      sx={{
+        maxWidth: 350,
+        minWidth: 350,
+        width: 350,
+        minHeight: 350,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        marginBottom: 2,
+      }}
+    >
       <div style={{ position: "relative" }}>
         <CardMedia
           component="img"

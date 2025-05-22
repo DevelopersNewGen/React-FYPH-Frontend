@@ -2,24 +2,36 @@ import React from "react";
 import { useEventFilter } from "../../shared/hooks/useEventFilter.jsx";
 import { EventList } from "../../components/event/EventList.jsx";
 import { ResponsiveAppBar } from "../../components/Navbar.jsx";
-import AddEventButton from "../../components/event/AddEventButton.jsx";
 import EventListAdmin from "../../components/event/EventListAdmin.jsx";
 import { useNavigate } from "react-router-dom";
+import AddEventButton from "../../components/event/AddEventButton.jsx";
 import "./event.css";
 
 const Event = () => {
-  const { filter, setFilter, eventosFiltrados, loading, categorias, refetch } = useEventFilter();
+  const { filter, setFilter, eventosFiltrados, loading, categorias } =
+    useEventFilter();
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
   const role = user?.role || null;
-
-  const handleEventUpdated = () => refetch && refetch();
-  const handleEventDeleted = () => refetch && refetch();
 
   return (
     <>
       <ResponsiveAppBar />
       <div className="event-page-wrapper">
+        {role === "ADMIN_ROLE" && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              marginBottom: 16,
+            }}
+          >
+            <AddEventButton
+              role={role}
+              onClick={() => navigate("/eventos/nuevo")}
+            />
+          </div>
+        )}
         <div className="event-filter">
           <select
             value={filter}
@@ -34,22 +46,13 @@ const Event = () => {
               </option>
             ))}
           </select>
-          <AddEventButton
-            role={role}
-            onClick={() => navigate("/eventos/nuevo")}
-          />
         </div>
         {loading ? (
           <div>Cargando eventos...</div>
         ) : role === "ADMIN_ROLE" ? (
           <EventListAdmin eventos={eventosFiltrados} />
         ) : (
-          <EventList
-            eventos={eventosFiltrados}
-            onEventUpdated={handleEventUpdated}
-            onEventDeleted={handleEventDeleted}
-            role={role}
-          />
+          <EventList eventos={eventosFiltrados} />
         )}
       </div>
     </>

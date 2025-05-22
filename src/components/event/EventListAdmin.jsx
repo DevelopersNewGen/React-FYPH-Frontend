@@ -3,12 +3,9 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
-import EventActions from "./EventActions";
 
-export default function EventListAdmin({ eventos, onEventUpdated, onEventDeleted, role }) {
+export default function EventListAdmin({ eventos }) {
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("user"));
-  const userRole = role || user?.role || null;
 
   return (
     <Box sx={{ width: "100%", maxWidth: 1100, mx: "auto", mt: 4 }}>
@@ -55,7 +52,6 @@ export default function EventListAdmin({ eventos, onEventUpdated, onEventDeleted
             <Typography sx={{ color: "#fff", fontSize: 14 }}>
               Categoría: {evento.category}
             </Typography>
-
           </Box>
           <Box sx={{ display: "flex", gap: 1 }}>
             <Button
@@ -73,12 +69,6 @@ export default function EventListAdmin({ eventos, onEventUpdated, onEventDeleted
             >
               MÁS DETALLES
             </Button>
-            <EventActions
-              event={evento}
-              onEventUpdated={onEventUpdated}
-              onEventDeleted={onEventDeleted}
-              role={userRole}
-            />
           </Box>
         </Box>
       ))}

@@ -5,6 +5,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import { useEventDetail } from "../../shared/hooks/useEventDetail.jsx";
 import { EventDetailContent } from "../../components/event/EventDetailContent.jsx";
+import EventActions from "../../components/event/EventActions.jsx";
 import "./eventDetail.css";
 
 export default function EventDetail() {
@@ -13,10 +14,32 @@ export default function EventDetail() {
   const { evento, loading, mainImage, setMainImage, getPreviewImages } =
     useEventDetail(eid);
 
+  const user = JSON.parse(localStorage.getItem("user"));
+  const role = user?.role || null;
+
+  const handleEventUpdated = () => window.location.reload();
+  const handleEventDeleted = () => navigate("/eventos");
+
   return (
     <>
       <ResponsiveAppBar />
       <div className="event-page-wrapper">
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginBottom: 16,
+          }}
+        >
+          {evento && (
+            <EventActions
+              event={evento}
+              onEventUpdated={handleEventUpdated}
+              onEventDeleted={handleEventDeleted}
+              role={role}
+            />
+          )}
+        </div>
         {loading ? (
           <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
             <CircularProgress />

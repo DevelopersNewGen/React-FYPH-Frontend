@@ -25,7 +25,6 @@ const user = JSON.parse(localStorage.getItem("user"));
 const role = user?.role || null;
 const img = user?.img;
 
-console.log(img)
 
 const settings = [{icon: MiscellaneousServicesIcon, text: "Perfil"},{icon: HistoryIcon, text:"Reservaciones"}, 
             {icon: LogoutIcon, text:"Cerrar sesion"} ];

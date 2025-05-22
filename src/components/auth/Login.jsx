@@ -4,7 +4,6 @@ import Link from '@mui/joy/Link';
 import PropTypes from "prop-types";
 import {
   validateEmail,
-  validatePassword,
   validateEmailMessage,
 } from "../../shared/validators";
 import {useLogin} from "../../shared/hooks"
@@ -42,7 +41,7 @@ export const Login = ({switchAuthHandler} ) => {
         isValid = validateEmail(value);
         break;
       case "password":
-        isValid = validatePassword(value);
+        isValid = true;
         break;
       default:
         break;
@@ -127,3 +126,6 @@ export const Login = ({switchAuthHandler} ) => {
   );
 };
 
+Login.propTypes = {
+  switchAuthHandler: PropTypes.func.isRequired,
+};

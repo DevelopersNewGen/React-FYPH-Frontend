@@ -38,35 +38,23 @@ export const DashboardPage = () => {
   }
 
   return (
-    <>
-      <ResponsiveAppBar />
-      <div style={{ padding: "1rem" }}>
-        <h1>Hoteles disponibles</h1>
-        {loading && <p>Cargando hoteles...</p>}
-        {error && <p>Error: {error}</p>}
+  <>
+    <ResponsiveAppBar />
+    <div style={{ padding: "1rem" }}>
+      <h1>Hoteles disponibles</h1>
+      {loading && <p>Cargando hoteles...</p>}
+      {error && <p>Error: {error}</p>}
 
-        {(role === "ADMIN_ROLE" || role === "HOST_ROLE") && (
-          <button onClick={handleAddHotel} style={{ marginBottom: "1rem" }}>
-            Agregar hotel
-          </button>
-        )}
-
-        {!loading && !error && (
-          <div className="hotel-list-grid">
-            {hotels.map(hotel => (
-              <div key={hotel.hid || hotel.id || hotel._id} style={{ position: "relative" }}>
-                <HotelCard hotel={hotel} />
-                {(role === "ADMIN_ROLE" || role === "HOST_ROLE") && (
-                  <div style={{ marginTop: "0.5rem", display: "flex", gap: "0.5rem", justifyContent: "center" }}>
-                    <button onClick={() => handleEditHotel(hotel.hid || hotel.id || hotel._id)}>Editar</button>
-                    <button onClick={() => handleDeleteHotel(hotel.hid || hotel.id || hotel._id)}>Eliminar</button>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </>
-  );
+      {!loading && !error && (
+        <div className="hotel-list-grid">
+          {hotels.map(hotel => (
+            <div key={hotel.hid || hotel.id || hotel._id} style={{ position: "relative" }}>
+              <HotelCard hotel={hotel} />
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  </>
+);
 };

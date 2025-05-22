@@ -1,10 +1,28 @@
 import React, { useState } from "react";
-import { Box, Typography, IconButton } from "@mui/material";
+import { Box, Typography, IconButton, Button } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 export default function CardDetails({ hotel }) {
   const [currentImage, setCurrentImage] = useState(0);
+
+  let user = null;
+  try {
+    user = JSON.parse(localStorage.getItem("user"));
+  } catch {
+    user = null;
+  }
+  const role = user?.role || null;
+
+  const handleAddHotel = () => {
+
+  };
+  const handleEditHotel = () => {
+
+  };
+  const handleDeleteHotel = () => {
+    
+  };
 
   if (!hotel) return null;
 
@@ -32,7 +50,7 @@ export default function CardDetails({ hotel }) {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "transparent", // o cambia según tu diseño
+        backgroundColor: "transparent",
       }}
     >
       <Box
@@ -195,6 +213,21 @@ export default function CardDetails({ hotel }) {
         <Typography variant="body1" sx={{ fontWeight: "bold", color: "#000" }}>
           Q{hotel.pricePerNight || "N/A"}
         </Typography>
+
+        {/* BOTONES SOLO PARA ADMIN_ROLE Y HOST_ROLE */}
+        {(role === "ADMIN_ROLE" || role === "HOST_ROLE") && (
+          <Box sx={{ display: "flex", gap: 2, justifyContent: "center", mt: 4 }}>
+            <Button variant="contained" color="primary" onClick={handleAddHotel}>
+              Agregar hotel
+            </Button>
+            <Button variant="outlined" color="warning" onClick={handleEditHotel}>
+              Editar
+            </Button>
+            <Button variant="outlined" color="error" onClick={handleDeleteHotel}>
+              Eliminar
+            </Button>
+          </Box>
+        )}
       </Box>
     </Box>
   );

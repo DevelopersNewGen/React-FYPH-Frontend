@@ -10,7 +10,7 @@ export const HotelDetailsPage = () => {
   const { hotel, loading, error } = useHotelDetails(hid)
 
   return (
-    <div className="hotel-page-container">
+    <div className="hotel-page-container" style={{ marginTop: "80px" }}>
       <ResponsiveAppBar />
       <header className="hotel-header">
         <h1>Detalle del Hotel</h1>

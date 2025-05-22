@@ -69,3 +69,16 @@ export const getHotelById = async (hotelId) => {
     throw error
   }
 }
+
+export const createHotel = async (formData) => {
+  try {
+    const response = await apiClient.post("/hotels/createHotel", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

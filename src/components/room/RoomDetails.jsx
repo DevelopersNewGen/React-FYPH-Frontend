@@ -84,6 +84,14 @@ export function RoomDetails({ room, onBack }) {
                 </button>
               </div>
             )}
+            <div style={{ marginTop: 16 }}>
+              <button
+                style={{ background: "#1976d2", color: "#fff" }}
+                onClick={() => navigate(`/reservacion/${room.rid}`)}
+              >
+                Reservar
+              </button>
+            </div>
           </div>
         </div>
         <div className="room-right">

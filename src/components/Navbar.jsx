@@ -23,11 +23,6 @@ const pagesUser = [" "]
 
 const user = JSON.parse(localStorage.getItem("user"));
 const img = user?.img;
-<<<<<<< HEAD
-
-console.log(img)
-=======
->>>>>>> origin/user-module
 
 const settings = [{icon: MiscellaneousServicesIcon, text: "Perfil"},{icon: HistoryIcon, text:"Reservaciones"}, 
             {icon: LogoutIcon, text:"Cerrar sesion"} ];
@@ -43,9 +38,10 @@ export const ResponsiveAppBar = ({role}) => {
 
   const handlePages = (page) => { // accion de links de navbar
     if (page === "Usuarios") {
-      navigate("/user")
-    } else if (page === "Habitaciones") {
-      navigate("/habitaciones")
+      navigate("/user");
+      } else if (page === "Habitaciones") {
+    navigate("/habitaciones");
+  
     }
   };
 

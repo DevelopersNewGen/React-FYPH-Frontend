@@ -6,17 +6,17 @@ import EventListAdmin from "../../components/event/EventListAdmin.jsx";
 import { useNavigate } from "react-router-dom";
 import AddEventButton from "../../components/event/AddEventButton.jsx";
 import "./event.css";
+import { useUser } from "../../shared/hooks"; 
 
 const Event = () => {
   const { filter, setFilter, eventosFiltrados, loading, categorias } =
     useEventFilter();
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("user"));
-  const role = user?.role || null;
+  const { role } = useUser(); 
 
   return (
     <>
-      <ResponsiveAppBar />
+      <ResponsiveAppBar role={role} />
       <div className="event-page-wrapper">
         {role === "ADMIN_ROLE" && (
           <div

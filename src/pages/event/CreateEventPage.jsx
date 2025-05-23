@@ -4,7 +4,7 @@ import CreateEventForm from "../../components/event/CreateEventForm.jsx";
 
 const CreateEventPage = () => (
   <>
-    <ResponsiveAppBar />
+     <ResponsiveAppBar role={role} />
     <CreateEventForm />
   </>
 );

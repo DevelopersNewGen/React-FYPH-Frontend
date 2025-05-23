@@ -7,6 +7,7 @@ import { useEventDetail } from "../../shared/hooks/useEventDetail.jsx";
 import { EventDetailContent } from "../../components/event/EventDetailContent.jsx";
 import EventActions from "../../components/event/EventActions.jsx";
 import "./eventDetail.css";
+import { useUser } from "../../shared/hooks";
 
 export default function EventDetail() {
   const { eid } = useParams();
@@ -14,15 +15,14 @@ export default function EventDetail() {
   const { evento, loading, mainImage, setMainImage, getPreviewImages } =
     useEventDetail(eid);
 
-  const user = JSON.parse(localStorage.getItem("user"));
-  const role = user?.role || null;
+  const { role } = useUser();
 
   const handleEventUpdated = () => window.location.reload();
   const handleEventDeleted = () => navigate("/eventos");
 
   return (
     <>
-      <ResponsiveAppBar />
+      <ResponsiveAppBar role={role} />
       <div className="event-page-wrapper">
         <div
           style={{

@@ -1,4 +1,3 @@
-
 import axios from 'axios';
 
 const apiClient = axios.create({
@@ -51,8 +50,76 @@ export const login = async (data) => {
             e
         };
     }
+};
+
+export const findUserById = async (uid) =>{
+    try {
+        return await apiClient.get(`/users/findUser/${uid}`);
+    } catch (e) {
+       return {
+            error: true,
+            e
+        }; 
+    }
 }
-  
+
+export const getClients = async () => {
+    try {
+        return await apiClient.get(`/users`)
+    } catch (e) {
+       return {
+            error: true,
+            e
+        };  
+    }
+}
+
+export const deleteUserAdmin = async (uid) => {
+    try {
+        return await apiClient.delete(`/users/deleteUserAdmin/${uid}`)
+    } catch (e) {
+       return {
+            error: true,
+            e
+        };  
+    }
+}
+
+export const updateUserAdmin = async (uid, data) => {
+    try {
+        return await apiClient.put(`/users/updateUserAdmin/${uid}`, data)
+    } catch (e) {
+       return {
+            error: true,
+            e
+        };  
+    }
+} 
+
+export const createUser = async (uid, data) => {
+    try {
+        return await apiClient.put(`/users/createUser`, data)
+    } catch (e) {
+       return {
+            error: true,
+            e
+        };  
+    }
+}  
+
+export const getUser = async () => {
+    try {
+        return await apiClient.get(`/users/getUser`)
+    } catch (e) {
+       return {
+            error: true,
+            e
+        };  
+    }
+}
+
+
+
  export const getEvents = async () => {
   try {
     const response = await apiClient.get("/events/");

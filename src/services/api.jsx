@@ -6,7 +6,6 @@ const apiClient = axios.create({
     httpsAgent: false
 });
 
-
 apiClient.interceptors.request.use(
     (config) => {
         const userDetails = localStorage.getItem("user");
@@ -51,6 +50,8 @@ export const login = async (data) => {
         };
     }
 };
+
+// ---- Funciones de usuario ----
 
 export const findUserById = async (uid) =>{
     try {
@@ -117,3 +118,46 @@ export const getRole = async () => {
         };  
     }
 }
+
+// ---- Funciones de hotel ----
+
+export const getHotels = async () => {
+  try {
+    const response = await apiClient.get("/hotels/")
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
+
+export const getHotelById = async (hotelId) => {
+  try {
+    const response = await apiClient.get(`/hotels/findHotel/${hotelId}`)
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
+
+export const createHotel = async (formData) => {
+  try {
+    const response = await apiClient.post("/hotels/createHotel", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getHosts = async () => {
+  try {
+    const response = await apiClient.get("/users/");
+    // Filtrar solo los hosts
+    return { hosts: response.data.users.filter(u => u.role === "HOST_ROLE") };
+  } catch (error) {
+    throw error;
+  }
+};

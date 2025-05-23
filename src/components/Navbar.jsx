@@ -17,32 +17,38 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom'; 
 import { useUserDetails } from '../shared/hooks';
 
-const pagesAdmin = ['Hoteles', 'Usuarios', 'Solicitudes', "Estadisticas"];
-const pagesHost = ["Reservaciones", "Usuarios", "Habitaciones", "Servicios"]
-const pagesUser = [" "]
+const pagesAdmin = ['Hoteles', 'Usuarios', 'Solicitudes', "Estadisticas", "Eventos"];
+const pagesHost = ["Reservaciones", "Usuarios", "Habitaciones", "Servicios"];
+const pagesUser = ["Hoteles", "Eventos"];
 
 const user = JSON.parse(localStorage.getItem("user"));
 const img = user?.img;
 
-const settings = [{icon: MiscellaneousServicesIcon, text: "Perfil"},{icon: HistoryIcon, text:"Reservaciones"}, 
-            {icon: LogoutIcon, text:"Cerrar sesion"} ];
+const settings = [
+  { icon: MiscellaneousServicesIcon, text: "Perfil" },
+  { icon: HistoryIcon, text: "Reservaciones" }, 
+  { icon: LogoutIcon, text: "Cerrar sesion" }
+];
 
-export const ResponsiveAppBar = ({role}) => {
+export const ResponsiveAppBar = ({ role }) => {
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const navigate = useNavigate(); // Hook para navegación
-  const {isLogged, logout} = useUserDetails();
+  const navigate = useNavigate();
+  const { isLogged, logout } = useUserDetails();
 
-  const handleOpenUserMenu = (event) => { // abre menu de avatar
+  const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handlePages = (page) => { // accion de links de navbar
+  const handlePages = (page) => {
     if (page === "Usuarios") {
       navigate("/user")
+    } else if (page === "Eventos") {
+      navigate("/eventos");
     }
+    // Aquí puedes agregar más páginas según lo necesites
   };
 
-  const handleCloseUserMenu = (setting) => { // cierra menu de avatar
+  const handleCloseUserMenu = (setting) => {
     if (setting.text === "Perfil") {
       navigate("/profile")
     } else if (setting.text === "Reservaciones") {
@@ -52,7 +58,6 @@ export const ResponsiveAppBar = ({role}) => {
     } else if (setting.text === "Ayuda") {
       navigate("/help")
     }
-
     setAnchorElUser(null);
   };
 
@@ -98,7 +103,6 @@ export const ResponsiveAppBar = ({role}) => {
             FYPH
           </Typography>
           
-
           {isLogged ? (
             <>
               {role === "CLIENT_ROLE" ? (
@@ -161,7 +165,10 @@ export const ResponsiveAppBar = ({role}) => {
                   onClose={handleCloseUserMenu}
                 >
                   {settings.map((setting) => (
-                    <MenuItem key={typeof setting === "string" ? setting : setting.text} onClick={() => handleCloseUserMenu(setting)}>
+                    <MenuItem
+                      key={typeof setting === "string" ? setting : setting.text}
+                      onClick={() => handleCloseUserMenu(setting)}
+                    >
                       <Typography sx={{ textAlign: 'center', display: 'flex', alignItems: 'center', gap: 1 }}>
                         {typeof setting === "object" && setting.icon && <setting.icon sx={{ mr: 1 }} />}
                         {typeof setting === "object" ? setting.text : setting}

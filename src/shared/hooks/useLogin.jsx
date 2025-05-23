@@ -20,7 +20,8 @@ export const useLogin = () => {
         setIsLoading(false)
 
         if(response.error){
-            toast.error(response.e?.response?.data || "Error iniciar sesión")
+            toast.error(response.e?.response?.data?.message || "Error iniciar sesión")
+            return;
         }else{
             toast.success(response.data.msg)
         }

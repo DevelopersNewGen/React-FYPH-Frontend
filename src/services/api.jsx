@@ -6,7 +6,6 @@ const apiClient = axios.create({
     httpsAgent: false
 });
 
-
 apiClient.interceptors.request.use(
     (config) => {
         const userDetails = localStorage.getItem("user");
@@ -51,6 +50,76 @@ export const login = async (data) => {
         };
     }
 };
+
+// ---- Funciones de usuario ----
+
+export const findUserById = async (uid) =>{
+    try {
+        return await apiClient.get(`/users/findUser/${uid}`);
+    } catch (e) {
+       return {
+            error: true,
+            e
+        }; 
+    }
+}
+
+export const getClients = async () => {
+    try {
+        return await apiClient.get(`/users`)
+    } catch (e) {
+       return {
+            error: true,
+            e
+        };  
+    }
+}
+
+export const deleteUserAdmin = async (uid) => {
+    try {
+        return await apiClient.delete(`/users/deleteUserAdmin/${uid}`)
+    } catch (e) {
+       return {
+            error: true,
+            e
+        };  
+    }
+}
+
+export const updateUserAdmin = async (uid, data) => {
+    try {
+        return await apiClient.put(`/users/updateUserAdmin/${uid}`, data)
+    } catch (e) {
+       return {
+            error: true,
+            e
+        };  
+    }
+} 
+
+export const createUser = async (uid, data) => {
+    try {
+        return await apiClient.put(`/users/createUser`, data)
+    } catch (e) {
+       return {
+            error: true,
+            e
+        };  
+    }
+}  
+
+export const getRole = async () => {
+    try {
+        return await apiClient.get(`/users/getRole`)
+    } catch (e) {
+       return {
+            error: true,
+            e
+        };  
+    }
+}
+
+// ---- Funciones de hotel ----
 
 export const getHotels = async () => {
   try {

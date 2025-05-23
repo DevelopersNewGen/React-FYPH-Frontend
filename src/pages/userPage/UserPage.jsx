@@ -1,21 +1,21 @@
 import React from 'react';
 import {ResponsiveAppBar} from '../../components/Navbar.jsx';
+import {UserTable} from "../../components/user/UserTable.jsx"
 
-const role = "HOST_ROLE"
+import { useUser } from '../../shared/hooks/useUser.jsx';
+
 
 export const UserPage = () => {
+  const {role} = useUser()
+
   return (
     <div>
       <div>
-        <ResponsiveAppBar />
+        <ResponsiveAppBar role={role}/>
         { 
             role === "ADMIN_ROLE" ? (
                 <div>
-                    ADMIN
-                </div>
-            ) : role === "USER_ROLE" ? (
-                <div>
-                    USER
+                    <UserTable/>
                 </div>
             ) : role === "HOST_ROLE" ? (
                 <div>

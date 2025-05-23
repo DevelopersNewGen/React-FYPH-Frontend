@@ -22,15 +22,17 @@ const pagesHost = ["Reservaciones", "Usuarios", "Habitaciones", "Servicios"]
 const pagesUser = [" "]
 
 const user = JSON.parse(localStorage.getItem("user"));
-const role = user?.role || null;
 const img = user?.img;
+<<<<<<< HEAD
 
 console.log(img)
+=======
+>>>>>>> origin/user-module
 
 const settings = [{icon: MiscellaneousServicesIcon, text: "Perfil"},{icon: HistoryIcon, text:"Reservaciones"}, 
             {icon: LogoutIcon, text:"Cerrar sesion"} ];
 
-export const ResponsiveAppBar = () => {
+export const ResponsiveAppBar = ({role}) => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const navigate = useNavigate(); // Hook para navegación
   const {isLogged, logout} = useUserDetails();

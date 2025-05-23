@@ -52,51 +52,68 @@ export const login = async (data) => {
     }
 };
 
-export const getRooms = async () => {
+export const findUserById = async (uid) =>{
     try {
-        return await apiClient.get('/rooms/getRooms');
+        return await apiClient.get(`/users/findUser/${uid}`);
     } catch (e) {
-        return {
+       return {
             error: true,
             e
-        };
+        }; 
     }
-};
+}
 
-export const getRoomById = async (rid) => {
+export const getClients = async () => {
     try {
-        return await apiClient.get(`/rooms/getRoomById/${rid}`);
+        return await apiClient.get(`/users`)
     } catch (e) {
-        return {
+       return {
             error: true,
             e
-        };
+        };  
     }
-};
+}
 
-export const createRoom = async (formData) => {
+export const deleteUserAdmin = async (uid) => {
     try {
-        return await apiClient.post('/rooms/createRoom', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        });
+        return await apiClient.delete(`/users/deleteUserAdmin/${uid}`)
     } catch (e) {
-        return {
+       return {
             error: true,
             e
-        };
+        };  
     }
-};
+}
 
-export const getHotels = async () => {
+export const updateUserAdmin = async (uid, data) => {
     try {
-        return await apiClient.get('/hotels/');
+        return await apiClient.put(`/users/updateUserAdmin/${uid}`, data)
     } catch (e) {
-        return {
+       return {
             error: true,
             e
-        };
+        };  
     }
-};
+} 
 
+export const createUser = async (uid, data) => {
+    try {
+        return await apiClient.put(`/users/createUser`, data)
+    } catch (e) {
+       return {
+            error: true,
+            e
+        };  
+    }
+}  
+
+export const getRole = async () => {
+    try {
+        return await apiClient.get(`/users/getRole`)
+    } catch (e) {
+       return {
+            error: true,
+            e
+        };  
+    }
+}

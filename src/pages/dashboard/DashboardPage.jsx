@@ -3,10 +3,9 @@ import { ResponsiveAppBar } from '../../components/Navbar.jsx';
 import HotelCard from "../../components/hotel/hotelCard.jsx";
 import { useHotelList } from '../../shared/hooks/useHotelList.jsx';
 import Button from '@mui/material/Button';
-import './Hotel.css';
+import '../hotelPage/Hotel.css';
 
 export const DashboardPage = () => {
-  // Obtener usuario desde localStorage
   let user = null;
   try {
     user = JSON.parse(localStorage.getItem("user"));
@@ -15,13 +14,11 @@ export const DashboardPage = () => {
   }
   const role = user?.role || null;
 
-  // Listar hoteles solo si hay usuario
   const { hotels, loading, error } = user
     ? useHotelList()
     : { hotels: [], loading: false, error: null };
 
   const handleAddHotel = () => {
-    // Aquí puedes mostrar un modal, navegar al form o lo que prefieras
     alert("Agregar hotel (implementa la lógica aquí)");
   };
 

@@ -12,26 +12,21 @@ export const useHotelAdd = () => {
     setSuccess(null);
 
     try {
-      // FormData para imágenes y otros campos
       const formData = new FormData();
       formData.append("name", hotelData.name);
       formData.append("description", hotelData.description);
       formData.append("address", hotelData.address);
       formData.append("telephone", hotelData.telephone);
-      formData.append("host", hotelData.host); // id del host
+      formData.append("host", hotelData.host); 
 
-      // Añadir cada imagen (input type="file" multiple)
       if (hotelData.images && hotelData.images.length > 0) {
         Array.from(hotelData.images).forEach((img) =>
           formData.append("pictures", img)
         );
       }
 
-      // Añadir servicios (como stringificado JSON)
-      // Ejemplo: services = [{type: "Singleroom", description: "Cama individual", price: 200}]
       formData.append("services", JSON.stringify(hotelData.services));
 
-      // Petición al backend
       const result = await createHotel(formData);
 
       if (result.success) {

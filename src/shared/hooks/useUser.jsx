@@ -15,7 +15,7 @@ export const useUser = () => {
             const data = await fetchRole(); 
             setRole(data.data.role);
         } catch (err) {
-            toast.error("Error al obtener el role: " + err.message);
+            return err.message
         } finally {
             setIsLoading(false);
         }

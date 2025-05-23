@@ -1,14 +1,15 @@
 import React from 'react';
 import {ResponsiveAppBar} from '../../components/Navbar.jsx';
 
-const user = JSON.parse(localStorage.getItem("user"));
-const role = user?.role || null;
+import { useUser } from '../../shared/hooks/useUser.jsx';
 
 export const UserPage = () => {
+  const {role} = useUser()
+
   return (
     <div>
       <div>
-        <ResponsiveAppBar />
+        <ResponsiveAppBar role={role}/>
         { 
             role === "ADMIN_ROLE" ? (
                 <div>

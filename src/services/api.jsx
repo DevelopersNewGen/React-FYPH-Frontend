@@ -82,3 +82,13 @@ export const createHotel = async (formData) => {
     throw error;
   }
 };
+
+export const getHosts = async () => {
+  try {
+    const response = await apiClient.get("/users/");
+    // Filtrar solo los hosts
+    return { hosts: response.data.users.filter(u => u.role === "HOST_ROLE") };
+  } catch (error) {
+    throw error;
+  }
+};

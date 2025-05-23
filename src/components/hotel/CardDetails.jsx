@@ -13,15 +13,27 @@ export default function CardDetails({ hotel }) {
     user = null;
   }
   const role = user?.role || null;
+  const userId = user?.id || user?._id;
 
-  const handleAddHotel = () => {
+  // El host puede venir como string o como objeto
+  const hotelHostId =
+    typeof hotel.host === "string"
+      ? hotel.host
+      : hotel.host?._id || hotel.host?.id;
 
-  };
+  // ADMIN puede editar/eliminar cualquiera, HOST solo su propio hotel
+  const puedeEditarOEliminar =
+    role === "ADMIN_ROLE" ||
+    (role === "HOST_ROLE" && hotelHostId && hotelHostId === userId);
+
   const handleEditHotel = () => {
-
+    // Aquí va la lógica real para editar el hotel
+    alert("Editar hotel (implementa la lógica aquí)");
   };
+
   const handleDeleteHotel = () => {
-    
+    // Aquí va la lógica real para eliminar el hotel
+    alert("Eliminar hotel (implementa la lógica aquí)");
   };
 
   if (!hotel) return null;
@@ -32,7 +44,8 @@ export default function CardDetails({ hotel }) {
     "https://i.ibb.co/ysVFF2X/burned3.jpg",
   ];
 
-  const images = hotel.images && hotel.images.length > 0 ? hotel.images : fallbackImages;
+  const images =
+    hotel.images && hotel.images.length > 0 ? hotel.images : fallbackImages;
 
   const handlePrev = () => {
     setCurrentImage((prev) => (prev === 0 ? images.length - 1 : prev - 1));
@@ -44,6 +57,7 @@ export default function CardDetails({ hotel }) {
 
   return (
     <Box
+      className="card-details"
       sx={{
         width: "100vw",
         height: "100vh",
@@ -68,7 +82,7 @@ export default function CardDetails({ hotel }) {
           variant="h5"
           component="h1"
           gutterBottom
-          sx={{ fontWeight: "bold", color: "#000" }}
+          sx={{ fontWeight: "bold", color: "#000", mb: 2, textAlign: "center" }}
         >
           {hotel.name}
         </Typography>
@@ -151,7 +165,8 @@ export default function CardDetails({ hotel }) {
                       width: 10,
                       height: 10,
                       borderRadius: "50%",
-                      bgcolor: idx === currentImage ? "primary.main" : "grey.400",
+                      bgcolor:
+                        idx === currentImage ? "primary.main" : "grey.400",
                       cursor: "pointer",
                       transition: "background-color 0.3s ease",
                     }}
@@ -171,7 +186,9 @@ export default function CardDetails({ hotel }) {
                 alignItems: "center",
               }}
             >
-              <Typography sx={{ color: "#000" }}>No hay imágenes disponibles</Typography>
+              <Typography sx={{ color: "#000" }}>
+                No hay imágenes disponibles
+              </Typography>
             </Box>
           )}
         </Box>
@@ -214,16 +231,23 @@ export default function CardDetails({ hotel }) {
           Q{hotel.pricePerNight || "N/A"}
         </Typography>
 
-        {/* BOTONES SOLO PARA ADMIN_ROLE Y HOST_ROLE */}
-        {(role === "ADMIN_ROLE" || role === "HOST_ROLE") && (
+        {/* BOTONES SOLO PARA ADMIN Y HOST RESPONSABLE */}
+        {puedeEditarOEliminar && (
           <Box sx={{ display: "flex", gap: 2, justifyContent: "center", mt: 4 }}>
-            <Button variant="contained" color="primary" onClick={handleAddHotel}>
-              Agregar hotel
-            </Button>
-            <Button variant="outlined" color="warning" onClick={handleEditHotel}>
+            <Button
+              variant="contained"
+              color="warning"
+              sx={{ fontWeight: 700, minWidth: 120, borderRadius: 2 }}
+              onClick={handleEditHotel}
+            >
               Editar
             </Button>
-            <Button variant="outlined" color="error" onClick={handleDeleteHotel}>
+            <Button
+              variant="contained"
+              color="error"
+              sx={{ fontWeight: 700, minWidth: 120, borderRadius: 2 }}
+              onClick={handleDeleteHotel}
+            >
               Eliminar
             </Button>
           </Box>

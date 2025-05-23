@@ -1,32 +1,34 @@
 import { useState , useEffect} from "react";
 
 import {
-    getRole as fetchRole
+    getUser as fetchUser
 } from "../../services";
 
 export const useUser = () => {
     const [role, setRole] = useState(null);
+    const [user, setUser] = useState(null)
     const [isLoading, setIsLoading] = useState(false);
 
-    const getRole = async () => {
-        setIsLoading(true);
+    const getUser = async () => {
+        setIsLoading(true)
+
         try {
-            const data = await fetchRole(); 
-            setRole(data.data.role);
+            const data = await fetchUser()
+            setUser(data.data.user)
+            setRole(data.data.user.role);
         } catch (err) {
             return err.message
-        } finally {
-            setIsLoading(false);
         }
-    };
+    }
 
     useEffect(() => {
-        getRole(); 
+        getUser()
     }, []);
 
     return {
         role,
-        getRole,
         isLoading,
+        user,
+        getUser
     };
 }

@@ -107,9 +107,9 @@ export const createUser = async (uid, data) => {
     }
 }  
 
-export const getRole = async () => {
+export const getUser = async () => {
     try {
-        return await apiClient.get(`/users/getRole`)
+        return await apiClient.get(`/users/getUser`)
     } catch (e) {
        return {
             error: true,

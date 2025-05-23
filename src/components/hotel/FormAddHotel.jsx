@@ -90,11 +90,11 @@ export const FormAddHotel = () => {
             <InputLabel>Host</InputLabel>
             <Select name="host" defaultValue={hostId || ""} required>
               <MenuItem value={hostId}>{hostId}</MenuItem>
-              {/* Aquí puedes agregar más opciones de hosts si es necesario */}
             </Select>
             <FormHelperText>Selecciona un Host</FormHelperText>
           </FormControl>
           <input
+            id="images"
             type="file"
             name="images"
             accept="image/*"
@@ -103,11 +103,11 @@ export const FormAddHotel = () => {
             style={{ display: "none" }}
             onChange={handleImageChange}
           />
-          <label htmlFor="images">
-            <Button variant="contained" component="span" fullWidth>
-              Subir Imágenes
-            </Button>
-          </label>
+        <label htmlFor="images">
+          <Button variant="contained" component="span" fullWidth>
+          Subir Imágenes
+          </Button>
+        </label>
           <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
             {imagesPreview.map((src, i) => (
               <img key={i} src={src} alt="Preview" height={60} style={{ borderRadius: 8 }} />

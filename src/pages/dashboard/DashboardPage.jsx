@@ -1,28 +1,17 @@
 import React from 'react';
 import { ResponsiveAppBar } from '../../components/Navbar.jsx';
 import HotelCard from "../../components/hotel/hotelCard.jsx";
-import { useHotelList } from '../../shared/hooks/useHotelList.jsx';
+import { useUser } from '../../shared/hooks';
 import Button from '@mui/material/Button';
 import '../hotelPage/Hotel.css';
 
 export const DashboardPage = () => {
-  let user = null;
-  try {
-    user = JSON.parse(localStorage.getItem("user"));
-  } catch {
-    user = null;
-  }
-  const role = user?.role || null;
-
-  const { hotels, loading, error } = user
-    ? useHotelList()
-    : { hotels: [], loading: false, error: null };
+  const {role} = useUser();
 
   const handleAddHotel = () => {
     alert("Agregar hotel (implementa la lógica aquí)");
   };
 
-  if (!user) {
     return (
       <>
         <ResponsiveAppBar />
@@ -31,7 +20,7 @@ export const DashboardPage = () => {
         </div>
       </>
     );
-  }
+  
 
   return (
     <>
@@ -72,4 +61,4 @@ export const DashboardPage = () => {
       </div>
     </>
   );
-};
+}

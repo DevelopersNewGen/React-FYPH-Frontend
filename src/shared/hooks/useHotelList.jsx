@@ -10,7 +10,7 @@ export const useHotelList = () => {
     const fetchHotels = async () => {
       try {
         const data = await getHotels()
-        console.log("Respuesta hoteles:", data) // <-- Agrega esto
+        console.log("Respuesta hoteles:", data) 
         setHotels(data.hotels || [])
       } catch (err) {
         setError("Error al cargar los hoteles. Inténtalo de nuevo más tarde.")

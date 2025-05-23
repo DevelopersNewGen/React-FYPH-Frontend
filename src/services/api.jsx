@@ -113,7 +113,7 @@ export const getRole = async () => {
     } catch (e) {
        return {
             error: true,
-            e
+            e: e.message
         };  
     }
 }
@@ -147,6 +147,43 @@ export const createRoom = async (formData) => {
                 'Content-Type': 'multipart/form-data'
             }
         });
+    } catch (e) {
+        return {
+            error: true,
+            e
+        };
+    }
+};
+
+export const updateRoom = async (rid, data) => {
+    try {
+        return await apiClient.put(`/rooms/updateRoom/${rid}`, data); 
+    } catch (e) {
+        return {
+            error: true,
+            e
+        };
+    }
+};
+
+export const updateRoomImages = async (rid, formData) => {
+    try {
+        return await apiClient.patch(`/rooms/updateImages/${rid}`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+    } catch (e) {
+        return {
+            error: true,
+            e
+        };
+    }
+};
+
+export const filterRooms = async (params) => {
+    try {
+        return await apiClient.get('/rooms/filterRooms', { params });
     } catch (e) {
         return {
             error: true,

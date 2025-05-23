@@ -11,12 +11,14 @@ import {
 } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { useRooms } from '../../shared/hooks';
+import RoomEdit from './RoomEdit';
 
-export default function RoomCard({ room, showAddButton }) {
+export default function RoomCard({ room, showAddButton, role }) {
   const [current, setCurrent] = useState(0);
+  const [showEdit, setShowEdit] = useState(false); 
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem('user'));
-  const role = user?.role; // Ahora obtiene el rol real del usuario
+  const { fetchRooms } = useRooms();
 
   const images = room?.images?.length > 0 ? room.images : [];
 
@@ -34,6 +36,15 @@ export default function RoomCard({ room, showAddButton }) {
 
   const handleAddRoom = () => {
     navigate('/habitaciones/agregar');
+  };
+
+  const handleEditRoom = () => {
+    setShowEdit(true);
+  };
+
+  const handleCloseEdit = () => {
+    setShowEdit(false);
+    fetchRooms(); 
   };
 
   if (
@@ -59,14 +70,11 @@ export default function RoomCard({ room, showAddButton }) {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 16 }}>
-      <Card sx={{ maxWidth: 345 }}>
-        <Box sx={{ position: 'relative' }}>
+      <Card className="room-card-fixed">
+        <Box className="room-card-img-wrapper" sx={{ position: 'relative' }}>
           <img
             src={images[current]}
             alt={`Habitación ${room.name} imagen ${current + 1}`}
-            height="180"
-            width="100%"
-            style={{ objectFit: 'cover', borderTopLeftRadius: 4, borderTopRightRadius: 4 }}
           />
           {images.length > 1 && (
             <>
@@ -97,8 +105,14 @@ export default function RoomCard({ room, showAddButton }) {
           <Button size="small" onClick={handleDetails}>
             Ver detalles
           </Button>
+          {(role === 'ADMIN_ROLE' || role === 'HOST_ROLE') && (
+            <Button size="small" color="secondary" onClick={handleEditRoom}>
+              Editar
+            </Button>
+          )}
         </CardActions>
       </Card>
+      {showEdit && <RoomEdit roomData={room} onClose={handleCloseEdit} />}
     </div>
   );
 }

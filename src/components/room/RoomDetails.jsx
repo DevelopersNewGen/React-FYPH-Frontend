@@ -5,15 +5,20 @@ import DescriptionIcon from "@mui/icons-material/Description";
 import CategoryIcon from "@mui/icons-material/Category";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import PropTypes from "prop-types";
-import RoomAdd from "./RoomAdd"; 
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
+import { useUser, useRoomDetails } from "../../shared/hooks";
+import RoomEdit from "./RoomEdit";
 
-export function RoomDetails({ room, onBack }) {
+export default function RoomDetails({ rid, onBack }) {
   const [mainImage, setMainImage] = useState("");
   const [showEdit, setShowEdit] = useState(false);
+  const [showEditImages, setShowEditImages] = useState(false);
+  const [refresh, setRefresh] = useState(0);
   const navigate = useNavigate();
+  const { role } = useUser();
+
+  const { room, loading } = useRoomDetails({ rid, refresh });
 
   useEffect(() => {
     if (room && room.images && room.images.length > 0) {
@@ -21,34 +26,27 @@ export function RoomDetails({ room, onBack }) {
     }
   }, [room]);
 
-  const user = JSON.parse(localStorage.getItem('user'));
-  const role = user?.role;
+  const getPreviewImages = () => room.images?.filter((img) => img !== mainImage) || [];
 
-  const getPreviewImages = () => room.images.filter((img) => img !== mainImage);
+  const handleEdit = () => setShowEdit(true);
+  const handleEditImages = () => setShowEditImages(true);
 
-  const handleEdit = () => {
-    setShowEdit(true); 
-  };
-
-  const handleEditSubmit = async (formData) => {
-  
+  const handleCloseEdit = () => {
     setShowEdit(false);
-
+    setRefresh(r => r + 1);
+  };
+  const handleCloseEditImages = () => {
+    setShowEditImages(false);
+    setRefresh(r => r + 1);
   };
 
-  const handleDelete = () => {
-    alert("¿Seguro que deseas eliminar esta habitación?");
-  };
-
-  if (!room || !room.images || room.images.length === 0) return null;
+  if (loading) return <div>Cargando...</div>;
+  if (!room) return <div>No se encontró la habitación.</div>;
 
   return (
     <div style={{ display: "flex", gap: 32 }}>
       <div className="room-detail-container">
-        <button
-          className="back-button"
-          onClick={() => navigate(-1)}
-        >
+        <button className="back-button" onClick={() => navigate(-1)}>
           <ArrowBackIosNewIcon fontSize="small" />
         </button>
         <div className="room-left">
@@ -77,10 +75,10 @@ export function RoomDetails({ room, onBack }) {
             {(role === "ADMIN_ROLE" || role === "HOST_ROLE") && (
               <div style={{ marginTop: 16 }}>
                 <button onClick={handleEdit} style={{ marginRight: 8 }}>
-                  Editar
+                  Editar datos
                 </button>
-                <button onClick={handleDelete} style={{ background: "#d32f2f", color: "#fff" }}>
-                  Eliminar
+                <button onClick={handleEditImages} style={{ marginRight: 8 }}>
+                  Editar imágenes
                 </button>
               </div>
             )}
@@ -123,40 +121,47 @@ export function RoomDetails({ room, onBack }) {
         </div>
       </div>
       <Modal
-  open={showEdit}
-  onClose={() => setShowEdit(false)}
-  aria-labelledby="modal-editar-habitacion"
-  aria-describedby="modal-editar-habitacion-descripcion"
->
-  <Box
-    sx={{
-      position: 'absolute',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      bgcolor: 'background.paper',
-      boxShadow: 24,
-      borderRadius: 2,
-      p: 4,
-      minWidth: 600,      
-      maxWidth: 700       
-    }}
-  >
-    <RoomAdd
-      initialData={room}
-      isEdit
-      onSubmit={handleEditSubmit}
-      onCancel={() => setShowEdit(false)}
-    />
-  </Box>
-</Modal>
+        open={showEdit}
+        onClose={handleCloseEdit}
+        aria-labelledby="modal-editar-habitacion"
+        aria-describedby="modal-editar-habitacion-descripcion"
+      >
+        <Box sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          bgcolor: 'background.paper',
+          boxShadow: 24,
+          borderRadius: 2,
+          p: 4,
+          minWidth: 600,
+          maxWidth: 700
+        }}>
+          <RoomEdit roomData={room} onClose={handleCloseEdit} hideImages />
+        </Box>
+      </Modal>
+      <Modal
+        open={showEditImages}
+        onClose={handleCloseEditImages}
+        aria-labelledby="modal-editar-imagenes"
+        aria-describedby="modal-editar-imagenes-descripcion"
+      >
+        <Box sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          bgcolor: 'background.paper',
+          boxShadow: 24,
+          borderRadius: 2,
+          p: 4,
+          minWidth: 400,
+          maxWidth: 600
+        }}>
+          <RoomEdit roomData={room} onClose={handleCloseEditImages} onlyImages />
+        </Box>
+      </Modal>
     </div>
   );
 }
-
-RoomDetails.propTypes = {
-  room: PropTypes.object.isRequired,
-  onBack: PropTypes.func.isRequired,
-};
-
-export default RoomDetails;

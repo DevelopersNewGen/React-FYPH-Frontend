@@ -1,30 +1,34 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { getRoomById, updateRoom } from '../../services/api'; // Asegúrate de tener updateRoom en tu api.jsx
+import React from 'react';
+import { useUser, useRoomUpdate } from '../../shared/hooks';
 import RoomAdd from './RoomAdd';
 
-export default function RoomEdit() {
-  const { rid } = useParams();
-  const [roomData, setRoomData] = useState(null);
+export default function RoomEdit({ roomData, onClose, hideImages, onlyImages }) {
+  const { role } = useUser();
+  const { handleUpdateRoom, handleUpdateRoomImages } = useRoomUpdate();
 
-  useEffect(() => {
-    async function fetchRoom() {
-      const res = await getRoomById(rid);
-      if (!res.error) setRoomData(res.data.room);
+  const onSubmit = async (dataOrFormData) => {
+    if (onlyImages) {
+      await handleUpdateRoomImages(roomData.rid || roomData._id, dataOrFormData);
+    } else {
+      await handleUpdateRoom(roomData.rid || roomData._id, dataOrFormData);
     }
-    fetchRoom();
-  }, [rid]);
+    onClose();
+    window.location.reload(); 
+  };
 
   if (!roomData) return <div>Cargando...</div>;
+  if (role !== "ADMIN_ROLE" && role !== "HOST_ROLE") {
+    return <div>No tienes permisos para editar esta habitación.</div>;
+  }
 
-  
   return (
     <RoomAdd
       initialData={roomData}
-      onSubmit={async (formData) => {
-        await updateRoom(rid, formData); 
-      }}
+      onSubmit={onSubmit}
       isEdit
+      onCancel={onClose}
+      hideImages={hideImages}
+      onlyImages={onlyImages}
     />
   );
 }

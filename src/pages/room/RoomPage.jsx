@@ -2,20 +2,23 @@ import React from 'react';
 import { ResponsiveAppBar } from '../../components/Navbar.jsx';
 import RoomCard from '../../components/room/RoomCard.jsx';
 import './Room.css';
-import { useRooms } from '../../shared/hooks/useRoom';
+import { useRooms, useUser } from '../../shared/hooks';
 
 export const RoomPage = () => {
   const { allRooms, isFetching } = useRooms();
+    const { role } = useUser();
 
+    console.log(role)
+    
   return (
     <div className="room-page-container">
-      <ResponsiveAppBar />
+      <ResponsiveAppBar role={role}/>
       <div className="room-header">
         <h1>Habitaciones</h1>
         <p>Bienvenido a la página de habitaciones.</p>
       </div>
       <div className="room-card-wrapper">
-        <RoomCard room={{}} showAddButton={true} />
+        <RoomCard room={{}} showAddButton={true} role={role}/>
         <div className="room-list-grid">
           {isFetching ? (
             <p>Cargando habitaciones...</p>

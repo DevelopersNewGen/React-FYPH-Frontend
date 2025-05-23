@@ -20,7 +20,7 @@ export const useUserAdmin = () => {
         setIsLoading(true);
         try {
             const data = await Clients();
-            setUsers(data.users);
+            setUsers(data.data.users);
         } catch (err) {
             toast.error("Error al cargar usuarios: " + err.message);
         } finally {

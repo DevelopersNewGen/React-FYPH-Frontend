@@ -28,7 +28,6 @@ export const UserDetails = ({user}) => {
         <TextField
           label="Nombre"
           value={user?.name || ''}
-          InputProps={{ readOnly: true }}
           fullWidth
           margin="dense"
           sx={{ maxWidth: 350, mb: 2 }}
@@ -36,7 +35,6 @@ export const UserDetails = ({user}) => {
         <TextField
           label="Email"
           value={user?.email || ''}
-          InputProps={{ readOnly: true }}
           fullWidth
           margin="dense"
           sx={{ maxWidth: 350, mb: 2 }}

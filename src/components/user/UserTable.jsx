@@ -1,8 +1,11 @@
+
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
+import { Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
-const columns = [
+const columns = (handleButtonClick) => [
     { 
         field: 'id', 
         headerName: 'ID', 
@@ -33,11 +36,31 @@ const columns = [
         sortable: false,
         width: 150,
     },
+    {
+        field: 'actions',
+        headerName: 'Actions',
+        width: 150,
+        renderCell: (params) => (
+            <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                onClick={() => handleButtonClick(params.row.id)}
+            >
+                Editar
+            </Button>
+        ),
+    },
 ];
 
 
-
 export const UserTable = ({users}) => {
+    const navigate = useNavigate(); // Mueve useNavigate dentro del componente funcional
+
+    const handleButtonClick = (id) => {
+        console.log("ID enviado:", id);
+        navigate(`/userDetailsAdmin/${id}`); // Usa navigate aquí
+    };
 
     const rows = users.map(user => ({
         id: user.uid,
@@ -51,7 +74,7 @@ export const UserTable = ({users}) => {
         <Box sx={{ height: 400, width: '100%' }}>
         <DataGrid
             rows={rows}
-            columns={columns}
+            columns={columns(handleButtonClick)}
             initialState={{
             pagination: {
                 paginationModel: {
@@ -60,8 +83,6 @@ export const UserTable = ({users}) => {
             },
             }}
             pageSizeOptions={[5]}
-            checkboxSelection
-            disableRowSelectionOnClick
         />
         </Box>
     );

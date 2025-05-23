@@ -231,7 +231,6 @@ export default function CardDetails({ hotel }) {
           Q{hotel.pricePerNight || "N/A"}
         </Typography>
 
-        {/* BOTONES SOLO PARA ADMIN Y HOST RESPONSABLE */}
         {puedeEditarOEliminar && (
           <Box sx={{ display: "flex", gap: 2, justifyContent: "center", mt: 4 }}>
             <Button

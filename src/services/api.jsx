@@ -117,3 +117,14 @@ export const getUser = async () => {
         };  
     }
 }
+
+export const listHotelsWithReservationCount = async () => {
+  try {
+    return await apiClient.get('/reports/getTopHotels');
+  } catch (e) {
+    return {
+      error: true,
+      e
+    };
+  }
+};

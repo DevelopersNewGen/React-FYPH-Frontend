@@ -7,7 +7,7 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import { useUser, useRoomDetails } from "../../shared/hooks";
+import { useRoomDetails } from "../../shared/hooks";
 import RoomEdit from "./RoomEdit";
 
 export default function RoomDetails({ rid, onBack , role}) {

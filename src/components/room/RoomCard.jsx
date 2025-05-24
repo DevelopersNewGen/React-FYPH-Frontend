@@ -8,17 +8,23 @@ import {
   Typography,
   Box,
   IconButton,
+  Stack
 } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { useUser } from '../../shared/hooks'; 
+import RoomIcon from '@mui/icons-material/Room';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
 
-export default function RoomCard({ room, showAddButton, role }) { 
+export default function RoomCard({ room, role }) {
   const [current, setCurrent] = useState(0);
   const navigate = useNavigate();
 
+  if (!room || !room.numRoom) return null;
 
-  const images = room?.images?.length > 0 ? room.images : [];
+  const images = room?.images?.length > 0 ? room.images : [
+  ];
 
   const handlePrev = () => {
     setCurrent((prev) => (prev === 0 ? images.length - 1 : prev - 1));
@@ -32,79 +38,59 @@ export default function RoomCard({ room, showAddButton, role }) {
     navigate(`/habitaciones/detalles/${room.rid || room._id}`);
   };
 
-  const handleAddRoom = () => {
-    navigate('/habitaciones/agregar');
-  };
-
-  if (
-    showAddButton &&
-    (role === 'ADMIN_ROLE' || role === 'HOST_ROLE') &&
-    (!room || Object.keys(room).length === 0)
-  ) {
-    return (
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 16 }}>
-        <Button
-          onClick={handleAddRoom}
-          color="primary"
-          variant="contained"
-          sx={{ mb: 2 }}
-        >
-          Agregar Habitación
-        </Button>
-      </div>
-    );
-  }
-
-  if (!room || Object.keys(room).length === 0) return null;
-
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 16 }}>
-      <Card sx={{ maxWidth: 345 }}>
-        <Box sx={{ position: 'relative' }}>
-          <img
-            src={images[current]}
-            alt={`Habitación ${room.name} imagen ${current + 1}`}
-            height="180"
-            width="100%"
-            style={{ objectFit: 'cover', borderTopLeftRadius: 4, borderTopRightRadius: 4 }}
-          />
-          {images.length > 1 && (
-            <>
-              <IconButton onClick={handlePrev} sx={{ position: 'absolute', top: '40%', left: 0 }}>
-                <ArrowBackIosIcon fontSize="small" />
-              </IconButton>
-              <IconButton onClick={handleNext} sx={{ position: 'absolute', top: '40%', right: 0 }}>
-                <ArrowForwardIosIcon fontSize="small" />
-              </IconButton>
-            </>
-          )}
-        </Box>
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
+    <Card className="room-card-fixed">
+      <Box className="room-card-img-wrapper" sx={{ position: 'relative' }}>
+        <img
+          src={images[current]}
+          alt={`Habitación imagen ${current + 1}`}
+        />
+        {images.length > 1 && (
+          <>
+            <IconButton onClick={handlePrev} sx={{ position: 'absolute', top: '40%', left: 0 }}>
+              <ArrowBackIosIcon fontSize="small" />
+            </IconButton>
+            <IconButton onClick={handleNext} sx={{ position: 'absolute', top: '40%', right: 0 }}>
+              <ArrowForwardIosIcon fontSize="small" />
+            </IconButton>
+          </>
+        )}
+      </Box>
+      <CardContent sx={{ padding: '8px 16px' }}>
+        <Stack direction="row" alignItems="center" spacing={1}>
+          <RoomIcon color="primary" fontSize="small" />
+          <Typography variant="subtitle1" fontWeight="bold">
             {room.numRoom}
           </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
-            {room.type} · Capacidad: {room.capacity}
+        </Stack>
+        <Stack direction="row" alignItems="center" spacing={1} sx={{ mt: 1 }}>
+          <AttachMoneyIcon fontSize="small" sx={{ color: 'green' }} />
+          <Typography variant="body2" sx={{ color: 'green' }}>
+            Q{room.pricePerDay} / noche
           </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            {room.description}
-          </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary', mt: 1 }}>
-            <strong>Q{room.pricePerDay} / noche</strong>
-          </Typography>
-        </CardContent>
-        <CardActions>
-          <Button size="small" onClick={handleDetails}>
-            Ver detalles
-          </Button>
-          {/* Ejemplo: solo admin/host pueden ver un botón extra */}
-          {(role === 'ADMIN_ROLE' || role === 'HOST_ROLE') && (
-            <Button size="small" color="secondary" onClick={handleAddRoom}>
-              Agregar
-            </Button>
+        </Stack>
+        <Stack direction="row" alignItems="center" spacing={1} sx={{ mt: 1 }}>
+          {room.status ? (
+            <CheckCircleIcon sx={{ color: 'green' }} fontSize="small" />
+          ) : (
+            <CancelIcon sx={{ color: 'red' }} fontSize="small" />
           )}
-        </CardActions>
-      </Card>
-    </div>
+          <Typography
+            variant="body2"
+            sx={{
+              color: room.status ? 'green' : 'red',
+              fontWeight: 'medium'
+            }}
+          >
+            {room.status ? 'Disponible' : 'No disponible'}
+          </Typography>
+        </Stack>
+      </CardContent>
+      <CardActions>
+        <Button size="small" onClick={handleDetails}>
+         DETALLES
+        </Button>
+      </CardActions>
+    </Card>
   );
 }

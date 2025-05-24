@@ -118,16 +118,57 @@ export const getUser = async () => {
     }
 }
 
+<<<<<<< HEAD
 
 
  export const getEvents = async () => {
   try {
     const response = await apiClient.get("/events/");
+=======
+export const getHosts = async () => {
+  try {
+    const response = await apiClient.get("/users");
+    console.log('Respuesta de /users:', response.data);
+    const allUsers = response.data.users || [];
+    return allUsers.filter(user => user.role === "HOST_ROLE");
+  } catch (error) {
+    return [];
+  }
+};
+
+
+export const getHotels = async () => {
+  try {
+    const response = await apiClient.get("/hotels/")
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
+
+export const getHotelById = async (hotelId) => {
+  try {
+    const response = await apiClient.get(`/hotels/findHotel/${hotelId}`)
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
+
+export const createHotel = async (formData) => {
+  try {
+    const response = await apiClient.post("/hotels/createHotel", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    });
+>>>>>>> origin/hotel-module
     return response.data;
   } catch (error) {
     throw error;
   }
 };
+<<<<<<< HEAD
   
 export const createEvent = async (data) => {
   try {
@@ -161,3 +202,38 @@ export const deleteEvent = async (eid) => {
     };
   }
 };
+=======
+
+export const updateHotel = async (hid, data) => {
+  try {
+    const response = await apiClient.put(`/hotels/updateHotel/${hid}`, data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteHotel = async (hid) => {
+  try {
+    const response = await apiClient.delete(`/hotels/deleteHotel/${hid}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const addHotelComment = async (hid, { rating, comment }) => {
+  try {
+    const response = await apiClient.patch(`/hotels/addComment/${hid}`, {
+      rating,
+      comment,
+    });
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.data && error.response.data.msg) {
+      return { success: false, msg: error.response.data.msg };
+    }
+    return { success: false, msg: "Error de conexión o desconocido" };
+  }
+};
+>>>>>>> origin/hotel-module

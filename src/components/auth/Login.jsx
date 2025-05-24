@@ -133,4 +133,8 @@ export const Login = ({switchAuthHandler} ) => {
 
 Login.propTypes = {
   switchAuthHandler: PropTypes.func.isRequired,
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> origin/hotel-module

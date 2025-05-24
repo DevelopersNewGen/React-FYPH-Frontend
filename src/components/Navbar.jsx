@@ -18,7 +18,10 @@ import { useNavigate } from 'react-router-dom';
 import { useUserDetails } from '../shared/hooks';
 import "../components/navbar.css";
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/hotel-module
 const pagesAdmin = ['Hoteles', 'Usuarios', 'Solicitudes', "Estadisticas", "Eventos"];
 const pagesHost = ["Reservaciones", "Usuarios", "Habitaciones", "Servicios"];
 const pagesUser = ["Hoteles", "Eventos"];
@@ -47,6 +50,7 @@ export const ResponsiveAppBar = ({ role }) => {
     } else if (page === "Eventos") {
       navigate("/eventos");
     }
+    // Aquí puedes agregar más páginas según lo necesites
   };
 
   const handleCloseUserMenu = (setting) => {
@@ -173,10 +177,13 @@ export const ResponsiveAppBar = ({ role }) => {
                 >
                   {settings.map((setting) => (
 <<<<<<< HEAD
+<<<<<<< HEAD
                     <MenuItem key={typeof setting === "string" ? setting : setting.text} onClick={() => handleCloseUserMenu(setting)} className="navbar-menuitem">
                       <Typography  className="navbar-menuitem-text"  sx={{ textAlign: 'center', display: 'flex', alignItems: 'center', gap: 1 }}>
                         {typeof setting === "object" && setting.icon && <setting.icon sx={{ mr: 1 }} className="navbar-menuitem-icon" />}
 =======
+=======
+>>>>>>> origin/hotel-module
                     <MenuItem
                       key={typeof setting === "string" ? setting : setting.text}
                       onClick={() => handleCloseUserMenu(setting)}

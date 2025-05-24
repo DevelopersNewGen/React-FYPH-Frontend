@@ -1,22 +1,36 @@
 import React, { useState } from "react";
-import { Box, Typography, IconButton, Button } from "@mui/material";
+import { Box, Typography, IconButton, Button, TextField } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../shared/hooks";
-import { useDeleteHotel } from "../../shared/hooks/useDeleteHotel"; 
+import { useDeleteHotel } from "../../shared/hooks/useDeleteHotel";
+import { useHotelComment } from "../../shared/hooks/useHotelComment";
+import Rating from "@mui/material/Rating";
 
 export default function CardDetails({ hotel, onEdit, onDelete }) {
   const [currentImage, setCurrentImage] = useState(0);
   const { role, user, isLoading } = useUser();
   const navigate = useNavigate();
 
-  const { 
-    removeHotel, 
-    loading: loadingDelete, 
-    error: errorDelete, 
-    success: successDelete 
+  const {
+    removeHotel,
+    loading: loadingDelete,
+    error: errorDelete,
+    success: successDelete
   } = useDeleteHotel();
+
+  const [showCommentForm, setShowCommentForm] = useState(false);
+  const [comment, setComment] = useState("");
+  const [rating, setRating] = useState(0);
+  const {
+    commentHotel,
+    loading: loadingComment,
+    error: errorComment,
+    success: successComment,
+    setError: setErrorComment,
+    setSuccess: setSuccessComment
+  } = useHotelComment();
 
   const hotelHostId =
     typeof hotel.host === "string"
@@ -25,7 +39,9 @@ export default function CardDetails({ hotel, onEdit, onDelete }) {
 
   const puedeEditarOEliminar =
     role === "ADMIN_ROLE" ||
-    (role === "HOST_ROLE" && hotelHostId && (user?._id === hotelHostId || user?.id === hotelHostId));
+    (role === "HOST_ROLE" &&
+      hotelHostId &&
+      (user?._id === hotelHostId || user?.id === hotelHostId));
 
   const handleEditHotel = () => {
     if (onEdit) onEdit();
@@ -35,8 +51,24 @@ export default function CardDetails({ hotel, onEdit, onDelete }) {
     if (!window.confirm("¿Seguro que deseas eliminar este hotel?")) return;
     const res = await removeHotel(hotel._id || hotel.id || hotel.hid);
     if (res.success) {
-      if (onDelete) onDelete(); 
+      if (onDelete) onDelete();
       else navigate("/dashboard");
+    }
+  };
+
+  const handleSubmitComment = async (e) => {
+    e.preventDefault();
+    setErrorComment("");
+    setSuccessComment("");
+    if (!rating) {
+      setErrorComment("La calificación es obligatoria");
+      return;
+    }
+    const res = await commentHotel(hotel._id || hotel.id || hotel.hid, { rating, comment });
+    if (res.success) {
+      setComment("");
+      setRating(0);
+      setShowCommentForm(false);
     }
   };
 
@@ -103,7 +135,12 @@ export default function CardDetails({ hotel, onEdit, onDelete }) {
           variant="h5"
           component="h1"
           gutterBottom
-          sx={{ fontWeight: "bold", color: "#000", mb: 2, textAlign: "center" }}
+          sx={{
+            fontWeight: "bold",
+            color: "#000",
+            mb: 2,
+            textAlign: "center"
+          }}
         >
           {hotel.name}
         </Typography>
@@ -250,6 +287,46 @@ export default function CardDetails({ hotel, onEdit, onDelete }) {
         <Typography variant="body1" sx={{ fontWeight: "bold", color: "#000" }}>
           Q{hotel.pricePerNight || "N/A"}
         </Typography>
+
+        {/* Botón para mostrar/ocultar el form de comentario */}
+        <Button
+          variant="outlined"
+          sx={{ mt: 2 }}
+          onClick={() => setShowCommentForm((prev) => !prev)}
+        >
+          {showCommentForm ? "Cerrar comentario" : "Agregar comentario/calificación"}
+        </Button>
+
+        {/* Formulario de comentario/calificación */}
+        {showCommentForm && (
+          <Box
+            component="form"
+            onSubmit={handleSubmitComment}
+            sx={{ mt: 2, p: 2, border: "1px solid #ddd", borderRadius: 2, maxWidth: 400 }}
+          >
+            <Typography variant="h6" sx={{ mb: 1 }}>Califica este hotel</Typography>
+            <Rating
+              name="hotel-rating"
+              value={rating}
+              onChange={(e, newValue) => setRating(newValue)}
+              precision={1}
+            />
+            <TextField
+              label="Comentario"
+              multiline
+              minRows={2}
+              value={comment}
+              onChange={e => setComment(e.target.value)}
+              fullWidth
+              sx={{ my: 2 }}
+            />
+            {errorComment && <Typography color="error">{errorComment}</Typography>}
+            {successComment && <Typography color="success.main">{successComment}</Typography>}
+            <Button type="submit" variant="contained" disabled={loadingComment}>
+              {loadingComment ? "Enviando..." : "Enviar"}
+            </Button>
+          </Box>
+        )}
 
         {puedeEditarOEliminar && (
           <Box sx={{ display: "flex", gap: 2, justifyContent: "center", mt: 4 }}>

@@ -4,12 +4,14 @@ import { useHotelDetails } from "../../shared/hooks/useHotelDetails.jsx";
 import CardDetails from "../../components/hotel/CardDetails.jsx";
 import EditHotel from "../../components/hotel/EditHotel.jsx";
 import { ResponsiveAppBar } from "../../components/Navbar.jsx";
+import { useUser } from '../../shared/hooks';
 import "./Hotel.css";
 
 export const HotelDetailsPage = () => {
   const { hid } = useParams();
   const [editing, setEditing] = useState(false);
   const [refetchKey, setRefetchKey] = useState(0);
+  const { role } = useUser();
 
   
   const { hotel, loading, error } = useHotelDetails(hid, refetchKey);
@@ -25,7 +27,7 @@ export const HotelDetailsPage = () => {
 
   return (
     <div className="hotel-page-container" style={{ marginTop: "80px" }}>
-      <ResponsiveAppBar />
+      <ResponsiveAppBar role={role} />
       <header className="hotel-header">
         <h1>Detalle del Hotel</h1>
       </header>

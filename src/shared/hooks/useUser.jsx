@@ -1,34 +1,40 @@
-import { useState , useEffect} from "react";
-
-import {
-    getUser as fetchUser
-} from "../../services";
+import { useState, useEffect } from "react";
+import { getUser as fetchUser } from "../../services";
 
 export const useUser = () => {
     const [role, setRole] = useState(null);
-    const [user, setUser] = useState(null)
-    const [isLoading, setIsLoading] = useState(false);
+    const [user, setUser] = useState(null);
+    const [isLoading, setIsLoading] = useState(true); 
+    const [error, setError] = useState(null);
 
     const getUser = async () => {
-        setIsLoading(true)
-
+        setIsLoading(true);
+        setError(null);
         try {
-            const data = await fetchUser()
-            setUser(data.data.user)
-            setRole(data.data.user.role);
+            const data = await fetchUser();
+            const userData = data?.data?.user || data?.user || data;
+            if (userData && userData.role) {
+                setUser(userData);
+                setRole(userData.role);
+            } else {
+                setError("No autorizado o usuario no encontrado");
+            }
         } catch (err) {
-            return err.message
+            setError("Error de autenticación o backend");
+        } finally {
+            setIsLoading(false);
         }
-    }
+    };
 
     useEffect(() => {
-        getUser()
+        getUser();
     }, []);
 
     return {
         role,
-        isLoading,
         user,
+        isLoading,
+        error,
         getUser
     };
-}
+};

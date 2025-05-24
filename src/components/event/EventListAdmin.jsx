@@ -18,7 +18,6 @@ export default function EventListAdmin({ eventos }) {
           letterSpacing: ".1rem",
         }}
       >
-        LISTA DE EVENTOS
       </Typography>
       {eventos.map((evento) => (
         <Box
@@ -39,7 +38,7 @@ export default function EventListAdmin({ eventos }) {
             },
           }}
         >
-          <Box>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 4 }}>
             <Typography variant="h5" sx={{ color: "#fff", fontWeight: 700 }}>
               {evento.name}
             </Typography>

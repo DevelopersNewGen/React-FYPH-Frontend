@@ -179,17 +179,7 @@ export const deleteHotel = async (hid) => {
   }
 };
 
-export const addHotelComment = async (hid, { rating, comment }) => {
-  try {
-    const response = await apiClient.patch(`/hotels/addComment/${hid}`, {
-      rating,
-      comment,
-    });
-    return response.data;
-  } catch (error) {
-    if (error.response && error.response.data && error.response.data.msg) {
-      return { success: false, msg: error.response.data.msg };
-    }
-    return { success: false, msg: "Error de conexión o desconocido" };
-  }
-};
+export async function addHotelComment(hid, data) {
+  const token = localStorage.getItem("token"); 
+  return await apiClient.post(`/hotels/addComment/${hid}`, data);
+}

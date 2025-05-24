@@ -87,9 +87,11 @@ export const DashboardPage = () => {
             {hotels.length === 0 ? (
               <p style={{ textAlign: "center" }}>No hay hoteles disponibles.</p>
             ) : (
-              hotels.map((hotel) => (
-                <div key={hotel._id || hotel.id} style={{ position: "relative", width: "100%", maxWidth: 350 }}>
-                  {/* Pasa setRefetchKey como prop */}
+              hotels.map((hotel, idx) => (
+                <div
+                  key={hotel._id || hotel.id || idx}
+                  style={{ position: "relative", width: "100%", maxWidth: 350 }}
+                >
                   <HotelCard hotel={hotel} setRefetchKey={setRefetchKey} />
                 </div>
               ))

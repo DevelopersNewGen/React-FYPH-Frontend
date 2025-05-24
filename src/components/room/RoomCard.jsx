@@ -11,14 +11,12 @@ import {
 } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { useRooms } from '../../shared/hooks';
-import RoomEdit from './RoomEdit';
+import { useUser } from '../../shared/hooks'; 
 
-export default function RoomCard({ room, showAddButton, role }) {
+export default function RoomCard({ room, showAddButton }) {
   const [current, setCurrent] = useState(0);
-  const [showEdit, setShowEdit] = useState(false); 
   const navigate = useNavigate();
-  const { fetchRooms } = useRooms();
+  const { role } = useUser(); 
 
   const images = room?.images?.length > 0 ? room.images : [];
 
@@ -36,15 +34,6 @@ export default function RoomCard({ room, showAddButton, role }) {
 
   const handleAddRoom = () => {
     navigate('/habitaciones/agregar');
-  };
-
-  const handleEditRoom = () => {
-    setShowEdit(true);
-  };
-
-  const handleCloseEdit = () => {
-    setShowEdit(false);
-    fetchRooms(); 
   };
 
   if (
@@ -70,11 +59,14 @@ export default function RoomCard({ room, showAddButton, role }) {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 16 }}>
-      <Card className="room-card-fixed">
-        <Box className="room-card-img-wrapper" sx={{ position: 'relative' }}>
+      <Card sx={{ maxWidth: 345 }}>
+        <Box sx={{ position: 'relative' }}>
           <img
             src={images[current]}
             alt={`Habitación ${room.name} imagen ${current + 1}`}
+            height="180"
+            width="100%"
+            style={{ objectFit: 'cover', borderTopLeftRadius: 4, borderTopRightRadius: 4 }}
           />
           {images.length > 1 && (
             <>
@@ -105,14 +97,14 @@ export default function RoomCard({ room, showAddButton, role }) {
           <Button size="small" onClick={handleDetails}>
             Ver detalles
           </Button>
+          {/* Ejemplo: solo admin/host pueden ver un botón extra */}
           {(role === 'ADMIN_ROLE' || role === 'HOST_ROLE') && (
-            <Button size="small" color="secondary" onClick={handleEditRoom}>
-              Editar
+            <Button size="small" color="secondary" onClick={handleAddRoom}>
+              Agregar
             </Button>
           )}
         </CardActions>
       </Card>
-      {showEdit && <RoomEdit roomData={room} onClose={handleCloseEdit} />}
     </div>
   );
 }

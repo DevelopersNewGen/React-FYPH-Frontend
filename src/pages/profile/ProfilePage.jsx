@@ -6,11 +6,10 @@ import { useUser } from "../../shared/hooks"
 export const ProfilePage = () => {
   const {user, role} = useUser()
 
-  console.log(user)
   return (
     <div>
       <ResponsiveAppBar role={role}/>
-      <UserDetails user={user}/>
+      <UserDetails user={user} isAdmin={false}/>
     </div>
     
   )

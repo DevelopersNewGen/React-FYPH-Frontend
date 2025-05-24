@@ -16,7 +16,6 @@ apiClient.interceptors.request.use(
                 const parsedUser = JSON.parse(userDetails);
                 if (parsedUser?.token) {
                     config.headers.Authorization = `Bearer ${parsedUser.token}`;
-                    console.log("Token agregado al header:", parsedUser.token); 
                 }
             } catch (err) {
                 console.warn("Error al leer el token:", err);
@@ -117,3 +116,26 @@ export const getUser = async () => {
         };  
     }
 }
+
+export const getUserById = async (uid) => {
+    try {
+        return await apiClient.get(`/users/findUser/${uid}`)
+    } catch (e) {
+        return {
+            error: true,
+            e
+        }
+    }
+}
+
+
+export const updatePassword = async (data) => {
+    try {
+        return await apiClient.patch('/users/updatePassword', data);
+    } catch (e) {
+        return {
+            error: true,
+            e
+        };
+    }
+};

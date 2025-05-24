@@ -54,11 +54,11 @@ const columns = (handleButtonClick) => [
 
 
 export const UserTable = ({users}) => {
-    const navigate = useNavigate(); // Mueve useNavigate dentro del componente funcional
+    const navigate = useNavigate(); 
 
     const handleButtonClick = (id) => {
         console.log("ID enviado:", id);
-        navigate(`/userDetailsAdmin/${id}`); // Usa navigate aquí
+        navigate(`/userDetails/${id}`); 
     };
 
     const rows = users.map(user => ({

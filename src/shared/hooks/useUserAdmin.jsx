@@ -5,12 +5,14 @@ import {
     getClients as Clients,
     updateUserAdmin,
     deleteUserAdmin,
-    createUser
+    createUser,
+    getUserById as userId
 } from "../../services";
 
 export const useUserAdmin = () => {
     const [users, setUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [user, setUser] = useState(null)
 
     useEffect(() => {
         loadUsers();
@@ -71,12 +73,26 @@ export const useUserAdmin = () => {
             setIsLoading(false);
         }
     }
+    
+    const getUserById = async (id) => {
+        setIsLoading(true);
+        try {
+            const data = await userId(id);
+            setUser(data.data.user);
+        } catch (err) {
+            toast.error("Error al crear usuario: " + err.message);
+        } finally {
+            setIsLoading(false);
+        } 
+    }
 
     return {
         users,
         isLoading,
         handleSave,
         handleDelete,
-        handleCreate
+        handleCreate,
+        getUserById,
+        user
     };
 }

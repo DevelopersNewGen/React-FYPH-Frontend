@@ -4,11 +4,19 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../shared/hooks";
+import { useDeleteHotel } from "../../shared/hooks/useDeleteHotel"; 
 
-export default function CardDetails({ hotel, onEdit }) {
+export default function CardDetails({ hotel, onEdit, onDelete }) {
   const [currentImage, setCurrentImage] = useState(0);
   const { role, user, isLoading } = useUser();
   const navigate = useNavigate();
+
+  const { 
+    removeHotel, 
+    loading: loadingDelete, 
+    error: errorDelete, 
+    success: successDelete 
+  } = useDeleteHotel();
 
   const hotelHostId =
     typeof hotel.host === "string"
@@ -23,8 +31,13 @@ export default function CardDetails({ hotel, onEdit }) {
     if (onEdit) onEdit();
   };
 
-  const handleDeleteHotel = () => {
-    alert("Implementa la eliminación aquí");
+  const handleDeleteHotel = async () => {
+    if (!window.confirm("¿Seguro que deseas eliminar este hotel?")) return;
+    const res = await removeHotel(hotel._id || hotel.id || hotel.hid);
+    if (res.success) {
+      if (onDelete) onDelete(); 
+      else navigate("/dashboard");
+    }
   };
 
   if (!hotel) return null;
@@ -72,7 +85,6 @@ export default function CardDetails({ hotel, onEdit }) {
           position: "relative",
         }}
       >
-        {/* Botón de regreso */}
         <IconButton
           onClick={() => navigate(-1)}
           sx={{
@@ -254,10 +266,22 @@ export default function CardDetails({ hotel, onEdit }) {
               color="error"
               sx={{ fontWeight: 700, minWidth: 120, borderRadius: 2 }}
               onClick={handleDeleteHotel}
+              disabled={loadingDelete}
             >
               Eliminar
             </Button>
           </Box>
+        )}
+
+        {errorDelete && (
+          <Typography color="error" sx={{ mt: 2, textAlign: "center" }}>
+            {errorDelete}
+          </Typography>
+        )}
+        {successDelete && (
+          <Typography color="success.main" sx={{ mt: 2, textAlign: "center" }}>
+            {successDelete}
+          </Typography>
         )}
       </Box>
     </Box>

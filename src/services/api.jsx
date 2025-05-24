@@ -169,3 +169,12 @@ export const updateHotel = async (hid, data) => {
     throw error;
   }
 };
+
+export const deleteHotel = async (hid) => {
+  try {
+    const response = await apiClient.delete(`/hotels/deleteHotel/${hid}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

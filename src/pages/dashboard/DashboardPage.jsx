@@ -8,10 +8,11 @@ import { useNavigate } from "react-router-dom";
 import '../hotelPage/Hotel.css';
 
 export const DashboardPage = () => {
-  const { role, isLoading: userLoading, error: userError } = useUser(); 
+  const { role, isLoading: userLoading } = useUser();
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [refetchKey, setRefetchKey] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,14 +30,13 @@ export const DashboardPage = () => {
       }
     };
     fetchHotels();
-  }, [role]);
+  }, [role, refetchKey]);
 
   const handleAddHotel = () => {
     navigate("/hotels/add");
   };
 
   if (userLoading) return <div style={{textAlign: "center", marginTop: "120px", fontSize: "2rem"}}>Cargando usuario...</div>;
-  if (userError) return <div style={{textAlign: "center", marginTop: "120px", color: "red", fontSize: "2rem"}}>Error: {userError}</div>;
 
   if (!role) {
     return (
@@ -89,7 +89,8 @@ export const DashboardPage = () => {
             ) : (
               hotels.map((hotel) => (
                 <div key={hotel._id || hotel.id} style={{ position: "relative", width: "100%", maxWidth: 350 }}>
-                  <HotelCard hotel={hotel} />
+                  {/* Pasa setRefetchKey como prop */}
+                  <HotelCard hotel={hotel} setRefetchKey={setRefetchKey} />
                 </div>
               ))
             )}

@@ -160,3 +160,12 @@ export const createHotel = async (formData) => {
     throw error;
   }
 };
+
+export const updateHotel = async (hid, data) => {
+  try {
+    const response = await apiClient.put(`/hotels/updateHotel/${hid}`, data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

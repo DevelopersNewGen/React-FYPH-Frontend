@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { Box, Typography, IconButton, Button } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { useNavigate } from "react-router-dom"; // Importante
+import { useNavigate } from "react-router-dom";
 import { useUser } from "../../shared/hooks";
 
-export default function CardDetails({ hotel }) {
+export default function CardDetails({ hotel, onEdit }) {
   const [currentImage, setCurrentImage] = useState(0);
   const { role, user, isLoading } = useUser();
-  const navigate = useNavigate(); // Hook para navegar
+  const navigate = useNavigate();
 
   const hotelHostId =
     typeof hotel.host === "string"
@@ -20,7 +20,7 @@ export default function CardDetails({ hotel }) {
     (role === "HOST_ROLE" && hotelHostId && (user?._id === hotelHostId || user?.id === hotelHostId));
 
   const handleEditHotel = () => {
-    alert("Implementa la edición aquí");
+    if (onEdit) onEdit();
   };
 
   const handleDeleteHotel = () => {
@@ -51,8 +51,9 @@ export default function CardDetails({ hotel }) {
     <Box
       className="card-details"
       sx={{
-        width: "100vw",
-        height: "100vh",
+        maxWidth: 600,
+        width: "90vw",
+        minHeight: 640,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -62,13 +63,13 @@ export default function CardDetails({ hotel }) {
       <Box
         sx={{
           maxWidth: 600,
-          width: "90%",
+          width: "100%",
           padding: "1rem",
           backgroundColor: "#fff",
           borderRadius: 3,
           boxShadow: 3,
           color: "#000",
-          position: "relative", // Necesario para el botón de regreso
+          position: "relative",
         }}
       >
         {/* Botón de regreso */}

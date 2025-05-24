@@ -2,41 +2,33 @@ import React, { useState } from "react";
 import { Box, Typography, IconButton, Button } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { useNavigate } from "react-router-dom"; // Importante
+import { useUser } from "../../shared/hooks";
 
 export default function CardDetails({ hotel }) {
   const [currentImage, setCurrentImage] = useState(0);
+  const { role, user, isLoading } = useUser();
+  const navigate = useNavigate(); // Hook para navegar
 
-  let user = null;
-  try {
-    user = JSON.parse(localStorage.getItem("user"));
-  } catch {
-    user = null;
-  }
-  const role = user?.role || null;
-  const userId = user?.id || user?._id;
-
-  // El host puede venir como string o como objeto
   const hotelHostId =
     typeof hotel.host === "string"
       ? hotel.host
       : hotel.host?._id || hotel.host?.id;
 
-  // ADMIN puede editar/eliminar cualquiera, HOST solo su propio hotel
   const puedeEditarOEliminar =
     role === "ADMIN_ROLE" ||
-    (role === "HOST_ROLE" && hotelHostId && hotelHostId === userId);
+    (role === "HOST_ROLE" && hotelHostId && (user?._id === hotelHostId || user?.id === hotelHostId));
 
   const handleEditHotel = () => {
-    // Aquí va la lógica real para editar el hotel
-    alert("Editar hotel (implementa la lógica aquí)");
+    alert("Implementa la edición aquí");
   };
 
   const handleDeleteHotel = () => {
-    // Aquí va la lógica real para eliminar el hotel
-    alert("Eliminar hotel (implementa la lógica aquí)");
+    alert("Implementa la eliminación aquí");
   };
 
   if (!hotel) return null;
+  if (isLoading) return <div>Cargando usuario...</div>;
 
   const fallbackImages = [
     "https://i.ibb.co/CKXHZcB/burned1.jpg",
@@ -76,8 +68,24 @@ export default function CardDetails({ hotel }) {
           borderRadius: 3,
           boxShadow: 3,
           color: "#000",
+          position: "relative", // Necesario para el botón de regreso
         }}
       >
+        {/* Botón de regreso */}
+        <IconButton
+          onClick={() => navigate(-1)}
+          sx={{
+            position: "absolute",
+            top: 16,
+            left: 16,
+            backgroundColor: "#f5f5f5",
+            zIndex: 100,
+            "&:hover": { backgroundColor: "#e0e0e0" },
+          }}
+        >
+          <ArrowBackIosIcon sx={{ fontSize: 20 }} />
+        </IconButton>
+
         <Typography
           variant="h5"
           component="h1"
@@ -146,7 +154,6 @@ export default function CardDetails({ hotel }) {
                   </IconButton>
                 </>
               )}
-              {/* Indicador de imágenes con puntos */}
               <Box
                 sx={{
                   position: "absolute",

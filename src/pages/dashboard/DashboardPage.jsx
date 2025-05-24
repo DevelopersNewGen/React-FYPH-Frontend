@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import '../hotelPage/Hotel.css';
 
 export const DashboardPage = () => {
-  const { role, isLoading: userLoading } = useUser();
+  const { role, isLoading: userLoading, error: userError } = useUser(); 
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -35,14 +35,20 @@ export const DashboardPage = () => {
     navigate("/hotels/add");
   };
 
-  if (userLoading) return <div>Cargando usuario...</div>;
+  if (userLoading) return <div style={{textAlign: "center", marginTop: "120px", fontSize: "2rem"}}>Cargando usuario...</div>;
+  if (userError) return <div style={{textAlign: "center", marginTop: "120px", color: "red", fontSize: "2rem"}}>Error: {userError}</div>;
 
   if (!role) {
     return (
       <>
         <ResponsiveAppBar />
-        <div style={{ textAlign: "center", marginTop: "120px" }}>
-          <h1>Debes iniciar sesión para ver los hoteles</h1>
+        <div style={{
+          textAlign: "center",
+          marginTop: "120px",
+          fontWeight: "bold",
+          fontSize: "2.5rem"
+        }}>
+          Debes iniciar sesión para ver los hoteles
         </div>
       </>
     );

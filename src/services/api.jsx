@@ -118,6 +118,18 @@ export const getUser = async () => {
     }
 }
 
+export const getHosts = async () => {
+  try {
+    const response = await apiClient.get("/users");
+    console.log('Respuesta de /users:', response.data);
+    const allUsers = response.data.users || [];
+    return allUsers.filter(user => user.role === "HOST_ROLE");
+  } catch (error) {
+    return [];
+  }
+};
+
+
 export const getHotels = async () => {
   try {
     const response = await apiClient.get("/hotels/")

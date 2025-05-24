@@ -8,6 +8,11 @@ import CardMedia from "@mui/material/CardMedia";
 import IconButton from "@mui/material/IconButton";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import EventIcon from "@mui/icons-material/Event";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import CategoryIcon from "@mui/icons-material/Category";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import { useEventCarousel } from "../../shared/hooks/useEventCarousel.jsx";
 import { useNavigate } from "react-router-dom";
 
@@ -20,12 +25,18 @@ const IMAGENES_DEMO = [
   "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80",
 ];
 
-export function EventCard({ eid, name, category, imagenes = IMAGENES_DEMO }) {
+export function EventCard({ eid, name, category, images, date, time, location, cost }) {
+  const imagenes = Array.isArray(images) && images.length > 0 ? images : IMAGENES_DEMO;
   const { current, handlePrev, handleNext } = useEventCarousel(imagenes);
   const navigate = useNavigate();
 
   const mostrarImagen =
     imagenes.length > 0 ? imagenes[current] : IMAGEN_EVENTO_DEFAULT;
+
+  // Formatea la fecha si existe
+  const fechaFormateada = date
+    ? new Date(date).toLocaleDateString()
+    : "-";
 
   return (
     <Card
@@ -79,8 +90,17 @@ export function EventCard({ eid, name, category, imagenes = IMAGENES_DEMO }) {
         <Typography gutterBottom variant="h5" component="div">
           {name}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Categoría: {category}
+        <Typography variant="body2" color="text.secondary" sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <CategoryIcon fontSize="small" sx={{ mr: 0.5 }} />
+          {category}
+        </Typography>
+        <Typography variant="body2" color="text.secondary" sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <EventIcon fontSize="small" sx={{ mr: 0.5 }} />
+          {fechaFormateada}
+        </Typography>
+        <Typography variant="body2" color="text.secondary" sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <AttachMoneyIcon fontSize="small" sx={{ mr: 0.5 }} />
+          {cost ? `$${cost}` : "Gratis"}
         </Typography>
       </CardContent>
       <CardActions>

@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { Box, Button, TextField, Typography, CircularProgress, Link, Paper } from "@mui/material";
+
 import {
   validateConfirmPassword,
   validateConfirmPasswordMessage,
@@ -11,8 +12,14 @@ import {
   validateUsername,
   validateUsernameMessage,
 } from "../../shared/validators";
+<<<<<<< HEAD
 import { useRegister } from "../../shared/hooks";
 import "../../assets/auth.css";
+=======
+
+import {useRegister} from "../../shared/hooks"
+
+>>>>>>> origin/event-module
 
 export const Register = ({ switchAuthHandler }) => {
   const { register, isLoading } = useRegister();
@@ -28,7 +35,7 @@ export const Register = ({ switchAuthHandler }) => {
       isValid: false,
       showError: false,
     },
-    name: {
+    username: {
       value: "",
       isValid: false,
       showError: false,
@@ -59,7 +66,7 @@ export const Register = ({ switchAuthHandler }) => {
       case "password":
         isValid = validatePassword(value);
         break;
-      case "name":
+      case "username":
         isValid = validateUsername(value);
         break;
       case "passwordConfirm":
@@ -78,17 +85,18 @@ export const Register = ({ switchAuthHandler }) => {
     }));
   };
 
-  const handleRegister = (event) => {
+  const handleRegister = (event) =>{
     event.preventDefault();
-    register(formState.name.value, formState.email.value, formState.password.value);
-  };
+    register( formState.username.value, formState.email.value, formState.password.value );
+  }
 
   const isSubmitDisabled =
-    isLoading ||
-    !formState.email.isValid ||
-    !formState.password.isValid ||
-    !formState.name.isValid ||
-    !formState.passwordConfirm.isValid;
+                    isLoading || 
+                    !formState.email.isValid ||
+                    !formState.password.isValid ||
+                    !formState.username.isValid ||
+                    !formState.passwordConfirm.isValid
+
 
   return (
     <Box className="auth-container">
@@ -119,11 +127,18 @@ export const Register = ({ switchAuthHandler }) => {
             fullWidth
             required
             margin="normal"
+<<<<<<< HEAD
              className={formState.email.showError ? "glass-input custom-error" : "glass-input"}
             value={formState.name.value}
             onChange={(e) => handleInputValueChange(e.target.value, "name")}
             onBlur={(e) => handleInputValidationOnBlur(e.target.value, "name")}
             error={formState.name.showError}
+=======
+            value={formState.username.value}
+            onChange={(e) => handleInputValueChange(e.target.value, "username")}
+            onBlur={(e) => handleInputValidationOnBlur(e.target.value, "username")}
+            error={formState.username.showError}
+>>>>>>> origin/event-module
             helperText={validateUsernameMessage}
           />
           <TextField

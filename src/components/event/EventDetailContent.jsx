@@ -7,8 +7,18 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import PropTypes from "prop-types";
+import EventActions from "./EventActions"; // Importa los botones
 
-export function EventDetailContent({ evento, mainImage, setMainImage, getPreviewImages, onBack }) {
+export function EventDetailContent({
+  evento,
+  mainImage,
+  setMainImage,
+  getPreviewImages,
+  onBack,
+  role,
+  onEventUpdated,
+  onEventDeleted,
+}) {
   return (
     <div className="event-detail-container">
       <button className="back-button" onClick={onBack}>
@@ -22,11 +32,32 @@ export function EventDetailContent({ evento, mainImage, setMainImage, getPreview
           </p>
         </div>
         <div className="event-options">
-          <p><DescriptionIcon fontSize="small" /> <b>Descripción:</b> {evento.description}</p>
-          <p><CalendarMonthIcon fontSize="small" /> <b>Fecha:</b> {evento.date ? new Date(evento.date).toLocaleDateString() : "-"}</p>
-          <p><AccessTimeIcon fontSize="small" /> <b>Hora:</b> {evento.time}</p>
-          <p><CategoryIcon fontSize="small" /> <b>Categoría:</b> {evento.category}</p>
-          <p><AttachMoneyIcon fontSize="small" /> <b>Costo:</b> {evento.cost ? `$${evento.cost}` : "Gratis"}</p>
+          <p>
+            <DescriptionIcon fontSize="small" /> <b>Descripción:</b> {evento.description}
+          </p>
+          <p>
+            <CalendarMonthIcon fontSize="small" /> <b>Fecha:</b>{" "}
+            {evento.date ? new Date(evento.date).toLocaleDateString() : "-"}
+          </p>
+          <p>
+            <AccessTimeIcon fontSize="small" /> <b>Hora:</b> {evento.time}
+          </p>
+          <p>
+            <CategoryIcon fontSize="small" /> <b>Categoría:</b> {evento.category}
+          </p>
+          <p>
+            <AttachMoneyIcon fontSize="small" /> <b>Costo:</b>{" "}
+            {evento.cost ? `$${evento.cost}` : "Gratis"}
+          </p>
+          {/* Botones debajo de costo */}
+          {role === "ADMIN_ROLE" && (
+            <EventActions
+              event={evento}
+              onEventUpdated={onEventUpdated}
+              onEventDeleted={onEventDeleted}
+              role={role}
+            />
+          )}
         </div>
       </div>
       <div className="event-right">
@@ -57,4 +88,7 @@ EventDetailContent.propTypes = {
   setMainImage: PropTypes.func.isRequired,
   getPreviewImages: PropTypes.func.isRequired,
   onBack: PropTypes.func.isRequired,
+  role: PropTypes.string,
+  onEventUpdated: PropTypes.func,
+  onEventDeleted: PropTypes.func,
 };

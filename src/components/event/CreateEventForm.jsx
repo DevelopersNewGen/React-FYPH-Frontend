@@ -1,6 +1,15 @@
 import React, { useState } from "react";
-import { Box, Button, TextField, MenuItem, Paper, Typography, CircularProgress } from "@mui/material";
+import {
+  Box,
+  Button,
+  TextField,
+  MenuItem,
+  Paper,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
 import { useCreateEvent } from "../../shared/hooks/useCreateEvent";
+import imageCompression from "browser-image-compression";
 import {
   validateEventName,
   validateEventNameMessage,
@@ -37,10 +46,43 @@ export default function CreateEventForm() {
     cost: "",
   });
   const [errors, setErrors] = useState({});
+  const [images, setImages] = useState([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleImageChange = async (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length > 3) {
+      setErrors((prev) => ({
+        ...prev,
+        images: "Solo puedes subir hasta 3 imágenes.",
+      }));
+      setImages([]);
+      return;
+    } else {
+      setErrors((prev) => ({
+        ...prev,
+        images: undefined,
+      }));
+    }
+
+    const compressedFiles = await Promise.all(
+      files.map(async (file) => {
+        const compressed = await imageCompression(file, {
+          maxSizeMB: 0.3,
+          maxWidthOrHeight: 800,
+          useWebWorker: true,
+        });
+        return new File([compressed], file.name, { type: compressed.type });
+      })
+    );
+    setImages(compressedFiles);
   };
 
   const validate = () => {
@@ -52,6 +94,7 @@ export default function CreateEventForm() {
     if (!validateEventLocation(form.location)) errs.location = validateEventLocationMessage;
     if (!validateEventCategory(form.category)) errs.category = validateEventCategoryMessage;
     if (!validateEventCost(form.cost)) errs.cost = validateEventCostMessage;
+    if (images.length === 0) errs.images = "Debes subir al menos una imagen";
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -59,20 +102,27 @@ export default function CreateEventForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!validate()) return;
-    const eventData = {
-      ...form,
-      cost: form.cost === "" ? 0 : Number(form.cost),
-    };
-    createEvent(eventData);
+    const formData = new FormData();
+    formData.append("name", form.name);
+    formData.append("description", form.description);
+    formData.append("date", form.date);
+    formData.append("time", form.time);
+    formData.append("location", form.location);
+    formData.append("category", form.category);
+    formData.append("cost", form.cost !== "" ? form.cost : "0");
+    images
+      .filter((img) => img instanceof File)
+      .forEach((img) => formData.append("pictures", img));
+    createEvent(formData, true);
   };
 
   return (
-    <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", mt: 4 }}>
-      <Paper elevation={3} sx={{ p: 4, minWidth: 350 }}>
-        <Typography variant="h5" mb={2} align="center">
+    <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+      <Paper elevation={4} sx={{ p: 4, borderRadius: 3, maxWidth: 500 }}>
+        <Typography variant="h5" mb={2} align="center" fontWeight={600}>
           Crear Evento
         </Typography>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} encType="multipart/form-data">
           <TextField
             label="Nombre"
             name="name"
@@ -97,32 +147,35 @@ export default function CreateEventForm() {
             error={!!errors.description}
             helperText={errors.description}
           />
-          <TextField
-            label="Fecha"
-            name="date"
-            type="date"
-            fullWidth
-            required
-            margin="normal"
-            InputLabelProps={{ shrink: true }}
-            value={form.date}
-            onChange={handleChange}
-            error={!!errors.date}
-            helperText={errors.date}
-          />
-          <TextField
-            label="Hora"
-            name="time"
-            type="time"
-            fullWidth
-            required
-            margin="normal"
-            InputLabelProps={{ shrink: true }}
-            value={form.time}
-            onChange={handleChange}
-            error={!!errors.time}
-            helperText={errors.time}
-          />
+          <Box sx={{ display: "flex", gap: 2 }}>
+            <TextField
+              label="Fecha"
+              name="date"
+              type="date"
+              fullWidth
+              required
+              margin="normal"
+              InputLabelProps={{ shrink: true }}
+              value={form.date}
+              onChange={handleChange}
+              error={!!errors.date}
+              helperText={errors.date}
+            />
+            <TextField
+              label="Hora"
+              name="time"
+              type="time"
+              fullWidth
+              required
+              margin="normal"
+              InputLabelProps={{ shrink: true }}
+              inputProps={{ step: 300 }}
+              value={form.time}
+              onChange={handleChange}
+              error={!!errors.time}
+              helperText={errors.time}
+            />
+          </Box>
           <TextField
             label="Ubicación"
             name="location"
@@ -165,6 +218,41 @@ export default function CreateEventForm() {
             inputProps={{ min: 0 }}
           />
           <Button
+            variant="outlined"
+            component="label"
+            fullWidth
+            sx={{
+              mt: 2,
+              mb: 1,
+              fontWeight: 600,
+              borderColor: errors.images ? "error.main" : "primary.main",
+              color: errors.images ? "error.main" : "primary.main",
+            }}
+          >
+            Subir imágenes
+            <input
+              type="file"
+              hidden
+              multiple
+              accept="image/*"
+              onChange={handleImageChange}
+            />
+          </Button>
+          {errors.images && (
+            <Typography color="error" variant="body2" sx={{ mb: 1 }}>
+              {errors.images}
+            </Typography>
+          )}
+          {images.length > 0 && (
+            <Box sx={{ mt: 1 }}>
+              {images.map((img, i) => (
+                <Typography key={i} variant="caption">
+                  {img.name}
+                </Typography>
+              ))}
+            </Box>
+          )}
+          <Button
             type="submit"
             variant="contained"
             color="primary"
@@ -172,7 +260,7 @@ export default function CreateEventForm() {
             sx={{ mt: 2 }}
             disabled={isLoading}
           >
-            {isLoading ? <CircularProgress size={24} /> : "Crear Evento"}
+            {isLoading ? <CircularProgress size={20} color="inherit" /> : "Crear Evento"}
           </Button>
         </form>
       </Paper>

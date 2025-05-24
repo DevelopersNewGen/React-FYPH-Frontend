@@ -1,18 +1,10 @@
 import { useEffect, useState } from "react";
 import { getEvents } from "../../services/index.js";
 
-const IMAGEN_EVENTO_DEFAULT =
-  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80";
-const IMAGENES_DEMO = [
-  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
-  "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80",
-  "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80",
-];
-
 export function useEventDetail(eid) {
   const [evento, setEvento] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [mainImage, setMainImage] = useState(IMAGEN_EVENTO_DEFAULT);
+  const [mainImage, setMainImage] = useState(null);
 
   useEffect(() => {
     async function fetchEvento() {
@@ -20,10 +12,11 @@ export function useEventDetail(eid) {
         const data = await getEvents();
         const found = (data.events || []).find((e) => String(e.eid) === eid);
         setEvento(found);
-        const img = found?.imagenes?.[0] || IMAGEN_EVENTO_DEFAULT;
+        const img = found?.images?.[0] || null;
         setMainImage(img);
       } catch {
         setEvento(null);
+        setMainImage(null);
       } finally {
         setLoading(false);
       }
@@ -32,10 +25,10 @@ export function useEventDetail(eid) {
   }, [eid]);
 
   const getPreviewImages = () => {
-    if (evento?.imagenes && evento.imagenes.length > 1) {
-      return evento.imagenes.slice(1, 4);
+    if (evento?.images && evento.images.length > 1) {
+      return evento.images.slice(1, 4);
     }
-    return IMAGENES_DEMO.slice(0, 3);
+    return [];
   };
 
   return { evento, loading, mainImage, setMainImage, getPreviewImages };

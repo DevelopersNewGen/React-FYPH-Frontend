@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+  Box,
+} from "@mui/material";
 import { useEventActions } from "../../shared/hooks/useEventActions";
 
 export default function EventActions({ event, onEventUpdated, onEventDeleted, role }) {
@@ -43,9 +51,12 @@ export default function EventActions({ event, onEventUpdated, onEventDeleted, ro
 
   return (
     <>
-      <Button size="small" onClick={handleOpen}>Editar</Button>
-      <Button size="small" color="error" onClick={handleDelete}>Eliminar</Button>
-      <Dialog open={open} onClose={handleClose}>
+      <div className="event-actions-buttons">
+        <Button size="small" onClick={handleOpen}>Editar</Button>
+        <Button size="small" color="error" onClick={handleDelete}>Eliminar</Button>
+      </div>
+
+      <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
         <DialogTitle>Editar Evento</DialogTitle>
         <form onSubmit={handleEditSubmit}>
           <DialogContent>
@@ -57,9 +68,13 @@ export default function EventActions({ event, onEventUpdated, onEventDeleted, ro
             <TextField label="Categoría" name="category" fullWidth margin="dense" value={editData.category} onChange={handleEditChange} />
             <TextField label="Costo" name="cost" type="number" fullWidth margin="dense" value={editData.cost} onChange={handleEditChange} />
           </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose}>Cancelar</Button>
-            <Button type="submit" disabled={loading}>Guardar</Button>
+
+          <DialogActions sx={{ justifyContent: "space-between", px: 3 }}>
+            <Button color="error" onClick={handleDelete}>Eliminar</Button>
+            <Box sx={{ display: "flex", gap: 2 }}>
+              <Button onClick={handleClose}>Cancelar</Button>
+              <Button type="submit" disabled={loading}>Guardar</Button>
+            </Box>
           </DialogActions>
         </form>
       </Dialog>

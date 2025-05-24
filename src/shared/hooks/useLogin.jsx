@@ -1,4 +1,4 @@
-import { login as loginRequest } from '../../services/index.js'
+import { login as loginRequest } from '../../services'
 import toast from "react-hot-toast"
 import { useState } from "react"
 import { useNavigate } from 'react-router-dom'
@@ -20,7 +20,8 @@ export const useLogin = () => {
         setIsLoading(false)
 
         if(response.error){
-            toast.error(response.e?.response?.data || "Error iniciar sesión")
+            toast.error(response.e?.response?.data?.message || "Error iniciar sesión")
+            return;
         }else{
             toast.success(response.data.msg)
         }

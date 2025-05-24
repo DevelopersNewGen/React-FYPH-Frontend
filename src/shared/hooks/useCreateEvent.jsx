@@ -9,19 +9,23 @@ export function useCreateEvent() {
 
   const createEvent = async (eventData) => {
     setIsLoading(true);
-    const response = await createEventApi(eventData);
-    setIsLoading(false);
+    try {
+      const response = await createEventApi(eventData);
+      setIsLoading(false);
 
-    if (response.error) {
-      toast.error(response.e?.response?.data?.message || "Error al crear evento");
-      return;
-    }
-
-    if (response.data?.success) {
-      toast.success(response.data.message || "Evento creado correctamente");
-      navigate("/eventos");
-    } else {
-      toast.error(response.data?.message || "Error al crear evento");
+      // Verifica si viene estructura Axios
+      if (response?.data?.success) {
+        toast.success(response.data.message || "Evento creado correctamente");
+        navigate("/eventos");
+      } else {
+        const msg = response?.data?.message || "Error desconocido al crear evento";
+        toast.error(msg);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      const msg =
+        error?.response?.data?.message || "Error inesperado al crear evento";
+      toast.error(msg);
     }
   };
 

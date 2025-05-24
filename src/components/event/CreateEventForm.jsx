@@ -37,10 +37,15 @@ export default function CreateEventForm() {
     cost: "",
   });
   const [errors, setErrors] = useState({});
+  const [images, setImages] = useState([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleImageChange = (e) => {
+    setImages([...e.target.files]);
   };
 
   const validate = () => {
@@ -52,6 +57,7 @@ export default function CreateEventForm() {
     if (!validateEventLocation(form.location)) errs.location = validateEventLocationMessage;
     if (!validateEventCategory(form.category)) errs.category = validateEventCategoryMessage;
     if (!validateEventCost(form.cost)) errs.cost = validateEventCostMessage;
+    if (images.length === 0) errs.images = "Debes subir al menos una imagen";
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -59,11 +65,18 @@ export default function CreateEventForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!validate()) return;
-    const eventData = {
-      ...form,
-      cost: form.cost === "" ? 0 : Number(form.cost),
-    };
-    createEvent(eventData);
+    const formData = new FormData();
+    formData.append("name", form.name);
+    formData.append("description", form.description);
+    formData.append("date", form.date);
+    formData.append("time", form.time);
+    formData.append("location", form.location);
+    formData.append("category", form.category);
+    formData.append("cost", form.cost === "" ? 0 : Number(form.cost));
+    images
+      .filter((img) => img instanceof File)
+      .forEach((img) => formData.append("pictures", img));
+    createEvent(formData, true);
   };
 
   return (
@@ -72,7 +85,7 @@ export default function CreateEventForm() {
         <Typography variant="h5" mb={2} align="center">
           Crear Evento
         </Typography>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} encType="multipart/form-data">
           <TextField
             label="Nombre"
             name="name"
@@ -164,6 +177,32 @@ export default function CreateEventForm() {
             helperText={errors.cost}
             inputProps={{ min: 0 }}
           />
+          <Button
+            variant="outlined"
+            component="label"
+            fullWidth
+            sx={{ mt: 2, mb: 1 }}
+            color={errors.images ? "error" : "primary"}
+          >
+            Subir imágenes
+            <input
+              type="file"
+              hidden
+              multiple
+              accept="image/*"
+              onChange={handleImageChange}
+            />
+          </Button>
+          {errors.images && (
+            <Typography color="error" variant="body2" sx={{ mb: 1 }}>
+              {errors.images}
+            </Typography>
+          )}
+          {images.length > 0 && (
+            <Typography variant="body2" sx={{ mb: 1 }}>
+              {images.length} imagen{images.length > 1 ? "es" : ""} seleccionada{images.length > 1 ? "s" : ""}
+            </Typography>
+          )}
           <Button
             type="submit"
             variant="contained"

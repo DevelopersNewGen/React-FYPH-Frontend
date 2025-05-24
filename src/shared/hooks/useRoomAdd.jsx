@@ -12,7 +12,6 @@ export const useRoomAdd = () => {
     const res = await createRoom(formData);
 
     if (res.error) {
-      // Si hay errores de validación de campos
       const errors = res.e?.response?.data?.errors;
       if (Array.isArray(errors)) {
         errors.forEach(err => toast.error(err.msg));

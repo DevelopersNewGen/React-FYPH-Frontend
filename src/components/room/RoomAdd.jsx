@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useRoomAdd } from '../../shared/hooks/useRoomAdd';
-import { useHotels } from '../../shared/hooks/useHotels'; 
 import {
   Box,
   Button,
@@ -11,34 +9,49 @@ import {
   OutlinedInput,
   MenuItem,
   Select,
-  FormControl
+  FormControl,
+  IconButton,
+  Typography as MuiTypography
 } from '@mui/material';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIos';
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
+import { useRoomAdd } from '../../shared/hooks/useRoomAdd';
+import { useHotels } from '../../shared/hooks/useHotels';
+import {
+  validateRoomCapacity,
+  validateRoomCapacityMessage,
+  validateRequiredField,
+  validateRequiredFieldMessage,
+} from '../../shared/validators';
 
 export default function RoomAdd({ initialData, onSubmit, isEdit, onCancel, hideImages, onlyImages }) {
   const { handleAddRoom, isLoading } = useRoomAdd();
   const { hotels, loadingHotels } = useHotels();
-  const [form, setForm] = useState(
-    onlyImages
-      ? { images: [] }
-      : {
-          numRoom: '',
-          type: '',
-          capacity: '',
-          pricePerDay: '',
-          description: '',
-          images: [],
-          hotel: ''
-        }
-  );
+  const navigate = useNavigate();
+
+  const [form, setForm] = useState({
+    numRoom: '',
+    type: '',
+    capacity: '',
+    pricePerDay: '',
+    description: '',
+    images: [],
+    hotel: ''
+  });
+
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     if (initialData) {
-      setForm(
-        onlyImages
-          ? { images: [] }
-          : { ...initialData, images: [] }
-      );
+      setForm(prev => ({
+        ...prev,
+        ...initialData,
+        images: []
+      }));
+    }
+    if (onlyImages) {
+      setForm({ images: [] });
     }
   }, [initialData, onlyImages]);
 
@@ -54,32 +67,35 @@ export default function RoomAdd({ initialData, onSubmit, isEdit, onCancel, hideI
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (onlyImages) {
-      const formData = new FormData();
+    const newErrors = {};
+    if (!validateRequiredField(form.numRoom)) newErrors.numRoom = validateRequiredFieldMessage;
+    if (!validateRequiredField(form.type)) newErrors.type = validateRequiredFieldMessage;
+    if (!validateRequiredField(form.capacity)) newErrors.capacity = validateRequiredFieldMessage;
+    else if (!validateRoomCapacity(form.capacity)) newErrors.capacity = validateRoomCapacityMessage;
+    if (!validateRequiredField(form.pricePerDay)) newErrors.pricePerDay = validateRequiredFieldMessage;
+    if (!validateRequiredField(form.description)) newErrors.description = validateRequiredFieldMessage;
+    if (!validateRequiredField(form.hotel)) newErrors.hotel = validateRequiredFieldMessage;
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) return; // Si hay errores, no enviar
+
+    const formData = new FormData();
+
+    if (onlyImages || form.images?.length > 0) {
+      if (!onlyImages) {
+        ['numRoom', 'type', 'capacity', 'pricePerDay', 'description', 'hotel'].forEach(key => {
+          formData.append(key, form[key]);
+        });
+      }
       for (let i = 0; i < form.images.length; i++) {
         formData.append('images', form.images[i]);
       }
-      if (onSubmit) await onSubmit(formData);
-      else await handleAddRoom(formData);
+
+      onSubmit ? await onSubmit(formData) : await handleAddRoom(formData);
     } else {
-      if (form.images && form.images.length > 0) {
-        const formData = new FormData();
-        formData.append('numRoom', form.numRoom);
-        formData.append('type', form.type);
-        formData.append('capacity', form.capacity);
-        formData.append('pricePerDay', form.pricePerDay);
-        formData.append('description', form.description);
-        formData.append('hotel', form.hotel);
-        for (let i = 0; i < form.images.length; i++) {
-          formData.append('images', form.images[i]);
-        }
-        if (onSubmit) await onSubmit(formData);
-        else await handleAddRoom(formData);
-      } else {
-        const { images, ...data } = form;
-        if (onSubmit) await onSubmit(data);
-        else await handleAddRoom(data);
-      }
+      const { images, ...data } = form;
+      onSubmit ? await onSubmit(data) : await handleAddRoom(data);
     }
   };
 
@@ -91,16 +107,18 @@ export default function RoomAdd({ initialData, onSubmit, isEdit, onCancel, hideI
         width: '100%',
         maxWidth: 700,
         mx: 'auto',
-        mt: 0,
         p: 0,
-        bgcolor: 'background.paper',
-        borderRadius: 2,
-        boxShadow: 0,
         display: 'flex',
         flexDirection: 'column',
         gap: 2
       }}
     >
+      <Box>
+        <IconButton onClick={() => navigate(-1)}>
+          <ArrowBackIosNewIcon />
+        </IconButton>
+      </Box>
+
       <Typography variant="h5" fontWeight={600} align="center" mb={2}>
         {onlyImages
           ? 'Editar imagen de habitación'
@@ -108,6 +126,7 @@ export default function RoomAdd({ initialData, onSubmit, isEdit, onCancel, hideI
           ? 'Editar Habitación'
           : 'Agregar Habitación'}
       </Typography>
+
       {onlyImages ? (
         <Stack spacing={1}>
           <InputLabel htmlFor="images">Imágenes</InputLabel>
@@ -128,8 +147,11 @@ export default function RoomAdd({ initialData, onSubmit, isEdit, onCancel, hideI
             onChange={handleChange}
             required
             fullWidth
+            error={!!errors.numRoom}
+            helperText={errors.numRoom}
           />
-          <FormControl fullWidth required>
+
+          <FormControl fullWidth required error={!!errors.type}>
             <InputLabel id="type-label">Tipo</InputLabel>
             <Select
               labelId="type-label"
@@ -144,7 +166,9 @@ export default function RoomAdd({ initialData, onSubmit, isEdit, onCancel, hideI
               <MenuItem value="SUITE">SUITE</MenuItem>
               <MenuItem value="DELUXE">DELUXE</MenuItem>
             </Select>
+            {errors.type && <MuiTypography color="error" variant="caption">{errors.type}</MuiTypography>}
           </FormControl>
+
           <TextField
             name="capacity"
             label="Capacidad"
@@ -153,6 +177,8 @@ export default function RoomAdd({ initialData, onSubmit, isEdit, onCancel, hideI
             onChange={handleChange}
             required
             fullWidth
+            error={!!errors.capacity}
+            helperText={errors.capacity}
           />
           <TextField
             name="pricePerDay"
@@ -162,6 +188,8 @@ export default function RoomAdd({ initialData, onSubmit, isEdit, onCancel, hideI
             onChange={handleChange}
             required
             fullWidth
+            error={!!errors.pricePerDay}
+            helperText={errors.pricePerDay}
           />
           <TextField
             name="description"
@@ -172,8 +200,11 @@ export default function RoomAdd({ initialData, onSubmit, isEdit, onCancel, hideI
             multiline
             minRows={3}
             fullWidth
+            error={!!errors.description}
+            helperText={errors.description}
           />
-          <FormControl fullWidth required sx={{ mb: 2 }}>
+
+          <FormControl fullWidth required error={!!errors.hotel}>
             <InputLabel id="hotel-label">Hotel</InputLabel>
             <Select
               labelId="hotel-label"
@@ -190,7 +221,9 @@ export default function RoomAdd({ initialData, onSubmit, isEdit, onCancel, hideI
                 </MenuItem>
               ))}
             </Select>
+            {errors.hotel && <MuiTypography color="error" variant="caption">{errors.hotel}</MuiTypography>}
           </FormControl>
+
           {!hideImages && (
             <Stack spacing={1}>
               <InputLabel htmlFor="images">Imágenes</InputLabel>
@@ -215,6 +248,7 @@ export default function RoomAdd({ initialData, onSubmit, isEdit, onCancel, hideI
       >
         {isEdit || onlyImages ? 'Guardar Cambios' : isLoading ? 'Agregando...' : 'Agregar'}
       </Button>
+
       {(isEdit || onlyImages) && (
         <Button
           variant="outlined"

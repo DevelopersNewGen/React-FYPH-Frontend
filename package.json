@@ -23,12 +23,16 @@
 =======
     "@mui/x-date-pickers": "^8.4.0",
     "axios": "^1.8.4",
+<<<<<<< HEAD
     "date-fns": "^4.1.0",
 >>>>>>> origin/hotel-module
+=======
+>>>>>>> origin/room-module
     "prop-types": "^15.8.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hot-toast": "^2.5.2",
+<<<<<<< HEAD
 <<<<<<< HEAD
     "react-router-dom": "^7.6.0"
 =======
@@ -36,6 +40,9 @@
     "react-slick": "^0.30.3",
     "slick-carousel": "^1.8.1"
 >>>>>>> origin/hotel-module
+=======
+    "react-router-dom": "^7.4.0"
+>>>>>>> origin/room-module
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",

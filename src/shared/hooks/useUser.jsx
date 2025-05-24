@@ -19,6 +19,7 @@ export const useUser = () => {
             setRole(data.data.user.role);
         } catch (err) {
             return err.message
+<<<<<<< HEAD
         }
     }
 
@@ -50,17 +51,26 @@ export const useUser = () => {
             setError("Error de autenticación o backend");
         } finally {
             setIsLoading(false);
+=======
+>>>>>>> origin/room-module
         }
-    };
+    }
 
     useEffect(() => {
+<<<<<<< HEAD
         getUser();
 >>>>>>> origin/hotel-module
+=======
+        getUser()
+>>>>>>> origin/room-module
     }, []);
 
     return {
         role,
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/room-module
         isLoading,
         user,
         getUser

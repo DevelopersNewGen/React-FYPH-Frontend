@@ -87,7 +87,11 @@ export const UserTable = ({users}) => {
         </Box>
     );
 <<<<<<< HEAD
+<<<<<<< HEAD
 }
 =======
 }
 >>>>>>> origin/hotel-module
+=======
+}
+>>>>>>> origin/room-module

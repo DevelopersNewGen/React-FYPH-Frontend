@@ -1,4 +1,4 @@
-.event-detail-container {
+.room-detail-container {
   max-width: 1200px;
   margin: 2rem auto;
   padding: 2rem;
@@ -13,13 +13,18 @@
   position: relative;
 }
 
+<<<<<<< HEAD:src/pages/event/eventDetail.css
 .event-left {
   flex: 1 1 0;
+=======
+.room-left {
+>>>>>>> origin/room-module:src/pages/room/RoomDetails.css
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
+<<<<<<< HEAD:src/pages/event/eventDetail.css
 .event-right {
   flex: 1 1 0;
   display: flex;
@@ -31,19 +36,22 @@
 
 
 .event-title {
+=======
+.room-title {
+>>>>>>> origin/room-module:src/pages/room/RoomDetails.css
   font-size: 2rem;
   font-weight: bold;
   color: #111;
   margin-top: 2.5rem;
 }
 
-.event-location {
+.room-location {
   font-size: 1rem;
   color: #444;
   margin-bottom: 1rem;
 }
 
-.event-options {
+.room-options {
   background-color: #006494;
   color: white;
   border-radius: 1rem;
@@ -53,22 +61,22 @@
   gap: 1.2rem;
 }
 
-.event-options p {
+.room-options p {
   margin: 0;
 }
 
-.event-options b {
+.room-options b {
   font-weight: 600;
 }
 
-.event-right {
+.room-right {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
 }
 
-.event-images-main {
+.room-images-main {
   width: 100%;
   max-width: 100%;
   height: 280px;
@@ -79,14 +87,14 @@
   display: block;
 }
 
-.event-images-preview {
+.room-images-preview {
   display: flex;
   gap: 1.2rem;
   justify-content: center;
   width: 100%;
 }
 
-.event-images-preview img {
+.room-images-preview img {
   width: 120px;
   height: 80px;
   object-fit: cover;
@@ -97,7 +105,12 @@
   background: #e0e0e0; 
   display: block;
 }
+<<<<<<< HEAD:src/pages/event/eventDetail.css
 .event-images-preview img:hover {
+=======
+
+.room-images-preview img:hover {
+>>>>>>> origin/room-module:src/pages/room/RoomDetails.css
   transform: scale(1.05);
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
 }
@@ -122,10 +135,11 @@
   background-color: #1b263b;
 }
 
-.event-page-wrapper {
+.room-page-wrapper {
   position: relative;
 }
 
+<<<<<<< HEAD:src/pages/event/eventDetail.css
 .event-actions-buttons {
   display: flex;
   gap: 1.2rem;
@@ -163,4 +177,14 @@
   background: #d32f2f;
   color: #fff;
   border: 1.5px solid #d32f2f;
+=======
+.room-status-available {
+  color: #32cd32;
+  font-weight: bold;
+}
+
+.room-status-unavailable {
+  color: #c62828;
+  font-weight: bold;
+>>>>>>> origin/room-module:src/pages/room/RoomDetails.css
 }

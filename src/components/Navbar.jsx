@@ -46,9 +46,16 @@ export const ResponsiveAppBar = ({ role }) => {
 
   const handlePages = (page) => {
     if (page === "Usuarios") {
+<<<<<<< HEAD
       navigate("/user")
     } else if (page === "Eventos") {
       navigate("/eventos");
+=======
+      navigate("/user");
+      } else if (page === "Habitaciones") {
+    navigate("/habitaciones");
+  
+>>>>>>> origin/room-module
     }
     // Aquí puedes agregar más páginas según lo necesites
   };

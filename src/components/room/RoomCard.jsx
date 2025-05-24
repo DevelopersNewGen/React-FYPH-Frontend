@@ -13,10 +13,10 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { useUser } from '../../shared/hooks'; 
 
-export default function RoomCard({ room, showAddButton }) {
+export default function RoomCard({ room, showAddButton, role }) { 
   const [current, setCurrent] = useState(0);
   const navigate = useNavigate();
-  const { role } = useUser(); 
+
 
   const images = room?.images?.length > 0 ? room.images : [];
 

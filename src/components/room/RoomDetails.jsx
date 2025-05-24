@@ -10,13 +10,13 @@ import Box from "@mui/material/Box";
 import { useUser, useRoomDetails } from "../../shared/hooks";
 import RoomEdit from "./RoomEdit";
 
-export default function RoomDetails({ rid, onBack }) {
+export default function RoomDetails({ rid, onBack , role}) {
   const [mainImage, setMainImage] = useState("");
   const [showEdit, setShowEdit] = useState(false);
   const [showEditImages, setShowEditImages] = useState(false);
   const [refresh, setRefresh] = useState(0);
   const navigate = useNavigate();
-  const { role } = useUser();
+  
 
   const { room, loading } = useRoomDetails({ rid, refresh });
 

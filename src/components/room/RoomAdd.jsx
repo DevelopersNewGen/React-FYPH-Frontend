@@ -55,7 +55,6 @@ export default function RoomAdd({ initialData, onSubmit, isEdit, onCancel, hideI
     e.preventDefault();
 
     if (onlyImages) {
-
       const formData = new FormData();
       for (let i = 0; i < form.images.length; i++) {
         formData.append('images', form.images[i]);
@@ -63,9 +62,24 @@ export default function RoomAdd({ initialData, onSubmit, isEdit, onCancel, hideI
       if (onSubmit) await onSubmit(formData);
       else await handleAddRoom(formData);
     } else {
-      const { images, ...data } = form; 
-      if (onSubmit) await onSubmit(data);
-      else await handleAddRoom(data);
+      if (form.images && form.images.length > 0) {
+        const formData = new FormData();
+        formData.append('numRoom', form.numRoom);
+        formData.append('type', form.type);
+        formData.append('capacity', form.capacity);
+        formData.append('pricePerDay', form.pricePerDay);
+        formData.append('description', form.description);
+        formData.append('hotel', form.hotel);
+        for (let i = 0; i < form.images.length; i++) {
+          formData.append('images', form.images[i]);
+        }
+        if (onSubmit) await onSubmit(formData);
+        else await handleAddRoom(formData);
+      } else {
+        const { images, ...data } = form;
+        if (onSubmit) await onSubmit(data);
+        else await handleAddRoom(data);
+      }
     }
   };
 

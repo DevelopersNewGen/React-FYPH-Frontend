@@ -14,31 +14,45 @@ import AdbIcon from '@mui/icons-material/Adb';
 import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices';
 import HistoryIcon from '@mui/icons-material/History';
 import LogoutIcon from '@mui/icons-material/Logout';
-import HelpIcon from '@mui/icons-material/Help';
+import { useNavigate } from 'react-router-dom'; 
+import { useUserDetails } from '../shared/hooks';
 
 const pagesAdmin = ['Hoteles', 'Usuarios', 'Solicitudes', "Estadisticas"];
 const pagesHost = ["Reservaciones", "Usuarios", "Habitaciones", "Servicios"]
-const pagesUser = ["Hoteles", "Eventos"]
+const pagesUser = [" "]
 
-const role = "USER_ROLE" // cambiar por respuesta de hook
-const isLogged = true // cambiar por respuesta del hook
-
+const user = JSON.parse(localStorage.getItem("user"));
+const img = user?.img;
 
 const settings = [{icon: MiscellaneousServicesIcon, text: "Perfil"},{icon: HistoryIcon, text:"Reservaciones"}, 
-            {icon: LogoutIcon, text:"Cerrar sesion"}, {icon: HelpIcon, text:"Ayuda"} ];
+            {icon: LogoutIcon, text:"Cerrar sesion"} ];
 
-export const ResponsiveAppBar = () => {
+export const ResponsiveAppBar = ({role}) => {
   const [anchorElUser, setAnchorElUser] = useState(null);
-
+  const navigate = useNavigate(); // Hook para navegación
+  const {isLogged, logout} = useUserDetails();
 
   const handleOpenUserMenu = (event) => { // abre menu de avatar
     setAnchorElUser(event.currentTarget);
   };
 
-  const handlePages = () => { // accion de links de navbar
+  const handlePages = (page) => { // accion de links de navbar
+    if (page === "Usuarios") {
+      navigate("/user")
+    }
   };
 
-  const handleCloseUserMenu = () => { // cierra menu de avatar
+  const handleCloseUserMenu = (setting) => { // cierra menu de avatar
+    if (setting.text === "Perfil") {
+      navigate("/profile")
+    } else if (setting.text === "Reservaciones") {
+      navigate("/reservations")
+    } else if (setting.text === "Cerrar sesion") {
+      logout();
+    } else if (setting.text === "Ayuda") {
+      navigate("/help")
+    }
+
     setAnchorElUser(null);
   };
 
@@ -51,7 +65,7 @@ export const ResponsiveAppBar = () => {
             variant="h6"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="/"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -69,7 +83,7 @@ export const ResponsiveAppBar = () => {
             variant="h5"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="/"
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
@@ -87,12 +101,12 @@ export const ResponsiveAppBar = () => {
 
           {isLogged ? (
             <>
-              {role === "USER_ROLE" ? (
+              {role === "CLIENT_ROLE" ? (
                 <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                   {pagesUser.map((page) => (
                     <Button
                       key={page}
-                      onClick={handlePages}
+                      onClick={() => handlePages(page)}
                       sx={{ my: 2, color: 'white', display: 'block' }}
                     >
                       {page}
@@ -104,7 +118,7 @@ export const ResponsiveAppBar = () => {
                   {pagesHost.map((page) => (
                     <Button
                       key={page}
-                      onClick={handlePages}
+                      onClick={() => handlePages(page)}
                       sx={{ my: 2, color: 'white', display: 'block' }}
                     >
                       {page}
@@ -116,7 +130,7 @@ export const ResponsiveAppBar = () => {
                   {pagesAdmin.map((page) => (
                     <Button
                       key={page}
-                      onClick={handlePages}
+                      onClick={() => handlePages(page)}
                       sx={{ my: 2, color: 'white', display: 'block' }}
                     >
                       {page}
@@ -124,10 +138,10 @@ export const ResponsiveAppBar = () => {
                   ))}
                 </Box>
               ) : null}
-              <Box sx={{ flexGrow: 0 }}>
+              <Box sx={{ flexGrow: 0,  ml: "auto" }}>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                    <Avatar src={img} />
                   </IconButton>
                 </Tooltip>
                 <Menu
@@ -147,7 +161,7 @@ export const ResponsiveAppBar = () => {
                   onClose={handleCloseUserMenu}
                 >
                   {settings.map((setting) => (
-                    <MenuItem key={typeof setting === "string" ? setting : setting.text} onClick={handleCloseUserMenu}>
+                    <MenuItem key={typeof setting === "string" ? setting : setting.text} onClick={() => handleCloseUserMenu(setting)}>
                       <Typography sx={{ textAlign: 'center', display: 'flex', alignItems: 'center', gap: 1 }}>
                         {typeof setting === "object" && setting.icon && <setting.icon sx={{ mr: 1 }} />}
                         {typeof setting === "object" ? setting.text : setting}
@@ -159,21 +173,13 @@ export const ResponsiveAppBar = () => {
             </>
           ) : (
             <>
-              <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                <Button
-                  onClick={handlePages}
-                  sx={{ my: 2, color: 'white', display: 'block' }}
-                >
-                  Hoteles
-                </Button>
-              </Box>
-              <Box sx={{ flexGrow: 0 }}>
+              <Box sx={{ flexGrow: 0, ml: "auto"}}>
                 <Tooltip title="Open settings">
                   <Typography
                     variant="h6"
                     noWrap
                     component="a"
-                    href="#app-bar-with-responsive-menu"
+                    href="/auth"
                     sx={{
                       mr: 2,
                       display: { xs: 'none', md: 'flex' },
@@ -195,4 +201,3 @@ export const ResponsiveAppBar = () => {
     </AppBar>
   );
 }
-export default ResponsiveAppBar;

@@ -27,6 +27,8 @@ export const useHotelAdd = () => {
 
       formData.append("services", JSON.stringify(hotelData.services));
 
+
+
       const result = await createHotel(formData);
 
       if (result.success) {

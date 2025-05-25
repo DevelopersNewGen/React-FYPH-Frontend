@@ -8,6 +8,7 @@ import RoomAddPage from './pages/room/RoomAdd';
 import { HotelPage } from "./pages/hotelPage/hotelPage.jsx";
 import { HotelDetailsPage } from "./pages/hotelPage/HotelDetailsPage.jsx";
 import { HotelAddPage } from "./pages/hotelPage/HotelAddPage.jsx";
+import RoomCardByHotel from "./pages/room/RoomCardByHotel";
 
 export const routes = [
   { path: "/*", element: <DashboardPage /> },
@@ -20,5 +21,6 @@ export const routes = [
   { path: '/habitaciones', element: <RoomPage /> },
   { path: '/habitaciones/detalles/:rid', element: <RoomDetails /> },
   { path: '/habitaciones/agregar', element: <RoomAddPage /> },
+  { path: "/hoteles/:hid/habitaciones", element: <RoomCardByHotel /> }
 ];
 

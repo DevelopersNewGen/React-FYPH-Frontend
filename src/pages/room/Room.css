@@ -11,7 +11,7 @@ html, body, #root {
 .room-page-container {
   max-width: 1200px;          /* Máximo ancho de la página */
   margin: 0 auto;             /* Centra horizontalmente */
-  padding: 32px 20px;         /* Espaciado alrededor */
+  padding: 90px 20px 32px;         /* Espaciado alrededor */
   background: #fff;
   min-height: 100vh;
   display: flex;

@@ -7,6 +7,7 @@ import { useUser } from "../../shared/hooks";
 import { useDeleteHotel } from "../../shared/hooks/useDeleteHotel";
 import { useHotelComment } from "../../shared/hooks/useHotelComment";
 import Rating from "@mui/material/Rating";
+import { getRoomsByHotel } from "../../services/api";
 
 export default function CardDetails({ hotel, onEdit, onDelete }) {
   const [currentImage, setCurrentImage] = useState(0);
@@ -327,6 +328,16 @@ export default function CardDetails({ hotel, onEdit, onDelete }) {
             </Button>
           </Box>
         )}
+
+        {/* Botón para ver habitaciones */}
+        <Button
+          variant="contained"
+          color="primary"
+          sx={{ mt: 2, mb: 2 }}
+          onClick={() => navigate(`/hoteles/${hotel._id || hotel.id || hotel.hid}/habitaciones`)}
+        >
+          Ver habitaciones
+        </Button>
 
         {puedeEditarOEliminar && (
           <Box sx={{ display: "flex", gap: 2, justifyContent: "center", mt: 4 }}>

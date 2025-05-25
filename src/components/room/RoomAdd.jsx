@@ -78,7 +78,7 @@ export default function RoomAdd({ initialData, onSubmit, isEdit, onCancel, hideI
 
     setErrors(newErrors);
 
-    if (Object.keys(newErrors).length > 0) return; // Si hay errores, no enviar
+    if (Object.keys(newErrors).length > 0) return; 
 
     const formData = new FormData();
 

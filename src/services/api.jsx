@@ -269,3 +269,15 @@ export const addHotelComment = async (hid, { rating, comment }) => {
   }
 };
 
+export const getRoomsByHotel = async (hid) => {
+    try {
+        return await apiClient.get(`/hotels/getRoomsByHotel/${hid}`);
+    } catch (e) {
+        return {
+            error: true,
+            e
+        };
+    }
+};
+
+

@@ -53,7 +53,6 @@ const columns = (handleButtonClick, isHost) => [
     },
 ];
 
-
 export const UserTable = ({users, isHost}) => {
     const navigate = useNavigate(); 
 

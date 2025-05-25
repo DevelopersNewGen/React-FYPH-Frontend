@@ -1,9 +1,7 @@
 import React, {useEffect} from 'react';
 import {ResponsiveAppBar} from '../../components/Navbar.jsx';
 import {UserTable} from "../../components/user/UserTable.jsx"
-
 import { useUser, useUserAdmin, useUserHost } from '../../shared/hooks';
-
 
 export const UserPage = () => {
   const {role} = useUser()
@@ -17,8 +15,6 @@ export const UserPage = () => {
       loadClients();
     }
   }, [role]);
-
-
   return (
     <div>
       <div>
@@ -33,7 +29,6 @@ export const UserPage = () => {
                     <UserTable users={clients} isHost={true}/>
                 </div>
             ) : null
-
         }
       </div>
     </div>

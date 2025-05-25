@@ -16,6 +16,7 @@ apiClient.interceptors.request.use(
                 const parsedUser = JSON.parse(userDetails);
                 if (parsedUser?.token) {
                     config.headers.Authorization = `Bearer ${parsedUser.token}`;
+                    console.log("Token agregado al header:", parsedUser.token); 
                 }
             } catch (err) {
                 console.warn("Error al leer el token:", err);
@@ -117,17 +118,30 @@ export const getUser = async () => {
     }
 }
 
+export const getRooms = async () => {
+    try {
+        return await apiClient.get('/rooms/getRooms');
+
 export const getUserById = async (uid) => {
     try {
         return await apiClient.get(`/users/findUser/${uid}`)
+
     } catch (e) {
         return {
             error: true,
             e
+
+        };
+    }
+};
+
+export const getRoomById = async (rid) => {
+    try {
+        return await apiClient.get(`/rooms/getRoomById/${rid}`);
+
         }
     }
 }
-
 
 export const updatePassword = async (data) => {
     try {
@@ -140,9 +154,18 @@ export const updatePassword = async (data) => {
     }
 };
 
+export const createRoom = async (formData) => {
+    try {
+        return await apiClient.post('/rooms/createRoom', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+      
 export const updateUser = async (data) => {
     try {
         return await apiClient.put('/users/updateUser', data);
+
     } catch (e) {
         return {
             error: true,
@@ -151,15 +174,26 @@ export const updateUser = async (data) => {
     }
 };
 
+export const updateRoom = async (rid, data) => {
+    try {
+        return await apiClient.put(`/rooms/updateRoom/${rid}`, data); 
+
 export const deleteUser = async () => {
     try {
         return await apiClient.delete(`/users/deleteUserClient`);
+
     } catch (e) {
         return {
             error: true,
             e
         };
     }
+
+};
+
+export const updateRoomImages = async (rid, formData) => {
+    try {
+        return await apiClient.patch(`/rooms/updateImages/${rid}`, formData, {
 }
 
 export const updateProfilePicture = async (data) => {
@@ -177,6 +211,104 @@ export const updateProfilePicture = async (data) => {
     }
 };
 
+export const filterRooms = async (params) => {
+    try {
+        return await apiClient.get('/rooms/filterRooms', { params });
+    } catch (e) {
+        return {
+            error: true,
+            e
+        };
+    }
+};
+
+
+export const getHosts = async () => {
+  try {
+    const response = await apiClient.get("/users");
+    console.log('Respuesta de /users:', response.data);
+    const allUsers = response.data.users || [];
+    return allUsers.filter(user => user.role === "HOST_ROLE");
+  } catch (error) {
+    return [];
+  }
+};
+
+
+export const getHotels = async () => {
+  try {
+    const response = await apiClient.get("/hotels/")
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
+
+export const getHotelById = async (hotelId) => {
+  try {
+    const response = await apiClient.get(`/hotels/findHotel/${hotelId}`)
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
+
+export const createHotel = async (formData) => {
+  try {
+    const response = await apiClient.post("/hotels/createHotel", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateHotel = async (hid, data) => {
+  try {
+    const response = await apiClient.put(`/hotels/updateHotel/${hid}`, data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteHotel = async (hid) => {
+  try {
+    const response = await apiClient.delete(`/hotels/deleteHotel/${hid}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const addHotelComment = async (hid, { rating, comment }) => {
+  try {
+    const response = await apiClient.patch(`/hotels/addComment/${hid}`, {
+      rating,
+      comment,
+    });
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.data && error.response.data.msg) {
+      return { success: false, msg: error.response.data.msg };
+    }
+    return { success: false, msg: "Error de conexión o desconocido" };
+  }
+};
+
+export const getRoomsByHotel = async (hid) => {
+    try {
+        return await apiClient.get(`/hotels/getRoomsByHotel/${hid}`);
+    } catch (e) {
+        return {
+            error: true,
+            e
+        };
+    }
+};
 
 export const getClientsHost = async () => { 
     try {

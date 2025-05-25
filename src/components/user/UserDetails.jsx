@@ -106,122 +106,119 @@ export const UserDetails = ({user, isAdmin, deleteUser}) => {
         </List>
       </Box>
       <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-        {activeView === 'perfil' && (
-          <>
-            <Box sx={{ position: 'relative', display: 'inline-block', mb: 3 }}>
-              <Avatar
-                src={user?.img || ''}
-                sx={{ width: 120, height: 120 }}
-              />
-              {!isAdmin && (
-                <Box
-                  sx={{
-                    position: 'absolute',
-                    bottom: 8,
-                    right: 8,
-                    bgcolor: 'white',
-                    borderRadius: '50%',
-                    p: 0.5,
-                    boxShadow: 1,
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}
-                  onClick={handleAvatarEditClick}
-                >
-                  <EditIcon fontSize="small" color="action" />
-                  <input
-                    type="file"
-                    accept="image/*"
-                    ref={fileInputRef}
-                    style={{ display: 'none' }}
-                    onChange={handleFileChange}
-                  />
-                </Box>
-              )}
-            </Box>
-            <TextField
-              label="Nombre"
-              name="name"
-              value={form.name}
-              onChange={handleChange}
-              fullWidth
-              margin="dense"
-              sx={{ maxWidth: 350, mb: 2 }}
-              disabled={!editMode}
-              error={!!errors.name}
-              helperText={errors.name}
-            />
-            <TextField
-              label="Email"
-              name="email"
-              value={form.email}
-              onChange={handleChange}
-              fullWidth
-              margin="dense"
-              sx={{ maxWidth: 350, mb: 2 }}
-              disabled={!editMode}
-              error={!!errors.email}
-              helperText={errors.email}
-            />
-            <Button 
-              onClick={handleEditClick}
-            >
-              {editMode ? 'Guardar' : 'Editar'}
-            </Button>
-            <Button
-              onClick={handleDeleteUser}
-            >
-              Eliminar usuario
-            </Button>
-            {!isAdmin && (
-              <Button 
-                onClick={handleEditPassword}
-              >
-                {editPassword ? 'Cancelar' : 'Cambiar contraseña'}
-              </Button>)
-            }
-            {editPassword && (
-              <PasswordForm
-                onSubmit={async (data) => {
-                await updatePassword(data);
-                setEditPassword(false); 
-              }}
-              />
-            )}
-          </>
-        )}
+{activeView === 'perfil' && (
+  <>
+    <Box sx={{ position: 'relative', display: 'inline-block', mb: 3 }}>
+      <Avatar
+        src={user?.img || ''}
+        sx={{ width: 120, height: 120 }}
+      />
+      {!isAdmin && (
+        <Box
+          sx={{
+            position: 'absolute',
+            bottom: 8,
+            right: 8,
+            bgcolor: 'white',
+            borderRadius: '50%',
+            p: 0.5,
+            boxShadow: 1,
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+          onClick={handleAvatarEditClick}
+        >
+          <EditIcon fontSize="small" color="action" />
+          <input
+            type="file"
+            accept="image/*"
+            ref={fileInputRef}
+            style={{ display: 'none' }}
+            onChange={handleFileChange}
+          />
+        </Box>
+      )}
+    </Box>
+    <TextField
+      label="Nombre"
+      name="name"
+      value={form.name}
+      onChange={handleChange}
+      fullWidth
+      margin="dense"
+      sx={{ maxWidth: 350, mb: 2 }}
+      disabled={!editMode}
+      error={!!errors.name}
+      helperText={errors.name}
+    />
+    <TextField
+      label="Email"
+      name="email"
+      value={form.email}
+      onChange={handleChange}
+      fullWidth
+      margin="dense"
+      sx={{ maxWidth: 350, mb: 2 }}
+      disabled={!editMode}
+      error={!!errors.email}
+      helperText={errors.email}
+    />
+    <Button onClick={handleEditClick}>
+      {editMode ? 'Guardar' : 'Editar'}
+    </Button>
+    <Button onClick={handleDeleteUser}>
+      Eliminar usuario
+    </Button>
+    {!isAdmin && (
+      <Button onClick={handleEditPassword}>
+        {editPassword ? 'Cancelar' : 'Cambiar contraseña'}
+      </Button>
+    )}
+    {editPassword && (
+      <PasswordForm
+        onSubmit={async (data) => {
+          await updatePassword(data);
+          setEditPassword(false);
+        }}
+      />
+    )}
+  </>
+)}
 
-        {activeView === 'historial' && (
-          <> 
-            {user.reservations.map((reservation) => (
-              <Box key={reservation.id} sx={{ mb: 2, p: 2, border: '1px solid #e0e0e0', borderRadius: 1, width: '100%', display: 'flex', flexDirection: 'column' }}>
-                <Typography variant="body1">habitacion: {reservation.room.numRoom}</Typography>
-                <Typography variant="body1">Hotel: {reservation.room.hotel.name}</Typography>
-                <Typography variant="body1">Fecha de entrada: {reservation.startDate ? reservation.startDate.slice(0, 10) : ''}</Typography>
-                <Typography variant="body1">Fecha de salida: {reservation.exitDate ? reservation.exitDate.slice(0, 10): " "}</Typography>
-                <Typography variant="body1">Estado: {reservation.status ? 'Activa' : 'Pasada'}</Typography>
-              </Box>
-            ))}
-          </>
-        )}
+{activeView === 'historial' && (
+  <>
+    {user.reservations.map((reservation) => (
+      <Box
+        key={reservation.id}
+        sx={{ mb: 2, p: 2, border: '1px solid #e0e0e0', borderRadius: 1, width: '100%', display: 'flex', flexDirection: 'column' }}
+      >
+        <Typography variant="body1">Habitación: {reservation.room.numRoom}</Typography>
+        <Typography variant="body1">Hotel: {reservation.room.hotel.name}</Typography>
+        <Typography variant="body1">Fecha de entrada: {reservation.startDate?.slice(0, 10) || ''}</Typography>
+        <Typography variant="body1">Fecha de salida: {reservation.exitDate?.slice(0, 10) || ''}</Typography>
+        <Typography variant="body1">Estado: {reservation.status ? 'Activa' : 'Pasada'}</Typography>
+      </Box>
+    ))}
+  </>
+)}
 
-        {activeView === 'reservaciones' && (
-          <> 
-            {user.reservations
-              .filter(reservation => reservation.status)
-              .map((reservation) => (
-              <Box key={reservation.id} sx={{ mb: 2, p: 2, border: '1px solid #e0e0e0', borderRadius: 1, width: '100%', display: 'flex', flexDirection: 'column' }}>
-                <Typography variant="body1">habitacion: {reservation.room.numRoom}</Typography>
-                <Typography variant="body1">Hotel: {reservation.room.hotel.name}</Typography>
-                <Typography variant="body1">Fecha de entrada: {reservation.startDate ? reservation.startDate.slice(0, 10) : ''}</Typography>
-                <Typography variant="body1">Fecha de salida: {reservation.exitDate ? reservation.exitDate.slice(0, 10): " "}</Typography>
-                <Typography variant="body1">Estado: {reservation.status ? 'Activa' : ''}</Typography>
-              </Box>
-            ))}
-          </>        )}
-      </CardContent>
-    </Card>
-  )
-}
+{activeView === 'reservaciones' && (
+  <>
+    {user.reservations
+      .filter(reservation => reservation.status)
+      .map((reservation) => (
+        <Box
+          key={reservation.id}
+          sx={{ mb: 2, p: 2, border: '1px solid #e0e0e0', borderRadius: 1, width: '100%', display: 'flex', flexDirection: 'column' }}
+        >
+          <Typography variant="body1">Habitación: {reservation.room.numRoom}</Typography>
+          <Typography variant="body1">Hotel: {reservation.room.hotel.name}</Typography>
+          <Typography variant="body1">Fecha de entrada: {reservation.startDate?.slice(0, 10) || ''}</Typography>
+          <Typography variant="body1">Fecha de salida: {reservation.exitDate?.slice(0, 10) || ''}</Typography>
+          <Typography variant="body1">Estado: Activa</Typography>
+        </Box>
+      ))}
+  </>
+)}

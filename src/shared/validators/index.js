@@ -2,4 +2,5 @@ export * from './validateEmail'
 export * from './validatePassword'
 export * from './validateUsername'
 export * from './validateConfirmPassword'
-
+export * from './validateRoomCapacity'
+export * from './validateRequiredField'

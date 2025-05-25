@@ -10,6 +10,6 @@ export const DashboardPage = () => {
       <div>
         <ResponsiveAppBar role={role}/>
       </div>
-    </div>
+    </>
   );
-}
+};

@@ -17,32 +17,128 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom'; 
 import { useUserDetails } from '../shared/hooks';
 
-const pagesAdmin = ['Hoteles', 'Usuarios', 'Solicitudes', "Estadisticas"];
-const pagesHost = ["Reservaciones", "Usuarios", "Habitaciones", "Servicios"]
-const pagesUser = [" "]
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useUserDetails } from "../../shared/hooks";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Avatar from "@mui/material/Avatar";
+import Tooltip from "@mui/material/Tooltip";
+import MiscellaneousServicesIcon from "@mui/icons-material/MiscellaneousServices";
+import HistoryIcon from "@mui/icons-material/History";
+import LogoutIcon from "@mui/icons-material/Logout";
 
-const user = JSON.parse(localStorage.getItem("user"));
-const img = user?.img;
+const pagesAdmin = ["Hoteles", "Usuarios", "Solicitudes", "Estadisticas", "Eventos"];
+const pagesHost = ["Reservaciones", "Usuarios", "Habitaciones", "Servicios"];
+const pagesUser = ["Hoteles", "Eventos"];
 
-const settings = [{icon: MiscellaneousServicesIcon, text: "Perfil"},{icon: HistoryIcon, text:"Reservaciones"}, 
-            {icon: LogoutIcon, text:"Cerrar sesion"} ];
+const settings = [
+  { icon: MiscellaneousServicesIcon, text: "Perfil" },
+  { icon: HistoryIcon, text: "Reservaciones" },
+  { icon: LogoutIcon, text: "Cerrar sesion" }
+];
 
-export const ResponsiveAppBar = ({role}) => {
+export const ResponsiveAppBar = ({ role }) => {
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const navigate = useNavigate(); // Hook para navegación
-  const {isLogged, logout} = useUserDetails();
+  const navigate = useNavigate();
+  const { logout } = useUserDetails();
 
-  const handleOpenUserMenu = (event) => { // abre menu de avatar
+  const user = JSON.parse(localStorage.getItem("user"));
+  const img = user?.img;
+
+  const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handlePages = (page) => { // accion de links de navbar
-    if (page === "Usuarios") {
-      navigate("/user")
+  const handleCloseUserMenu = (setting) => {
+    switch (setting.text) {
+      case "Perfil":
+        navigate("/profile");
+        break;
+      case "Reservaciones":
+        navigate("/reservas");
+        break;
+      case "Cerrar sesion":
+        logout();
+        break;
+      default:
+        break;
+    }
+    setAnchorElUser(null);
+  };
+
+  const handlePages = (page) => {
+    const routes = {
+      "Usuarios": "/user",
+      "Habitaciones": "/habitaciones",
+      "Eventos": "/eventos",
+      "Hoteles": "/hotels",
+      "Solicitudes": "/solicitudes",
+      "Estadisticas": "/estadisticas",
+      "Reservaciones": "/reservaciones",
+      "Servicios": "/servicios"
+    };
+    if (routes[page]) {
+      navigate(routes[page]);
     }
   };
 
-  const handleCloseUserMenu = (setting) => { // cierra menu de avatar
+  const pages =
+    role === "admin" ? pagesAdmin : role === "host" ? pagesHost : pagesUser;
+
+  return (
+    <AppBar position="static">
+      <Toolbar sx={{ justifyContent: "space-between" }}>
+        <Box sx={{ display: "flex", gap: 2 }}>
+          {pages.map((page) => (
+            <Typography
+              key={page}
+              variant="button"
+              onClick={() => handlePages(page)}
+              sx={{ cursor: "pointer", color: "white" }}
+            >
+              {page}
+            </Typography>
+          ))}
+        </Box>
+
+        <Box>
+          <Tooltip title="Configuración">
+            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              <Avatar alt="avatar" src={img} />
+            </IconButton>
+          </Tooltip>
+          <Menu
+            anchorEl={anchorElUser}
+            open={Boolean(anchorElUser)}
+            onClose={() => setAnchorElUser(null)}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right"
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right"
+            }}
+          >
+            {settings.map((setting) => (
+              <MenuItem key={setting.text} onClick={() => handleCloseUserMenu(setting)}>
+                <setting.icon fontSize="small" sx={{ mr: 1 }} />
+                {setting.text}
+              </MenuItem>
+            ))}
+          </Menu>
+        </Box>
+      </Toolbar>
+    </AppBar>
+  );
+};
+
     if (setting.text === "Perfil") {
       navigate("/profile")
     } else if (setting.text === "Reservaciones") {
@@ -52,7 +148,6 @@ export const ResponsiveAppBar = ({role}) => {
     } else if (setting.text === "Ayuda") {
       navigate("/help")
     }
-
     setAnchorElUser(null);
   };
 
@@ -98,7 +193,6 @@ export const ResponsiveAppBar = ({role}) => {
             FYPH
           </Typography>
           
-
           {isLogged ? (
             <>
               {role === "CLIENT_ROLE" ? (

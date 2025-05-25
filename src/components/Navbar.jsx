@@ -17,9 +17,9 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom'; 
 import { useUserDetails } from '../shared/hooks';
 
-const pagesAdmin = ['Hoteles', 'Usuarios', 'Solicitudes', "Estadisticas", "Eventos"];
+const pagesAdmin = ['Usuarios', 'Solicitudes', "Estadisticas", "Eventos"];
 const pagesHost = ["Reservaciones", "Usuarios", "Habitaciones", "Servicios"];
-const pagesUser = ["Hoteles", "Eventos"];
+const pagesUser = ["Eventos"];
 
 const user = JSON.parse(localStorage.getItem("user"));
 const img = user?.img;
@@ -41,11 +41,14 @@ export const ResponsiveAppBar = ({ role }) => {
 
   const handlePages = (page) => {
     if (page === "Usuarios") {
-      navigate("/user")
-    } else if (page === "Eventos") {
+      
+      navigate("/user");
+      } else if (page === "Habitaciones") {
+    navigate("/habitaciones");
+      } else if (page === "Eventos") {
       navigate("/eventos");
     }
-    // Aquí puedes agregar más páginas según lo necesites
+
   };
 
   const handleCloseUserMenu = (setting) => {

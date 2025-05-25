@@ -14,7 +14,7 @@ export default function HotelCard({ hotel }) {
   const navigate = useNavigate();
 
   const images = hotel?.images?.length > 0 ? hotel.images : [
-    "https://via.placeholder.com/345x180?text=Sin+imagen"
+    "https://via.placeholder.com/345x220?text=Sin+imagen"
   ];
 
   const handlePrev = () => {
@@ -35,17 +35,42 @@ export default function HotelCard({ hotel }) {
 
   return (
     <Card 
-      sx={{ maxWidth: 345, cursor: 'pointer', transition: 'transform 0.3s ease', ':hover': { transform: 'scale(1.03)', boxShadow: 6 } }}
+      sx={{ 
+        maxWidth: 345, 
+        cursor: 'pointer', 
+        transition: 'transform 0.3s ease', 
+        ':hover': { transform: 'scale(1.03)', boxShadow: 6 } 
+      }}
       onClick={handleDetails}
       elevation={3}
     >
-      <Box sx={{ position: "relative" }}>
+      <Box
+        sx={{
+          position: "relative",
+          width: "100%",
+          height: 220,
+          overflow: "hidden",
+          background: "#222",
+          borderTopLeftRadius: 4,
+          borderTopRightRadius: 4,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <img
           src={images[current]}
           alt={`Hotel ${hotel.name || "Sin nombre"} imagen ${current + 1}`}
-          height="180"
-          width="100%"
-          style={{ objectFit: "cover", borderTopLeftRadius: 4, borderTopRightRadius: 4 }}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            borderTopLeftRadius: 4,
+            borderTopRightRadius: 4,
+            display: "block",
+            background: "#111",
+          }}
+          draggable={false}
         />
         {images.length > 1 && (
           <>

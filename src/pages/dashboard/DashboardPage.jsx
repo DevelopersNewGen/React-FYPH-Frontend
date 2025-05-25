@@ -41,7 +41,7 @@ export const DashboardPage = () => {
   if (!role) {
     return (
       <>
-        <ResponsiveAppBar />
+        <ResponsiveAppBar role={role} />
         <div style={{
           textAlign: "center",
           marginTop: "120px",
@@ -56,41 +56,61 @@ export const DashboardPage = () => {
 
   return (
     <>
-      <ResponsiveAppBar />
+      <ResponsiveAppBar role={role} />
       <div style={{ padding: "1rem" }}>
-        <div
-          style={{
+        {role === "ADMIN_ROLE" && (
+          <div style={{
             display: "flex",
+            justifyContent: "flex-end",
             alignItems: "center",
-            gap: "1rem",
-            marginBottom: "2rem",
-            justifyContent: "center",
-          }}
-        >
-          <h1 style={{ margin: 0 }}>Hoteles disponibles</h1>
-          {role === "ADMIN_ROLE" && (
+            marginTop: "2rem",
+            marginBottom: "1.5rem",
+            width: "100%"
+          }}>
             <Button
               variant="contained"
               color="primary"
               onClick={handleAddHotel}
               style={{ minWidth: 150, fontWeight: "bold" }}
             >
-              Agregar hotel
+              AGREGAR HOTEL
             </Button>
-          )}
+          </div>
+        )}
+
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            marginBottom: "2rem",
+            marginTop: "0"
+          }}
+        >
+          <h1 style={{ margin: 0, fontSize: "2.5rem", textAlign: "center" }}>Hoteles disponibles</h1>
         </div>
 
         {loading && <p style={{ textAlign: "center" }}>Cargando hoteles...</p>}
         {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
         {!loading && !error && (
-          <div className="hotel-list-grid" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1rem" }}>
+          <div
+            className="hotel-list-grid"
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "center",
+              gap: "2rem",
+              width: "100%",
+              margin: "0 auto"
+            }}
+          >
             {hotels.length === 0 ? (
               <p style={{ textAlign: "center" }}>No hay hoteles disponibles.</p>
             ) : (
               hotels.map((hotel, idx) => (
                 <div
                   key={hotel._id || hotel.id || idx}
-                  style={{ position: "relative", width: "100%", maxWidth: 350 }}
+                  style={{ position: "relative", width: 350, minWidth: 300, maxWidth: 370, flex: "1 1 340px" }}
                 >
                   <HotelCard hotel={hotel} setRefetchKey={setRefetchKey} />
                 </div>

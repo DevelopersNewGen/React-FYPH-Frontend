@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const apiClient = axios.create({
     baseURL: "http://127.0.0.1:3000/FYPH/v1",
-    timeout: 3000,
+    timeout: 10000,
     httpsAgent: false
 });
 
@@ -157,7 +157,7 @@ export const createHotel = async (formData) => {
     });
     return response.data;
   } catch (error) {
-    throw error;
+    throw new Error(error.response?.data?.msg || "Error al crear el hotel");
   }
 };
 
@@ -181,5 +181,28 @@ export const deleteHotel = async (hid) => {
 
 export async function addHotelComment(hid, data) {
   const token = localStorage.getItem("token"); 
-  return await apiClient.post(`/hotels/addComment/${hid}`, data);
+  return await apiClient.patch(`/hotels/addComment/${hid}`, data);
 }
+
+export const createReservation = async (rid, reservationData) => {
+    try {
+        return await apiClient.post(`/reservations/createReser/${rid}`, reservationData);
+    } catch (e) {
+        return {
+            error: true,
+            e
+        };
+    }
+};
+
+export const getReservationsByRoom = async (rid) => {
+  try {
+    return await apiClient.get(`/reservations/listReserByRoom/${rid}`
+    );
+  } catch (e) {
+    return {
+      error: true,
+      e
+    };
+  }
+};

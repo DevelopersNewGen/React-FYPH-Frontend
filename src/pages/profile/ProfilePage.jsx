@@ -4,12 +4,13 @@ import { ResponsiveAppBar } from '../../components/Navbar'
 import { useUser } from "../../shared/hooks"
 
 export const ProfilePage = () => {
-  const {user, role, deleteUser} = useUser()
+  const {user, role} = useUser()
 
+  console.log(user)
   return (
     <div>
       <ResponsiveAppBar role={role}/>
-      <UserDetails user={user} isAdmin={false} deleteUser={deleteUser}/>
+      <UserDetails user={user}/>
     </div>
     
   )

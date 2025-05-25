@@ -121,16 +121,10 @@ export const getUser = async () => {
 export const getRooms = async () => {
     try {
         return await apiClient.get('/rooms/getRooms');
-
-export const getUserById = async (uid) => {
-    try {
-        return await apiClient.get(`/users/findUser/${uid}`)
-
     } catch (e) {
         return {
             error: true,
             e
-
         };
     }
 };
@@ -138,14 +132,6 @@ export const getUserById = async (uid) => {
 export const getRoomById = async (rid) => {
     try {
         return await apiClient.get(`/rooms/getRoomById/${rid}`);
-
-        }
-    }
-}
-
-export const updatePassword = async (data) => {
-    try {
-        return await apiClient.patch('/users/updatePassword', data);
     } catch (e) {
         return {
             error: true,
@@ -161,11 +147,6 @@ export const createRoom = async (formData) => {
                 'Content-Type': 'multipart/form-data'
             }
         });
-      
-export const updateUser = async (data) => {
-    try {
-        return await apiClient.put('/users/updateUser', data);
-
     } catch (e) {
         return {
             error: true,
@@ -177,28 +158,17 @@ export const updateUser = async (data) => {
 export const updateRoom = async (rid, data) => {
     try {
         return await apiClient.put(`/rooms/updateRoom/${rid}`, data); 
-
-export const deleteUser = async () => {
-    try {
-        return await apiClient.delete(`/users/deleteUserClient`);
-
     } catch (e) {
         return {
             error: true,
             e
         };
     }
-
 };
 
 export const updateRoomImages = async (rid, formData) => {
     try {
         return await apiClient.patch(`/rooms/updateImages/${rid}`, formData, {
-}
-
-export const updateProfilePicture = async (data) => {
-    try {
-        return await apiClient.patch('/users/updateProfilePicture', data, { 
             headers: {
                 'Content-Type': 'multipart/form-data'
             }

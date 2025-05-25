@@ -1,20 +1,14 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {ResponsiveAppBar} from '../../components/Navbar.jsx';
 import {UserTable} from "../../components/user/UserTable.jsx"
-import { useUser, useUserAdmin, useUserHost } from '../../shared/hooks';
+
+import { useUser, useUserAdmin } from '../../shared/hooks';
+
 
 export const UserPage = () => {
   const {role} = useUser()
-  const {users, loadUsers} = useUserAdmin()
-  const {clients, loadClients} = useUserHost()
+  const {users} = useUserAdmin()
 
-  useEffect(() => {
-    if (role === "ADMIN_ROLE") {
-      loadUsers();
-    } else if (role === "HOST_ROLE") {
-      loadClients();
-    }
-  }, [role]);
   return (
     <div>
       <div>
@@ -22,13 +16,14 @@ export const UserPage = () => {
         { 
             role === "ADMIN_ROLE" ? (
                 <div>
-                    <UserTable users={users} isHost={false}/>
+                    <UserTable users={users}/>
                 </div>
             ) : role === "HOST_ROLE" ? (
                 <div>
-                    <UserTable users={clients} isHost={true}/>
+                    HOST
                 </div>
             ) : null
+
         }
       </div>
     </div>

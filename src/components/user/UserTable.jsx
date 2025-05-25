@@ -1,14 +1,15 @@
+
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-const columns = (handleButtonClick, isHost) => [
+const columns = (handleButtonClick) => [
     { 
         field: 'id', 
         headerName: 'ID', 
-        width: 200 
+        width: 90 
     },
     {
         field: 'name',
@@ -45,7 +46,6 @@ const columns = (handleButtonClick, isHost) => [
                 color="primary"
                 size="small"
                 onClick={() => handleButtonClick(params.row.id)}
-                disabled={isHost}
             >
                 Editar
             </Button>
@@ -53,15 +53,17 @@ const columns = (handleButtonClick, isHost) => [
     },
 ];
 
-export const UserTable = ({users, isHost}) => {
-    const navigate = useNavigate(); 
+
+export const UserTable = ({users}) => {
+    const navigate = useNavigate(); // Mueve useNavigate dentro del componente funcional
 
     const handleButtonClick = (id) => {
-        navigate(`/userDetails/${id}`); 
+        console.log("ID enviado:", id);
+        navigate(`/userDetailsAdmin/${id}`); // Usa navigate aquí
     };
 
     const rows = users.map(user => ({
-        id: user.uid || user.id,
+        id: user.uid,
         name: user.name,
         email: user.email,
         role: user.role,
@@ -72,7 +74,7 @@ export const UserTable = ({users, isHost}) => {
         <Box sx={{ height: 400, width: '100%' }}>
         <DataGrid
             rows={rows}
-            columns={columns(handleButtonClick, isHost)}
+            columns={columns(handleButtonClick)}
             initialState={{
             pagination: {
                 paginationModel: {

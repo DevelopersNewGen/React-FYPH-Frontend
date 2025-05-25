@@ -9,7 +9,7 @@ import { HotelPage } from "./pages/hotelPage/hotelPage.jsx";
 import { HotelDetailsPage } from "./pages/hotelPage/HotelDetailsPage.jsx";
 import { HotelAddPage } from "./pages/hotelPage/HotelAddPage.jsx";
 import RoomCardByHotel from "./pages/room/RoomCardByHotel";
-import ReportPage from "./pages/report/ReportPage"; // <-- Importa la page
+import  ReportPage  from "./pages/report/ReportPage"; // <-- Importa la page
 
 export const routes = [
   { path: "/*", element: <DashboardPage /> },

@@ -109,14 +109,17 @@ export default function RoomDetails({ rid, onBack, role }) {
             </div>
           )}
 
-          <div style={{ marginTop: 16 }}>
-            <button
-              style={{ background: "#1976d2", color: "#fff", padding: "8px 16px", borderRadius: 8 }}
-              onClick={() => navigate(`/reservacion/${room.rid}`)}
-            >
-              Reservar
-            </button>
-          </div>
+          {role === "CLIENT_ROLE" && (
+            <div style={{ marginTop: 16 }}>
+              <button
+                style={{ background: "#1976d2", color: "#fff", padding: "8px 16px", borderRadius: 8 }}
+                onClick={() => navigate(`/reservacion/${room.rid}`)}
+              >
+                Reservar
+              </button>
+            </div>
+          )}
+          
         </div>
 
         <div style={{ flex: 1 }}>

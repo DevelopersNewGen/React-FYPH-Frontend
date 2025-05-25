@@ -4,6 +4,7 @@ import { ResponsiveAppBar } from "../../components/Navbar";
 import { useUser } from "../../shared/hooks";
 import { useReservationByHotel } from "../../shared/hooks/useReservationByHotel"; 
 import ReservationDetailsPage from "../../components/reservation/CardDetails";
+import "../room/Room.css"
 
 export default function ReservationCardByHotel() {
     const { hid } = useParams();
@@ -13,7 +14,11 @@ export default function ReservationCardByHotel() {
     return (
         <>
             <ResponsiveAppBar role={role} />
-            <Box className="room-page-container" sx={{ paddingTop: { xs: 10, md: 12 } }}>
+            <Box className="room-page-container" 
+                sx={{ paddingTop: { xs: '720px', md: '800px' },
+                    maxWidth: '1200px', 
+                    margin: '0 auto',
+                    overflowX: 'hidden' }}>
                 <Typography variant="h3" className="room-header" gutterBottom>
                     Reservaciones del hotel
                 </Typography>
@@ -23,7 +28,7 @@ export default function ReservationCardByHotel() {
                 ) : reservations?.length === 0 ? (
                     <Typography>No hay reservaciones para este hotel.</Typography>
                 ) : (
-                    <div className="room-list-grid">
+                    <div className="res-list-grid">
                         {reservations.map((reser) => (
                             <ReservationDetailsPage key={reser.rid} reser={reser} />
                         ))}

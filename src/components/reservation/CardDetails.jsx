@@ -44,13 +44,14 @@ export default function ReservationDetailsPage({ reser, onDelete }) {
     <Box
         className="card-details"
         sx={{
-        maxWidth: 600,
-        width: "90vw",
-        minHeight: 640,
+        minWidth: 300,
+        width: "30vw",
+        minHeight: 100,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "transparent",
+
         }}
     >
         <Box
@@ -119,14 +120,14 @@ export default function ReservationDetailsPage({ reser, onDelete }) {
             Fecha de ingreso
         </Typography>
         <Typography paragraph sx={{ color: "#000" }}>
-            {reser.startDate || "No especificado"}
+            {reser.startDate.slice(0, 10) || "No especificado"}
         </Typography>
 
         <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold", color: "#000" }}>
             Fecha de salida
         </Typography>
         <Typography paragraph sx={{ color: "#000" }}>
-            {reser.exitDate || "No especificado"}
+            {reser.exitDate.slice(0, 10) || "No especificado"}
         </Typography>
 
         {puedeEliminar && (

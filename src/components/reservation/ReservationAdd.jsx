@@ -45,19 +45,17 @@ export default function ReservationAdd() {
 
     return (
         <LocalizationProvider dateAdapter={AdapterDateFns}>
-        {/* Contenedor principal que centra vertical y horizontalmente */}
         <Box
             sx={{
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            minHeight: '100vh', // Ocupa al menos el 100% del viewport height
+            minHeight: '100vh', 
             width: '100%',
             bgcolor: 'background.default',
             p: 2
             }}
         >
-            {/* Contenedor del formulario con ancho fijo */}
             <Box
             component="form"
             onSubmit={handleSubmit}

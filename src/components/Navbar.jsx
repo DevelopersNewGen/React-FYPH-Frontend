@@ -17,12 +17,10 @@ import HistoryIcon from '@mui/icons-material/History';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Button from '@mui/material/Button';
 
-// Páginas según el rol
 const pagesAdmin = ["Hoteles", "Usuarios", "Solicitudes", "Estadisticas", "Eventos"];
 const pagesHost = ["Reservaciones", "Usuarios", "Habitaciones", "Servicios"];
 const pagesUser = ["Hoteles", "Eventos"];
 
-// Opciones del menú de usuario
 const settings = [
   { icon: MiscellaneousServicesIcon, text: "Perfil" },
   { icon: HistoryIcon, text: "Reservaciones" },
@@ -97,11 +95,12 @@ export const ResponsiveAppBar = ({ role }) => {
               fontWeight: 700,
               letterSpacing: '.3rem',
               color: 'inherit',
-              textDecoration: 'none',
+              textDecoration: 'none'
             }}
           >
             FYPH
           </Typography>
+
           <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
           <Typography
             variant="h5"
@@ -116,7 +115,7 @@ export const ResponsiveAppBar = ({ role }) => {
               fontWeight: 700,
               letterSpacing: '.3rem',
               color: 'inherit',
-              textDecoration: 'none',
+              textDecoration: 'none'
             }}
           >
             FYPH
@@ -145,15 +144,9 @@ export const ResponsiveAppBar = ({ role }) => {
                   sx={{ mt: '45px' }}
                   id="menu-appbar"
                   anchorEl={anchorElUser}
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
+                  anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                   keepMounted
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
+                  transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                   open={Boolean(anchorElUser)}
                   onClose={() => setAnchorElUser(null)}
                 >
@@ -181,7 +174,7 @@ export const ResponsiveAppBar = ({ role }) => {
                   fontFamily: 'monospace',
                   fontWeight: 400,
                   color: 'inherit',
-                  textDecoration: 'none',
+                  textDecoration: 'none'
                 }}
               >
                 Iniciar sesión
@@ -193,4 +186,3 @@ export const ResponsiveAppBar = ({ role }) => {
     </AppBar>
   );
 };
-

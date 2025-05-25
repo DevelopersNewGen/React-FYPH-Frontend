@@ -35,12 +35,8 @@ export const UserDetails = ({ user, isAdmin, deleteUser }) => {
     setForm({ ...form, [name]: value });
 
     let errorMsg = '';
-    if (name === 'name' && !validateUsername(value)) {
-      errorMsg = validateUsernameMessage;
-    }
-    if (name === 'email' && !validateEmail(value)) {
-      errorMsg = validateEmailMessage;
-    }
+    if (name === 'name' && !validateUsername(value)) errorMsg = validateUsernameMessage;
+    if (name === 'email' && !validateEmail(value)) errorMsg = validateEmailMessage;
     setErrors((prev) => ({ ...prev, [name]: errorMsg }));
   };
 
@@ -92,10 +88,7 @@ export const UserDetails = ({ user, isAdmin, deleteUser }) => {
               <Avatar src={user?.img || ''} sx={{ width: 120, height: 120 }} />
               {!isAdmin && (
                 <Box
-                  sx={{
-                    position: 'absolute', bottom: 8, right: 8, bgcolor: 'white',
-                    borderRadius: '50%', p: 0.5, boxShadow: 1, cursor: 'pointer'
-                  }}
+                  sx={{ position: 'absolute', bottom: 8, right: 8, bgcolor: 'white', borderRadius: '50%', p: 0.5, boxShadow: 1, cursor: 'pointer' }}
                   onClick={handleAvatarEditClick}
                 >
                   <EditIcon fontSize="small" color="action" />

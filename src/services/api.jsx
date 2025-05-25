@@ -118,6 +118,10 @@ export const getUser = async () => {
     }
 }
 
+ export const getEvents = async () => {
+  try {
+    const response = await apiClient.get("/events/");
+
 export const getRooms = async () => {
     try {
         return await apiClient.get('/rooms/getRooms');
@@ -268,11 +272,41 @@ export const createHotel = async (formData) => {
 export const updateHotel = async (hid, data) => {
   try {
     const response = await apiClient.put(`/hotels/updateHotel/${hid}`, data);
+
     return response.data;
   } catch (error) {
     throw error;
   }
 };
+  
+export const createEvent = async (data) => {
+  try {
+    return await apiClient.post("/events/createEvent", data, {
+      headers: { "Content-Type": "multipart/form-data" }
+    });
+  } catch (e) {
+    return {
+      error: true,
+      e
+    };
+  }
+};
+
+
+export const updateEvent = async (eid, data) => {
+  try {
+    return await apiClient.put(`/events/editEvent/${eid}`, data);
+  } catch (e) {
+    return {
+      error: true,
+      e
+    };
+  }
+};
+
+export const deleteEvent = async (eid) => {
+  try {
+    return await apiClient.delete(`/events/deleteEvent/${eid}`);
 
 export const deleteHotel = async (hid) => {
   try {

@@ -37,7 +37,14 @@ export const DashboardPage = () => {
   };
 
   if (userLoading) {
-    return <div style={{ textAlign: "center", marginTop: "120px", fontSize: "2rem" }}>Cargando usuario...</div>;
+    return (
+      <>
+        <ResponsiveAppBar role={role} />
+        <div style={{ textAlign: "center", marginTop: "120px", fontSize: "2rem" }}>
+          Cargando usuario...
+        </div>
+      </>
+    );
   }
 
   if (!role) {

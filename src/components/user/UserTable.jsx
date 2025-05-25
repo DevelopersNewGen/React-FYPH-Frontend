@@ -56,7 +56,8 @@ export const UserTable = ({ users, isHost }) => {
   const navigate = useNavigate();
 
   const handleButtonClick = (id) => {
-    navigate(`/userDetails/${id}`);
+    const route = isHost ? `/userDetails/${id}` : `/userDetailsAdmin/${id}`;
+    navigate(route);
   };
 
   const rows = users.map(user => ({

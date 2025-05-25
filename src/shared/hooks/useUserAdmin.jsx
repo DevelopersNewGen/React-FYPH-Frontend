@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 import {
-  getClients as Clients,
+  getClients as fetchClients,
   updateUserAdmin,
   deleteUserAdmin,
   createUser,
-  getUserById as userId
+  getUserById as fetchUserById
 } from "../../services";
 
 export const useUserAdmin = () => {
@@ -21,8 +21,8 @@ export const useUserAdmin = () => {
   const loadUsers = async () => {
     setIsLoading(true);
     try {
-      const data = await Clients();
-      setUsers(data.data.users);
+      const data = await fetchClients();
+      setUsers(data?.data?.users || []);
     } catch (err) {
       toast.error("Error al cargar usuarios: " + err.message);
     } finally {
@@ -30,10 +30,10 @@ export const useUserAdmin = () => {
     }
   };
 
-  const handleSave = async (uid, user) => {
+  const handleSave = async (uid, userData) => {
     setIsLoading(true);
     try {
-      await updateUserAdmin(uid, user);
+      await updateUserAdmin(uid, userData);
       toast.success("Usuario actualizado correctamente");
       loadUsers();
       return true;
@@ -61,10 +61,10 @@ export const useUserAdmin = () => {
     }
   };
 
-  const handleCreate = async (user) => {
+  const handleCreate = async (userData) => {
     setIsLoading(true);
     try {
-      await createUser(user);
+      await createUser(userData);
       toast.success("Usuario creado correctamente");
       loadUsers();
     } catch (err) {
@@ -77,8 +77,8 @@ export const useUserAdmin = () => {
   const getUserById = async (id) => {
     setIsLoading(true);
     try {
-      const data = await userId(id);
-      setUser(data.data.user);
+      const data = await fetchUserById(id);
+      setUser(data?.data?.user || null);
     } catch (err) {
       toast.error("Error al obtener usuario: " + err.message);
     } finally {

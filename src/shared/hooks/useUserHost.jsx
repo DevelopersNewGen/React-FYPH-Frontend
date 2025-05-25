@@ -1,6 +1,6 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { getClientsHost as Clients } from "../../services";
+import { getClientsHost as fetchClientsHost } from "../../services";
 
 export const useUserHost = () => {
   const [clients, setClients] = useState([]);
@@ -9,10 +9,10 @@ export const useUserHost = () => {
   const loadClients = async () => {
     setIsLoading(true);
     try {
-      const data = await Clients();
-      setClients(data.data.users);
+      const response = await fetchClientsHost();
+      setClients(response?.data?.users || []);
     } catch (err) {
-      toast.error("Error al cargar usuarios: " + err.message);
+      toast.error("Error al cargar los clientes: " + err.message);
     } finally {
       setIsLoading(false);
     }

@@ -23,7 +23,6 @@ export const useUser = () => {
     try {
       const data = await fetchUser();
       const userData = data?.data?.user || data?.user || data;
-
       if (userData && userData.role) {
         setUser(userData);
         setRole(userData.role);
@@ -40,8 +39,8 @@ export const useUser = () => {
   const updatePassword = async ({ oldPassword, newPassword }) => {
     setIsLoading(true);
     try {
-      const data = await updateUserPassword({ oldPassword, newPassword });
-      toast.success(data.data.message);
+      const response = await updateUserPassword({ oldPassword, newPassword });
+      toast.success(response.data.message || "Contraseña actualizada");
     } catch (err) {
       toast.error("La contraseña anterior no coincide");
     } finally {
@@ -56,7 +55,6 @@ export const useUser = () => {
       if (response?.error) throw response.e;
 
       const localUser = JSON.parse(localStorage.getItem("user"));
-
       if (response?.data?.user) {
         localUser.name = response.data.user.name;
         localUser.email = response.data.user.email;
@@ -67,11 +65,11 @@ export const useUser = () => {
       toast.success(response?.data?.msg || "Usuario actualizado correctamente");
     } catch (e) {
       toast.error(
-        "Error al actualizar el usuario: " +
-          (e?.response?.data?.msg ||
-            e?.response?.data?.message ||
-            e?.message ||
-            "Error desconocido")
+        "Error al actualizar usuario: " +
+        (e?.response?.data?.msg ||
+          e?.response?.data?.message ||
+          e?.message ||
+          "Error desconocido")
       );
     } finally {
       setIsLoading(false);
@@ -99,11 +97,11 @@ export const useUser = () => {
       toast.success(response?.data?.msg || "Imagen de perfil actualizada");
     } catch (e) {
       toast.error(
-        "Error al actualizar la imagen de perfil: " +
-          (e?.response?.data?.msg ||
-            e?.response?.data?.message ||
-            e?.message ||
-            "Error desconocido")
+        "Error al actualizar la imagen: " +
+        (e?.response?.data?.msg ||
+          e?.response?.data?.message ||
+          e?.message ||
+          "Error desconocido")
       );
     } finally {
       setIsLoading(false);
@@ -117,15 +115,15 @@ export const useUser = () => {
       if (response?.error) throw response.e;
 
       localStorage.setItem("user", JSON.stringify(""));
-      toast.success(response?.data?.msg || "Usuario eliminado correctamente");
+      toast.success(response?.data?.msg || "Cuenta eliminada");
       navigate("/auth");
     } catch (e) {
       toast.error(
-        "Error al eliminar el usuario: " +
-          (e?.response?.data?.msg ||
-            e?.response?.data?.message ||
-            e?.message ||
-            "Error desconocido")
+        "Error al eliminar cuenta: " +
+        (e?.response?.data?.msg ||
+          e?.response?.data?.message ||
+          e?.message ||
+          "Error desconocido")
       );
     } finally {
       setIsLoading(false);

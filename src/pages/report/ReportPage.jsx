@@ -4,29 +4,26 @@ import { HotelsGroupedBarChart, groupReservations } from "../../components/repor
 
 export default function ReportPage() {
   const { topHotels, hotelReservations, fetchTopHotels, fetchHotelReservations, loading } = useReport();
-  const [selectedHotel, setSelectedHotel] = useState("");
+  const [selectedHotelId, setSelectedHotelId] = useState("");
 
-  // Al cargar, trae el top de hoteles
   useEffect(() => {
     fetchTopHotels();
   }, [fetchTopHotels]);
 
-  // Cuando cambia el topHotels, selecciona el primero automáticamente
   useEffect(() => {
-    if (topHotels.length > 0 && !selectedHotel) {
-      setSelectedHotel(topHotels[0].hotel);
+    if (topHotels.length > 0 && !selectedHotelId) {
+      setSelectedHotelId(topHotels[0]._id); // usar ID real
     }
-  }, [topHotels, selectedHotel]);
+  }, [topHotels, selectedHotelId]);
 
-  // Cuando cambia el hotel seleccionado, trae sus reservaciones
   useEffect(() => {
-    if (selectedHotel) {
-      fetchHotelReservations(selectedHotel);
+    if (selectedHotelId) {
+      fetchHotelReservations(selectedHotelId);
     }
-  }, [selectedHotel, fetchHotelReservations]);
+  }, [selectedHotelId, fetchHotelReservations]);
 
-  // Agrupa las reservaciones del hotel seleccionado
   const groupedData = groupReservations(hotelReservations);
+  console.log("Grouped Data:", groupedData);
 
   return (
     <div>
@@ -36,12 +33,14 @@ export default function ReportPage() {
       <div style={{ margin: "2rem 0" }}>
         <h3>Ver reservaciones por hotel</h3>
         <select
-          value={selectedHotel}
-          onChange={e => setSelectedHotel(e.target.value)}
+          value={selectedHotelId}
+          onChange={e => setSelectedHotelId(e.target.value)}
         >
           <option value="">Seleccione un hotel</option>
-          {topHotels.map(h => (
-            <option key={h.hotel} value={h.hotel}>{h.hotel}</option>
+          {topHotels.map((h) => (
+            <option key={h._id} value={h._id}>
+              {h.hotel}
+            </option>
           ))}
         </select>
       </div>

@@ -20,16 +20,18 @@ export const useReport = () => {
   }, []);
 
   const fetchHotelReservations = useCallback(async (hid) => {
-    setLoading(true);
-    setError(null);
-    const res = await getHotelReservations(hid);
-    if (res.success) {
-      setHotelReservations(res.reservations);
-    } else {
-      setError(res.error);
-    }
-    setLoading(false);
-  }, []);
+  setLoading(true);
+  setError(null);
+  const res = await getHotelReservations(hid);
+  console.log("📊 Respuesta completa de getHotelReservations:", res);
+  if (res.success) {
+    setHotelReservations(res.reservations || []);
+  } else {
+    setHotelReservations([]);
+    setError(res.error);
+  }
+  setLoading(false);
+}, []);
 
   return {
     topHotels,

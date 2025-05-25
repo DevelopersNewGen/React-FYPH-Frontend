@@ -11,7 +11,10 @@ import { BarChart } from '@mui/x-charts/BarChart';
  * ]
  */
 export function HotelsGroupedBarChart({ data }) {
-  if (!data || data.length === 0) return <div>No hay datos</div>;
+  if (!data || data.length === 0) {
+    return <div>No hay datos</div>;
+  }
+
 
   // Obtener hoteles y tipos únicos
   const hoteles = [...new Set(data.map(d => d.hotel))];

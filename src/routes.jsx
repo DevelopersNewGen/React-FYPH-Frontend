@@ -4,8 +4,8 @@ import { UserDetailPage } from './pages/userPage/UserDetailPage';
 import { AuthPage } from './pages/authPage/AuthPage';
 import { ProfilePage } from './pages/profile/ProfilePage';
 import { RoomPage } from './pages/room/RoomPage';
-import RoomDetails from './pages/room/RoomDetails'; 
-import RoomAddPage from './pages/room/RoomAdd'; 
+import RoomDetails from './pages/room/RoomDetails';
+import RoomAddPage from './pages/room/RoomAdd';
 import { HotelPage } from "./pages/hotelPage/hotelPage.jsx";
 import { HotelDetailsPage } from "./pages/hotelPage/HotelDetailsPage.jsx";
 import { HotelAddPage } from "./pages/hotelPage/HotelAddPage.jsx";
@@ -13,6 +13,7 @@ import RoomCardByHotel from "./pages/room/RoomCardByHotel";
 import Event from "./pages/event/Event";
 import EventDetail from "./pages/event/EventDetail";
 import CreateEventPage from "./pages/event/CreateEventPage";
+import ReportPage from "./pages/report/ReportPage";
 
 export const routes = [
   { path: "/*", element: <DashboardPage /> },
@@ -29,5 +30,7 @@ export const routes = [
   { path: "/habitaciones/agregar", element: <RoomAddPage /> },
   { path: "/eventos", element: <Event /> },
   { path: "/eventos/:eid", element: <EventDetail /> },
-  { path: "/eventos/nuevo", element: <CreateEventPage /> }
+  { path: "/eventos/nuevo", element: <CreateEventPage /> },
+  { path: "/Estadisticas", element: <ReportPage /> }
 ];
+

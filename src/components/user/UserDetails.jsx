@@ -14,12 +14,13 @@ import {
   validateEmailMessage
 } from '../../shared/validators';
 
-export const UserDetails = ({ user, isAdmin, deleteUser }) => {
+export const UserDetails = ({ user, isAdmin = false, deleteUser }) => {
   const [activeView, setActiveView] = useState('perfil');
   const [editMode, setEditMode] = useState(false);
   const [editPassword, setEditPassword] = useState(false);
   const [form, setForm] = useState({ name: user?.name || '', email: user?.email || '' });
   const [errors, setErrors] = useState({ name: '', email: '' });
+
   const { updatePassword, updateProfilePicture, updateUser } = useUser();
   const { handleSave, handleDelete } = useUserAdmin();
   const fileInputRef = useRef();
@@ -37,6 +38,7 @@ export const UserDetails = ({ user, isAdmin, deleteUser }) => {
     let errorMsg = '';
     if (name === 'name' && !validateUsername(value)) errorMsg = validateUsernameMessage;
     if (name === 'email' && !validateEmail(value)) errorMsg = validateEmailMessage;
+
     setErrors((prev) => ({ ...prev, [name]: errorMsg }));
   };
 
@@ -81,6 +83,7 @@ export const UserDetails = ({ user, isAdmin, deleteUser }) => {
           <ListItem button onClick={() => setActiveView('reservaciones')}><ListItemText primary="Reservaciones" /></ListItem>
         </List>
       </Box>
+
       <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
         {activeView === 'perfil' && (
           <>
@@ -96,6 +99,7 @@ export const UserDetails = ({ user, isAdmin, deleteUser }) => {
                 </Box>
               )}
             </Box>
+
             <TextField
               label="Nombre"
               name="name"
@@ -108,6 +112,7 @@ export const UserDetails = ({ user, isAdmin, deleteUser }) => {
               error={!!errors.name}
               helperText={errors.name}
             />
+
             <TextField
               label="Email"
               name="email"
@@ -120,6 +125,7 @@ export const UserDetails = ({ user, isAdmin, deleteUser }) => {
               error={!!errors.email}
               helperText={errors.email}
             />
+
             <Button onClick={handleEditClick}>{editMode ? 'Guardar' : 'Editar'}</Button>
             <Button onClick={handleDeleteUser}>Eliminar usuario</Button>
             {!isAdmin && (
@@ -140,12 +146,12 @@ export const UserDetails = ({ user, isAdmin, deleteUser }) => {
 
         {activeView === 'historial' && (
           <>
-            {user.reservations.map((reservation) => (
-              <Box key={reservation.id} sx={{ mb: 2, p: 2, border: '1px solid #e0e0e0', borderRadius: 1, width: '100%', display: 'flex', flexDirection: 'column' }}>
+            {(user.reservations || []).map((reservation) => (
+              <Box key={reservation.id} sx={{ mb: 2, p: 2, border: '1px solid #e0e0e0', borderRadius: 1, width: '100%' }}>
                 <Typography variant="body1">Habitación: {reservation.room.numRoom}</Typography>
                 <Typography variant="body1">Hotel: {reservation.room.hotel.name}</Typography>
-                <Typography variant="body1">Fecha de entrada: {reservation.startDate?.slice(0, 10) || ''}</Typography>
-                <Typography variant="body1">Fecha de salida: {reservation.exitDate?.slice(0, 10) || ''}</Typography>
+                <Typography variant="body1">Fecha de entrada: {reservation.startDate?.slice(0, 10)}</Typography>
+                <Typography variant="body1">Fecha de salida: {reservation.exitDate?.slice(0, 10)}</Typography>
                 <Typography variant="body1">Estado: {reservation.status ? 'Activa' : 'Pasada'}</Typography>
               </Box>
             ))}
@@ -154,18 +160,21 @@ export const UserDetails = ({ user, isAdmin, deleteUser }) => {
 
         {activeView === 'reservaciones' && (
           <>
-            {user.reservations.filter(r => r.status).map((reservation) => (
-              <Box key={reservation.id} sx={{ mb: 2, p: 2, border: '1px solid #e0e0e0', borderRadius: 1, width: '100%', display: 'flex', flexDirection: 'column' }}>
-                <Typography variant="body1">Habitación: {reservation.room.numRoom}</Typography>
-                <Typography variant="body1">Hotel: {reservation.room.hotel.name}</Typography>
-                <Typography variant="body1">Fecha de entrada: {reservation.startDate?.slice(0, 10) || ''}</Typography>
-                <Typography variant="body1">Fecha de salida: {reservation.exitDate?.slice(0, 10) || ''}</Typography>
-                <Typography variant="body1">Estado: Activa</Typography>
-              </Box>
-            ))}
+            {(user.reservations || [])
+              .filter(r => r.status)
+              .map((reservation) => (
+                <Box key={reservation.id} sx={{ mb: 2, p: 2, border: '1px solid #e0e0e0', borderRadius: 1, width: '100%' }}>
+                  <Typography variant="body1">Habitación: {reservation.room.numRoom}</Typography>
+                  <Typography variant="body1">Hotel: {reservation.room.hotel.name}</Typography>
+                  <Typography variant="body1">Fecha de entrada: {reservation.startDate?.slice(0, 10)}</Typography>
+                  <Typography variant="body1">Fecha de salida: {reservation.exitDate?.slice(0, 10)}</Typography>
+                  <Typography variant="body1">Estado: Activa</Typography>
+                </Box>
+              ))}
           </>
         )}
       </CardContent>
     </Card>
   );
 };
+

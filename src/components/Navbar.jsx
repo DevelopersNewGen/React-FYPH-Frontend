@@ -1,37 +1,39 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUserDetails } from '../shared/hooks';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Avatar from '@mui/material/Avatar';
-import Tooltip from '@mui/material/Tooltip';
-import Container from '@mui/material/Container';
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  IconButton,
+  Typography,
+  Menu,
+  MenuItem,
+  Avatar,
+  Tooltip,
+  Container,
+  Button
+} from '@mui/material';
 import AdbIcon from '@mui/icons-material/Adb';
 import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices';
 import HistoryIcon from '@mui/icons-material/History';
 import LogoutIcon from '@mui/icons-material/Logout';
-import Button from '@mui/material/Button';
 
-const pagesAdmin = ["Hoteles", "Usuarios", "Solicitudes", "Estadisticas", "Eventos"];
-const pagesHost = ["Reservaciones", "Usuarios", "Habitaciones", "Servicios"];
-const pagesUser = ["Hoteles", "Eventos"];
+const pagesAdmin = ['Hoteles', 'Usuarios', 'Solicitudes', 'Estadisticas', 'Eventos'];
+const pagesHost = ['Reservaciones', 'Usuarios', 'Habitaciones', 'Servicios'];
+const pagesUser = ['Hoteles', 'Eventos'];
 
 const settings = [
-  { icon: MiscellaneousServicesIcon, text: "Perfil" },
-  { icon: HistoryIcon, text: "Reservaciones" },
-  { icon: LogoutIcon, text: "Cerrar sesion" }
+  { icon: MiscellaneousServicesIcon, text: 'Perfil' },
+  { icon: HistoryIcon, text: 'Reservaciones' },
+  { icon: LogoutIcon, text: 'Cerrar sesion' }
 ];
 
 export const ResponsiveAppBar = ({ role }) => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const navigate = useNavigate();
   const { isLogged, logout } = useUserDetails();
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(localStorage.getItem('user'));
   const img = user?.img;
 
   const handleOpenUserMenu = (event) => {
@@ -40,13 +42,13 @@ export const ResponsiveAppBar = ({ role }) => {
 
   const handleCloseUserMenu = (setting) => {
     switch (setting.text) {
-      case "Perfil":
-        navigate("/profile");
+      case 'Perfil':
+        navigate('/profile');
         break;
-      case "Reservaciones":
-        navigate("/reservas");
+      case 'Reservaciones':
+        navigate('/reservaciones');
         break;
-      case "Cerrar sesion":
+      case 'Cerrar sesion':
         logout();
         break;
       default:
@@ -57,14 +59,14 @@ export const ResponsiveAppBar = ({ role }) => {
 
   const handlePages = (page) => {
     const routes = {
-      "Hoteles": "/hotels",
-      "Usuarios": "/user",
-      "Solicitudes": "/solicitudes",
-      "Estadisticas": "/estadisticas",
-      "Eventos": "/eventos",
-      "Reservaciones": "/reservaciones",
-      "Habitaciones": "/habitaciones",
-      "Servicios": "/servicios"
+      Hoteles: '/hotels',
+      Usuarios: '/user',
+      Solicitudes: '/solicitudes',
+      Estadisticas: '/estadisticas',
+      Eventos: '/eventos',
+      Reservaciones: '/reservaciones',
+      Habitaciones: '/habitaciones',
+      Servicios: '/servicios'
     };
     if (routes[page]) {
       navigate(routes[page]);
@@ -72,9 +74,9 @@ export const ResponsiveAppBar = ({ role }) => {
   };
 
   const pages =
-    role === "ADMIN_ROLE"
+    role === 'ADMIN_ROLE'
       ? pagesAdmin
-      : role === "HOST_ROLE"
+      : role === 'HOST_ROLE'
       ? pagesHost
       : pagesUser;
 
@@ -134,7 +136,7 @@ export const ResponsiveAppBar = ({ role }) => {
                   </Button>
                 ))}
               </Box>
-              <Box sx={{ flexGrow: 0, ml: "auto" }}>
+              <Box sx={{ flexGrow: 0, ml: 'auto' }}>
                 <Tooltip title="Configuración">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     <Avatar src={img} />
@@ -152,7 +154,7 @@ export const ResponsiveAppBar = ({ role }) => {
                 >
                   {settings.map((setting) => (
                     <MenuItem key={setting.text} onClick={() => handleCloseUserMenu(setting)}>
-                      <Typography sx={{ textAlign: 'center', display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <Typography sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                         <setting.icon fontSize="small" />
                         {setting.text}
                       </Typography>
@@ -162,7 +164,7 @@ export const ResponsiveAppBar = ({ role }) => {
               </Box>
             </>
           ) : (
-            <Box sx={{ flexGrow: 0, ml: "auto" }}>
+            <Box sx={{ flexGrow: 0, ml: 'auto' }}>
               <Typography
                 variant="h6"
                 noWrap

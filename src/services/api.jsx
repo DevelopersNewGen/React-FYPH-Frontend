@@ -118,6 +118,23 @@ export const getUser = async () => {
     }
 }
 
+export const getTopHotels = async (limit = 5) => {
+  try {
+    const response = await apiClient.get(`/reports/getTopHotels`, { params: { limit } });
+    return response.data;
+  } catch (error) {
+    return { success: false, error };
+  }
+};
+
+export const getHotelReservations = async (hid) => {
+  try {
+    const response = await apiClient.get(`/reports/getHotelReservations/${hid}`);
+    return response.data;
+  } catch (error) {
+    return { success: false, error };
+  }
+};
  export const getEvents = async () => {
   try {
     const response = await apiClient.get("/events/");

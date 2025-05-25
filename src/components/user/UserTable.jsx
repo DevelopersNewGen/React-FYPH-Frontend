@@ -52,7 +52,7 @@ const columns = (handleButtonClick, isHost) => [
   },
 ];
 
-export const UserTable = ({ users, isHost }) => {
+export const UserTable = ({ users, isHost = false }) => {
   const navigate = useNavigate();
 
   const handleButtonClick = (id) => {
@@ -85,3 +85,4 @@ export const UserTable = ({ users, isHost }) => {
     </Box>
   );
 };
+

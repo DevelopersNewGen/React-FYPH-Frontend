@@ -23,6 +23,7 @@ export const useUser = () => {
     try {
       const data = await fetchUser();
       const userData = data?.data?.user || data?.user || data;
+
       if (userData && userData.role) {
         setUser(userData);
         setRole(userData.role);
@@ -59,17 +60,17 @@ export const useUser = () => {
         localUser.name = response.data.user.name;
         localUser.email = response.data.user.email;
         localStorage.setItem("user", JSON.stringify(localUser));
-        window.location.reload();
+        window.location.reload(); // Refrescar para reflejar cambios
       }
 
       toast.success(response?.data?.msg || "Usuario actualizado correctamente");
     } catch (e) {
       toast.error(
         "Error al actualizar usuario: " +
-        (e?.response?.data?.msg ||
-          e?.response?.data?.message ||
-          e?.message ||
-          "Error desconocido")
+          (e?.response?.data?.msg ||
+            e?.response?.data?.message ||
+            e?.message ||
+            "Error desconocido")
       );
     } finally {
       setIsLoading(false);
@@ -98,10 +99,10 @@ export const useUser = () => {
     } catch (e) {
       toast.error(
         "Error al actualizar la imagen: " +
-        (e?.response?.data?.msg ||
-          e?.response?.data?.message ||
-          e?.message ||
-          "Error desconocido")
+          (e?.response?.data?.msg ||
+            e?.response?.data?.message ||
+            e?.message ||
+            "Error desconocido")
       );
     } finally {
       setIsLoading(false);
@@ -120,10 +121,10 @@ export const useUser = () => {
     } catch (e) {
       toast.error(
         "Error al eliminar cuenta: " +
-        (e?.response?.data?.msg ||
-          e?.response?.data?.message ||
-          e?.message ||
-          "Error desconocido")
+          (e?.response?.data?.msg ||
+            e?.response?.data?.message ||
+            e?.message ||
+            "Error desconocido")
       );
     } finally {
       setIsLoading(false);

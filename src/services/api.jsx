@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const apiClient = axios.create({
     baseURL: "http://127.0.0.1:3000/FYPH/v1",
-    timeout: 10000,
+    timeout: 3000,
     httpsAgent: false
 });
 
@@ -118,6 +118,110 @@ export const getUser = async () => {
     }
 }
 
+export const getRooms = async () => {
+    try {
+        return await apiClient.get('/rooms/getRooms');
+
+export const getUserById = async (uid) => {
+    try {
+        return await apiClient.get(`/users/findUser/${uid}`)
+
+    } catch (e) {
+        return {
+            error: true,
+            e
+
+        };
+    }
+};
+
+export const getRoomById = async (rid) => {
+    try {
+        return await apiClient.get(`/rooms/getRoomById/${rid}`);
+
+        }
+    }
+}
+
+export const updatePassword = async (data) => {
+    try {
+        return await apiClient.patch('/users/updatePassword', data);
+    } catch (e) {
+        return {
+            error: true,
+            e
+        };
+    }
+};
+
+export const createRoom = async (formData) => {
+    try {
+        return await apiClient.post('/rooms/createRoom', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+      
+export const updateUser = async (data) => {
+    try {
+        return await apiClient.put('/users/updateUser', data);
+
+    } catch (e) {
+        return {
+            error: true,
+            e
+        };
+    }
+};
+
+export const updateRoom = async (rid, data) => {
+    try {
+        return await apiClient.put(`/rooms/updateRoom/${rid}`, data); 
+
+export const deleteUser = async () => {
+    try {
+        return await apiClient.delete(`/users/deleteUserClient`);
+
+    } catch (e) {
+        return {
+            error: true,
+            e
+        };
+    }
+
+};
+
+export const updateRoomImages = async (rid, formData) => {
+    try {
+        return await apiClient.patch(`/rooms/updateImages/${rid}`, formData, {
+}
+
+export const updateProfilePicture = async (data) => {
+    try {
+        return await apiClient.patch('/users/updateProfilePicture', data, { 
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+    } catch (e) {
+        return {
+            error: true,
+            e
+        };
+    }
+};
+
+export const filterRooms = async (params) => {
+    try {
+        return await apiClient.get('/rooms/filterRooms', { params });
+    } catch (e) {
+        return {
+            error: true,
+            e
+        };
+    }
+};
+
 export const getHosts = async () => {
   try {
     const response = await apiClient.get("/users");
@@ -187,6 +291,25 @@ export async function addHotelComment(hid, data) {
 export const createReservation = async (rid, reservationData) => {
     try {
         return await apiClient.post(`/reservations/createReser/${rid}`, reservationData);
+
+export const addHotelComment = async (hid, { rating, comment }) => {
+  try {
+    const response = await apiClient.patch(`/hotels/addComment/${hid}`, {
+      rating,
+      comment,
+    });
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.data && error.response.data.msg) {
+      return { success: false, msg: error.response.data.msg };
+    }
+    return { success: false, msg: "Error de conexión o desconocido" };
+  }
+};
+
+export const getRoomsByHotel = async (hid) => {
+    try {
+        return await apiClient.get(`/hotels/getRoomsByHotel/${hid}`);
     } catch (e) {
         return {
             error: true,
@@ -206,3 +329,13 @@ export const getReservationsByRoom = async (rid) => {
     };
   }
 };
+export const getClientsHost = async () => { 
+    try {
+        return await apiClient.get(`/hotels/clients`)
+    } catch (e) {
+       return {
+            error: true,
+            e
+        };  
+    }
+}

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { ResponsiveAppBar } from '../../components/Navbar.jsx';
-import HotelCard from "../../components/hotel/hotelCard.jsx";
+import HotelCard from '../../components/hotel/hotelCard.jsx';
 import { useUser } from '../../shared/hooks';
 import Button from '@mui/material/Button';
 import { getHotels } from '../../services';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import '../hotelPage/Hotel.css';
 
 export const DashboardPage = () => {
@@ -36,7 +36,9 @@ export const DashboardPage = () => {
     navigate("/hotels/add");
   };
 
-  if (userLoading) return <div style={{textAlign: "center", marginTop: "120px", fontSize: "2rem"}}>Cargando usuario...</div>;
+  if (userLoading) {
+    return <div style={{ textAlign: "center", marginTop: "120px", fontSize: "2rem" }}>Cargando usuario...</div>;
+  }
 
   if (!role) {
     return (

@@ -1,243 +1,244 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useHotelAdd } from "../../shared/hooks/useHotelAdd";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Divider,
+  FormControl,
+  FormHelperText,
+  Grid,
+  InputAdornment,
+  InputLabel,
+  MenuItem,
+  Select,
+  Stack,
+  TextField,
+  Typography,
+  IconButton,
+  Paper,
+  useTheme
+} from "@mui/material";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { useNavigate } from "react-router-dom";
-import { validateAddHotelFields } from "../../shared/validators/validateAddHotels";
-import useFormAddHotelLogic from "../../shared/hooks/useFormAddHotel";
-import "../../pages/hotelPage/Hotel.css";
+import { getHosts } from "../../services/api";
 
 export const FormAddHotel = () => {
   const { addHotel, loading, success, error } = useHotelAdd();
-  const {
-    services,
-    setServices,
-    imagesPreview,
-    setImagesPreview,
-    selectedFiles,
-    setSelectedFiles,
-    hosts,
-    hostValue,
-    setHostValue,
-    handleServiceChange,
-    addService,
-    removeService,
-    handleImageChange,
-    handleRemoveImage,
-    fetchHosts,
-    createService
-  } = useFormAddHotelLogic();
+  const [services, setServices] = useState([{ type: "", description: "", price: "" }]);
+  const [imagesPreview, setImagesPreview] = useState([]);
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [hosts, setHosts] = useState([]);
   const formRef = useRef();
   const navigate = useNavigate();
+  const theme = useTheme();
 
-  React.useEffect(() => {
-    fetchHosts();
-  }, [fetchHosts]);
+  useEffect(() => {
+    getHosts().then(setHosts);
+  }, []);
+
+  const handleServiceChange = (idx, field, value) => {
+    const newServices = [...services];
+    newServices[idx][field] = value;
+    setServices(newServices);
+  };
+
+  const addService = () => setServices([...services, { type: "", description: "", price: "" }]);
+
+  const removeService = (idx) => {
+    if (services.length > 1) {
+      setServices(services.filter((_, i) => i !== idx));
+    }
+  };
+
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    setSelectedFiles(files);
+    setImagesPreview(files.map((file) => URL.createObjectURL(file)));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const images = selectedFiles;
-    const name = e.target.name.value;
-    const description = e.target.description.value;
-    const address = e.target.address.value;
-    const telephone = e.target.telephone.value;
-    const host = hostValue;
-    const servicesFiltered = services
-      .filter((s) => s.type && s.description && s.price)
-      .map((s) => ({
-        type: s.type,
-        description: s.description,
-        price: Number(s.price)
-      }));
+    const form = e.target;
+    const hostValue = form.host.value;
 
-    const validation = validateAddHotelFields({
-      name,
-      description,
-      address,
-      telephone,
-      host,
-      images,
-      services: servicesFiltered
-    });
+    if (!hostValue) return alert("Selecciona un Host.");
+    if (!selectedFiles.length) return alert("Debes subir al menos una imagen.");
 
-    if (!validation.valid) {
-      alert(validation.error);
-      return;
-    }
+    const servicesFiltered = services.filter((s) => s.type && s.description && s.price);
+    if (servicesFiltered.length === 0) return alert("Debes ingresar al menos un servicio.");
 
     addHotel({
-      name,
-      description,
-      address,
-      telephone,
-      host,
-      images,
-      services: servicesFiltered,
+      name: form.name.value,
+      description: form.description.value,
+      address: form.address.value,
+      telephone: form.telephone.value,
+      host: hostValue,
+      images: selectedFiles,
+      services: servicesFiltered
     });
 
     formRef.current.reset();
     setImagesPreview([]);
     setSelectedFiles([]);
-    setServices([createService()]);
-    setHostValue("");
+    setServices([{ type: "", description: "", price: "" }]);
   };
 
   return (
-    <div className="formaddhotel-bg">
-      <div className="formaddhotel-container">
-        <button
+    <Box sx={{
+      minHeight: "100vh",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      background: theme.palette.mode === "dark"
+        ? "linear-gradient(120deg, #232526 0%, #28292d 100%)"
+        : "linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%)"
+    }}>
+      <Paper
+        elevation={8}
+        sx={{
+          maxWidth: 480,
+          width: "100%",
+          p: { xs: 2, sm: 4 },
+          borderRadius: 5,
+          background: theme.palette.mode === "dark" ? "rgba(30,30,30,0.98)" : "#fff",
+          boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.17)",
+          position: "relative"
+        }}
+      >
+        <IconButton
           onClick={() => navigate("/dashboard")}
-          className="formaddhotel-back"
+          sx={{
+            position: "absolute",
+            top: 16,
+            left: 16,
+            color: "primary.main"
+          }}
         >
-          {"< Regresar"}
-        </button>
-        <h2 className="formaddhotel-title">
-          Registrar Hotel
-        </h2>
-        <form ref={formRef} onSubmit={handleSubmit} autoComplete="off">
-          <div className="formaddhotel-fields">
-            <input
-              name="name"
-              placeholder="Nombre"
-              maxLength={50}
-              required
-              className="formaddhotel-input"
-            />
-            <textarea
-              name="description"
-              placeholder="Descripción"
-              maxLength={500}
-              rows={4}
-              required
-              className="formaddhotel-input"
-            />
-            <input
-              name="address"
-              placeholder="Dirección"
-              maxLength={100}
-              required
-              className="formaddhotel-input"
-            />
-            <input
-              name="telephone"
-              placeholder="Teléfono"
-              maxLength={8}
-              pattern="[0-9]{8}"
-              required
-              className="formaddhotel-input"
-            />
+          <ArrowBackIosIcon sx={{ fontSize: 20, mr: 1 }} />
+          Regresar
+        </IconButton>
 
-            <div>
-              <select
-                name="host"
-                required
-                value={hostValue}
-                onChange={e => setHostValue(e.target.value)}
-                className="formaddhotel-select"
-              >
-                <option value="">Selecciona un Host</option>
+        <Typography
+          variant="h4"
+          gutterBottom
+          sx={{ textAlign: "center", mt: 3, fontWeight: 700, color: "primary.main" }}
+        >
+          Registrar Hotel
+        </Typography>
+
+        <form ref={formRef} onSubmit={handleSubmit} autoComplete="off">
+          <Stack spacing={3} sx={{ mt: 2 }}>
+            <TextField name="name" label="Nombre" required fullWidth />
+            <TextField name="description" label="Descripción" required multiline rows={4} fullWidth />
+            <TextField name="address" label="Dirección" required fullWidth />
+            <TextField name="telephone" label="Teléfono" required fullWidth inputProps={{ pattern: "[0-9]{8}" }} />
+
+            <FormControl fullWidth>
+              <InputLabel>Host</InputLabel>
+              <Select name="host" required defaultValue="">
+                <MenuItem value="">Selecciona un Host</MenuItem>
                 {hosts.map((h) => (
-                  <option key={h.uid} value={h.uid}>
-                    {h.name} ({h.email})
-                  </option>
+                  <MenuItem key={h._id} value={h._id}>{h.name} ({h.email})</MenuItem>
                 ))}
-              </select>
-              <div className="formaddhotel-select-desc">Selecciona un Host</div>
-            </div>
+              </Select>
+              <FormHelperText>Selecciona un Host</FormHelperText>
+            </FormControl>
+
             <input
               id="images"
               type="file"
-              name="pictures"
-              accept="image/png, image/jpg, image/jpeg"
+              name="images"
+              accept="image/*"
               multiple
+              required
               style={{ display: "none" }}
               onChange={handleImageChange}
             />
-            <label htmlFor="images" className="formaddhotel-upload-label">
-              <span className="formaddhotel-upload-btn">
+            <label htmlFor="images">
+              <Button variant="contained" component="span" fullWidth>
                 Subir Imágenes
-              </span>
+              </Button>
             </label>
-            <div className="formaddhotel-img-preview-list">
+            <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
               {imagesPreview.map((src, i) => (
-                <div key={i} className="formaddhotel-img-preview-item">
-                  <img src={src} alt="Preview" height={60} className="formaddhotel-img-preview" />
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveImage(i)}
-                    className="formaddhotel-img-remove"
-                    title="Eliminar imagen"
-                  >
-                    ×
-                  </button>
-                </div>
+                <img key={i} src={src} alt="Preview" height={60} style={{ borderRadius: 8 }} />
               ))}
-            </div>
-            <hr className="formaddhotel-divider" />
-            <div className="formaddhotel-services">
-              <label className="formaddhotel-services-label">Servicios</label>
-              {services.map((service) => (
-                <div key={service.id} className="formaddhotel-service-row">
-                  <select
-                    value={service.type || ""}
-                    onChange={e => handleServiceChange(service.id, "type", e.target.value)}
-                    required
-                    className="formaddhotel-service-type"
-                  >
-                    <option value="">Tipo</option>
-                    <option value="Hotel">Hotel</option>
-                    <option value="Singleroom">Simple</option>
-                    <option value="Doubleroom">Doble</option>
-                    <option value="Suite">Suite</option>
-                    <option value="Deluxeroom">Deluxe</option>
-                    <option value="Event">Evento</option>
-                  </select>
-                  <input
-                    type="text"
-                    placeholder="Descripción"
-                    value={service.description || ""}
-                    maxLength={100}
-                    required
-                    onChange={e => handleServiceChange(service.id, "description", e.target.value)}
-                    className="formaddhotel-service-desc"
-                  />
-                  <input
-                    type="text"
-                    placeholder="Precio"
-                    value={service.price || ""}
-                    maxLength={10}
-                    required
-                    onChange={e => handleServiceChange(service.id, "price", e.target.value)}
-                    className="formaddhotel-service-price"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => removeService(service.id)}
-                    disabled={services.length === 1}
-                    className="formaddhotel-service-remove"
-                  >
-                    Eliminar
-                  </button>
-                </div>
+            </Box>
+
+            <Divider />
+            <Stack spacing={2}>
+              {services.map((service, idx) => (
+                <Grid container spacing={2} key={idx}>
+                  <Grid item xs={6}>
+                    <TextField
+                      select
+                      label="Tipo"
+                      value={service.type}
+                      onChange={(e) => handleServiceChange(idx, "type", e.target.value)}
+                      fullWidth
+                    >
+                      <MenuItem value="Hotel">Hotel</MenuItem>
+                      <MenuItem value="Singleroom">Simple</MenuItem>
+                      <MenuItem value="Doubleroom">Doble</MenuItem>
+                      <MenuItem value="Suite">Suite</MenuItem>
+                      <MenuItem value="Deluxeroom">Deluxe</MenuItem>
+                      <MenuItem value="Event">Evento</MenuItem>
+                    </TextField>
+                  </Grid>
+                  <Grid item xs={10}>
+                    <TextField
+                      label="Descripción"
+                      value={service.description}
+                      onChange={(e) => handleServiceChange(idx, "description", e.target.value)}
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={2}>
+                    <TextField
+                      label="Precio"
+                      value={service.price}
+                      onChange={(e) => handleServiceChange(idx, "price", e.target.value)}
+                      fullWidth
+                      InputProps={{
+                        startAdornment: <InputAdornment position="start">Q</InputAdornment>
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={2}>
+                    <Button
+                      variant="outlined"
+                      color="error"
+                      onClick={() => removeService(idx)}
+                      disabled={services.length === 1}
+                    >
+                      Eliminar
+                    </Button>
+                  </Grid>
+                </Grid>
               ))}
-              <button
-                type="button"
-                onClick={addService}
-                className="formaddhotel-service-add"
-              >
+              <Button variant="outlined" onClick={addService} fullWidth>
                 + Agregar Servicio
-              </button>
-            </div>
-            {error && <div className="formaddhotel-error">{error}</div>}
-            {success && <div className="formaddhotel-success">{success}</div>}
-            <button
+              </Button>
+            </Stack>
+
+            {error && <Typography color="error">{error}</Typography>}
+            {success && <Typography color="success.main">{success}</Typography>}
+
+            <Button
               type="submit"
+              variant="contained"
+              color="primary"
+              fullWidth
               disabled={loading}
-              className="formaddhotel-submit"
+              startIcon={loading && <CircularProgress size={20} />}
             >
               {loading ? "Guardando..." : "Registrar Hotel"}
-            </button>
-          </div>
+            </Button>
+          </Stack>
         </form>
-      </div>
-    </div>
+      </Paper>
+    </Box>
   );
 };
+

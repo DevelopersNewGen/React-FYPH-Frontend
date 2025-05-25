@@ -1,32 +1,31 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useUserDetails } from '../shared/hooks';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+import Avatar from '@mui/material/Avatar';
+import Tooltip from '@mui/material/Tooltip';
+import Container from '@mui/material/Container';
 import AdbIcon from '@mui/icons-material/Adb';
 import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices';
 import HistoryIcon from '@mui/icons-material/History';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { useNavigate } from 'react-router-dom'; 
-import { useUserDetails } from '../shared/hooks';
+import Button from '@mui/material/Button';
 
-const pagesAdmin = ['Usuarios', 'Solicitudes', "Estadisticas", "Eventos"];
+// Páginas según el rol
+const pagesAdmin = ["Hoteles", "Usuarios", "Solicitudes", "Estadisticas", "Eventos"];
 const pagesHost = ["Reservaciones", "Usuarios", "Habitaciones", "Servicios"];
-const pagesUser = ["Eventos"];
+const pagesUser = ["Hoteles", "Eventos"];
 
-const user = JSON.parse(localStorage.getItem("user"));
-const img = user?.img;
-
+// Opciones del menú de usuario
 const settings = [
   { icon: MiscellaneousServicesIcon, text: "Perfil" },
-  { icon: HistoryIcon, text: "Reservaciones" }, 
+  { icon: HistoryIcon, text: "Reservaciones" },
   { icon: LogoutIcon, text: "Cerrar sesion" }
 ];
 
@@ -34,35 +33,52 @@ export const ResponsiveAppBar = ({ role }) => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const navigate = useNavigate();
   const { isLogged, logout } = useUserDetails();
+  const user = JSON.parse(localStorage.getItem("user"));
+  const img = user?.img;
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handlePages = (page) => {
-    if (page === "Usuarios") {
-      
-      navigate("/user");
-      } else if (page === "Habitaciones") {
-    navigate("/habitaciones");
-      } else if (page === "Eventos") {
-      navigate("/eventos");
-    }
-
-  };
-
   const handleCloseUserMenu = (setting) => {
-    if (setting.text === "Perfil") {
-      navigate("/profile")
-    } else if (setting.text === "Reservaciones") {
-      navigate("/reservations")
-    } else if (setting.text === "Cerrar sesion") {
-      logout();
-    } else if (setting.text === "Ayuda") {
-      navigate("/help")
+    switch (setting.text) {
+      case "Perfil":
+        navigate("/profile");
+        break;
+      case "Reservaciones":
+        navigate("/reservas");
+        break;
+      case "Cerrar sesion":
+        logout();
+        break;
+      default:
+        break;
     }
     setAnchorElUser(null);
   };
+
+  const handlePages = (page) => {
+    const routes = {
+      "Hoteles": "/hotels",
+      "Usuarios": "/user",
+      "Solicitudes": "/solicitudes",
+      "Estadisticas": "/estadisticas",
+      "Eventos": "/eventos",
+      "Reservaciones": "/reservaciones",
+      "Habitaciones": "/habitaciones",
+      "Servicios": "/servicios"
+    };
+    if (routes[page]) {
+      navigate(routes[page]);
+    }
+  };
+
+  const pages =
+    role === "ADMIN_ROLE"
+      ? pagesAdmin
+      : role === "HOST_ROLE"
+      ? pagesHost
+      : pagesUser;
 
   return (
     <AppBar position="fixed">
@@ -105,48 +121,22 @@ export const ResponsiveAppBar = ({ role }) => {
           >
             FYPH
           </Typography>
-          
+
           {isLogged ? (
             <>
-              {role === "CLIENT_ROLE" ? (
-                <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                  {pagesUser.map((page) => (
-                    <Button
-                      key={page}
-                      onClick={() => handlePages(page)}
-                      sx={{ my: 2, color: 'white', display: 'block' }}
-                    >
-                      {page}
-                    </Button>
-                  ))}
-                </Box>
-              ) : role === "HOST_ROLE" ? (
-                <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                  {pagesHost.map((page) => (
-                    <Button
-                      key={page}
-                      onClick={() => handlePages(page)}
-                      sx={{ my: 2, color: 'white', display: 'block' }}
-                    >
-                      {page}
-                    </Button>
-                  ))}
-                </Box>
-              ) : role === "ADMIN_ROLE" ? (
-                <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                  {pagesAdmin.map((page) => (
-                    <Button
-                      key={page}
-                      onClick={() => handlePages(page)}
-                      sx={{ my: 2, color: 'white', display: 'block' }}
-                    >
-                      {page}
-                    </Button>
-                  ))}
-                </Box>
-              ) : null}
-              <Box sx={{ flexGrow: 0,  ml: "auto" }}>
-                <Tooltip title="Open settings">
+              <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                {pages.map((page) => (
+                  <Button
+                    key={page}
+                    onClick={() => handlePages(page)}
+                    sx={{ my: 2, color: 'white', display: 'block' }}
+                  >
+                    {page}
+                  </Button>
+                ))}
+              </Box>
+              <Box sx={{ flexGrow: 0, ml: "auto" }}>
+                <Tooltip title="Configuración">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     <Avatar src={img} />
                   </IconButton>
@@ -165,16 +155,13 @@ export const ResponsiveAppBar = ({ role }) => {
                     horizontal: 'right',
                   }}
                   open={Boolean(anchorElUser)}
-                  onClose={handleCloseUserMenu}
+                  onClose={() => setAnchorElUser(null)}
                 >
                   {settings.map((setting) => (
-                    <MenuItem
-                      key={typeof setting === "string" ? setting : setting.text}
-                      onClick={() => handleCloseUserMenu(setting)}
-                    >
+                    <MenuItem key={setting.text} onClick={() => handleCloseUserMenu(setting)}>
                       <Typography sx={{ textAlign: 'center', display: 'flex', alignItems: 'center', gap: 1 }}>
-                        {typeof setting === "object" && setting.icon && <setting.icon sx={{ mr: 1 }} />}
-                        {typeof setting === "object" ? setting.text : setting}
+                        <setting.icon fontSize="small" />
+                        {setting.text}
                       </Typography>
                     </MenuItem>
                   ))}
@@ -182,32 +169,28 @@ export const ResponsiveAppBar = ({ role }) => {
               </Box>
             </>
           ) : (
-            <>
-              <Box sx={{ flexGrow: 0, ml: "auto"}}>
-                <Tooltip title="Open settings">
-                  <Typography
-                    variant="h6"
-                    noWrap
-                    component="a"
-                    href="/auth"
-                    sx={{
-                      mr: 2,
-                      display: { xs: 'none', md: 'flex' },
-                      fontFamily: 'monospace',
-                      fontWeight: 400,
-                      color: 'inherit',
-                      textDecoration: 'none',
-                    }}
-                  >
-                    Iniciar sesion
-                  </Typography>
-                </Tooltip>
-              </Box>
-            </>
+            <Box sx={{ flexGrow: 0, ml: "auto" }}>
+              <Typography
+                variant="h6"
+                noWrap
+                component="a"
+                href="/auth"
+                sx={{
+                  mr: 2,
+                  display: { xs: 'none', md: 'flex' },
+                  fontFamily: 'monospace',
+                  fontWeight: 400,
+                  color: 'inherit',
+                  textDecoration: 'none',
+                }}
+              >
+                Iniciar sesión
+              </Typography>
+            </Box>
           )}
-          
         </Toolbar>
       </Container>
     </AppBar>
   );
-}
+};
+

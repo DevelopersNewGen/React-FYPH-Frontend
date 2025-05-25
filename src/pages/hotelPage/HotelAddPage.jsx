@@ -5,6 +5,7 @@ import { useUser } from '../../shared/hooks';
 
 export const HotelAddPage = () => {
   const { role } = useUser();
+
   return (
     <>
       <ResponsiveAppBar role={role} />

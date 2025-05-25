@@ -9,6 +9,7 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { useRoomDetails } from "../../shared/hooks";
 import RoomEdit from "./RoomEdit";
+import { useReservationsByRoom } from "../../shared/hooks/useReservationByRoom";
 
 export default function RoomDetails({ rid, onBack, role }) {
   const [mainImage, setMainImage] = useState("");
@@ -98,6 +99,12 @@ export default function RoomDetails({ rid, onBack, role }) {
               </button>
               <button onClick={handleEditImages} style={{ marginRight: 8 }}>
                 Editar imágenes
+              </button>
+              <button
+              style={{ marginTop: 16 }}
+              onClick={() => navigate(`/reservaciones/habitacion/${room.rid}`)}
+            >
+              Ver historial de reservaciones
               </button>
             </div>
           )}

@@ -9,6 +9,7 @@ import { useHotelComment } from "../../shared/hooks/useHotelComment";
 import Rating from "@mui/material/Rating";
 import { getRoomsByHotel } from "../../services/api";
 
+
 export default function CardDetails({ hotel, onEdit, onDelete }) {
   const [currentImage, setCurrentImage] = useState(0);
   const { role, user, isLoading } = useUser();
@@ -357,6 +358,15 @@ export default function CardDetails({ hotel, onEdit, onDelete }) {
               disabled={loadingDelete}
             >
               Eliminar
+            </Button>
+            <Button
+              variant="contained"
+              color="info"
+              sx={{ fontWeight: 700, minWidth: 120, borderRadius: 2 }}
+              onClick={() => navigate(`/reservaciones/hotel/${hotel.hid}`)}
+              disabled={loadingDelete}
+            >
+              Ver historial de reservaciones
             </Button>
           </Box>
         )}

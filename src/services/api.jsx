@@ -200,7 +200,7 @@ export const getHosts = async () => {
     const allUsers = response.data.users || [];
     return allUsers.filter(user => user.role === "HOST_ROLE");
   } catch (error) {
-    return [];
+    return error;
   }
 };
 
@@ -280,4 +280,69 @@ export const getRoomsByHotel = async (hid) => {
     }
 };
 
+export const createReservation = async (rid, reservationData) => {
+    try {
+        return await apiClient.post(`/reservations/createReser/${rid}`, reservationData);
+    } catch (e) {
+        return {
+            error: true,
+            e
+        };
+    }
+};
 
+export const getReservationsByRoom = async (rid) => {
+    try {
+        return await apiClient.get(`/reservations/listReserByRoom/${rid}`
+        );
+    } catch (e) {
+        return {
+        error: true,
+        e
+        };
+    }
+};
+
+export const getReservationById = async (rid) => {
+    try {
+        return await apiClient.get(`/reservations/listReser/${rid}`);
+    } catch (e) {
+        return {
+            error: true,
+            e
+        };
+    }
+}
+
+export const deleteReservation = async (rid) => {
+    try {
+        return await apiClient.delete(`/reservations/deleteReser/${rid}`);
+    } catch (e) {
+        return {
+            error: true,
+            e
+        };
+    }
+}
+
+export const getReservationByUser = async () => {
+    try {
+        return await apiClient.get(`/users/getReservations`)
+    } catch (e) {
+        return {
+            error: true,
+            e
+        };
+    }
+}
+
+export const getReservationByHotel = async (hid) => {
+    try{
+        return await apiClient.get(`/hotels/getReservations/${hid}`)
+    }catch (e){
+        return{
+            error: true,
+            e
+        }
+    }
+}

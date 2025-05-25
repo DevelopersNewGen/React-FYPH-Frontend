@@ -88,7 +88,7 @@ export default function RoomCard({ room, role }) {
       </CardContent>
       <CardActions>
         <Button size="small" onClick={handleDetails}>
-         DETALLES
+        DETALLES
         </Button>
       </CardActions>
     </Card>

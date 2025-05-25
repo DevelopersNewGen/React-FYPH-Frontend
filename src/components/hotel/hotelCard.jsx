@@ -93,9 +93,6 @@ export default function HotelCard({ hotel }) {
         <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap title={hotel.description}>
           {hotel.description || "Sin descripción"}
         </Typography>
-        <Typography variant="body2" sx={{ color: "text.primary", mt: 1, fontWeight: '600' }}>
-          Desde Q{hotel.pricePerNight ?? "?"} / noche
-        </Typography>
       </CardContent>
       <CardActions>
         <Button size="small" onClick={e => { e.stopPropagation(); handleDetails() }}>Ver detalles</Button>

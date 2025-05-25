@@ -156,7 +156,16 @@ export default function CardDetails({ hotel, onEdit, onDelete }) {
   };
 
   return (
-    <Box className="card-details">
+    <Box
+  className="card-details"
+  sx={{
+    marginTop: "300px", 
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "flex-start",
+    minHeight: "calc(100vh - 72px)",
+  }}
+>
       <Box className="card-details-inner">
         <IconButton
           onClick={() => navigate(-1)}
@@ -266,13 +275,6 @@ export default function CardDetails({ hotel, onEdit, onDelete }) {
           <Typography sx={{ color: "#000" }}>No hay servicios listados.</Typography>
         )}
 
-        <Typography variant="h6" gutterBottom sx={{ mt: 3, fontWeight: "bold", color: "#000" }}>
-          Precio por noche
-        </Typography>
-        <Typography variant="body1" sx={{ fontWeight: "bold", color: "#000" }}>
-          Q{hotel.pricePerNight || "N/A"}
-        </Typography>
-
         {user && (
           <>
             <Button
@@ -358,32 +360,41 @@ export default function CardDetails({ hotel, onEdit, onDelete }) {
         )}
 
         <Box sx={{ mt: 5 }}>
-          <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>
-            Comentarios
-          </Typography>
-          {loadingComments ? (
-            <Typography sx={{ color: "#888" }}>Cargando comentarios...</Typography>
-          ) : comments.length === 0 ? (
-            <Typography sx={{ color: "#888" }}>No hay comentarios aún.</Typography>
-          ) : (
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-              {comments.map((c, idx) => (
-                <Box key={idx} sx={{ border: "1px solid #eee", borderRadius: 2, p: 2, mb: 1, background: "#fafafa" }}>
-                  <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
-                    <Typography sx={{ fontWeight: "bold", color: "#1976d2" }}>
-                      {c.userName}
-                    </Typography>
-                    <Rating value={c.rating || c.ratings || c.value || 0} readOnly size="small" sx={{ ml: 1 }} />
-                    <Typography sx={{ color: "#888", fontSize: 13, ml: 2 }}>
-                      {c.createdAt || c.date ? new Date(c.createdAt || c.date).toLocaleString() : ""}
-                    </Typography>
-                  </Box>
-                  <Typography sx={{ color: "#222" }}>{c.comment || c.comentario || ""}</Typography>
-                </Box>
-              ))}
-            </Box>
-          )}
+  <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>
+    Comentarios
+  </Typography>
+  {loadingComments ? (
+    <Typography sx={{ color: "#888" }}>Cargando comentarios...</Typography>
+  ) : comments.length === 0 ? (
+    <Typography sx={{ color: "#888" }}>No hay comentarios aún.</Typography>
+  ) : (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 2,
+        maxHeight: 300, 
+        overflowY: "auto",
+        pr: 1 
+      }}
+    >
+      {comments.map((c, idx) => (
+        <Box key={idx} sx={{ border: "1px solid #eee", borderRadius: 2, p: 2, mb: 1, background: "#fafafa" }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
+            <Typography sx={{ fontWeight: "bold", color: "#1976d2" }}>
+              {c.userName}
+            </Typography>
+            <Rating value={c.rating || c.ratings || c.value || 0} readOnly size="small" sx={{ ml: 1 }} />
+            <Typography sx={{ color: "#888", fontSize: 13, ml: 2 }}>
+              {c.createdAt || c.date ? new Date(c.createdAt || c.date).toLocaleString() : ""}
+            </Typography>
+          </Box>
+          <Typography sx={{ color: "#222" }}>{c.comment || c.comentario || ""}</Typography>
         </Box>
+      ))}
+    </Box>
+  )}
+</Box>
       </Box>
     </Box>
   );

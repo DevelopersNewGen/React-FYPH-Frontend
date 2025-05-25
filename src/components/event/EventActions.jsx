@@ -8,7 +8,7 @@ import {
   TextField,
   Box,
 } from "@mui/material";
-import { useEventActions } from "../../shared/hooks/useEventActions";
+import { useEventActions } from "../../shared/hooks"; 
 
 export default function EventActions({ event, onEventUpdated, onEventDeleted, role }) {
   const { handleUpdateEvent, handleDeleteEvent, loading } = useEventActions();

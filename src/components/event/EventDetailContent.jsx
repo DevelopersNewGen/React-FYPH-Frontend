@@ -7,7 +7,7 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import PropTypes from "prop-types";
-import EventActions from "./EventActions"; // Importa los botones
+import EventActions from "./EventActions"; 
 
 export function EventDetailContent({
   evento,

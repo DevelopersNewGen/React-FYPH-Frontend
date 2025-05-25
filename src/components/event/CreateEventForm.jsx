@@ -8,7 +8,7 @@ import {
   Typography,
   CircularProgress,
 } from "@mui/material";
-import { useCreateEvent } from "../../shared/hooks/useCreateEvent";
+import { useCreateEvent } from "../../shared/hooks"; 
 import imageCompression from "browser-image-compression";
 import {
   validateEventName,

@@ -9,11 +9,9 @@ import IconButton from "@mui/material/IconButton";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import EventIcon from "@mui/icons-material/Event";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CategoryIcon from "@mui/icons-material/Category";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import { useEventCarousel } from "../../shared/hooks/useEventCarousel.jsx";
+import { useEventCarousel } from "../../shared/hooks";
 import { useNavigate } from "react-router-dom";
 
 const IMAGEN_EVENTO_DEFAULT =
@@ -33,7 +31,7 @@ export function EventCard({ eid, name, category, images, date, time, location, c
   const mostrarImagen =
     imagenes.length > 0 ? imagenes[current] : IMAGEN_EVENTO_DEFAULT;
 
-  // Formatea la fecha si existe
+
   const fechaFormateada = date
     ? new Date(date).toLocaleDateString()
     : "-";

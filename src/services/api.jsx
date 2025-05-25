@@ -222,7 +222,6 @@ export const filterRooms = async (params) => {
     }
 };
 
-
 export const getHosts = async () => {
   try {
     const response = await apiClient.get("/users");
@@ -262,7 +261,7 @@ export const createHotel = async (formData) => {
     });
     return response.data;
   } catch (error) {
-    throw error;
+    throw new Error(error.response?.data?.msg || "Error al crear el hotel");
   }
 };
 
@@ -283,6 +282,15 @@ export const deleteHotel = async (hid) => {
     throw error;
   }
 };
+
+export async function addHotelComment(hid, data) {
+  const token = localStorage.getItem("token"); 
+  return await apiClient.patch(`/hotels/addComment/${hid}`, data);
+}
+
+export const createReservation = async (rid, reservationData) => {
+    try {
+        return await apiClient.post(`/reservations/createReser/${rid}`, reservationData);
 
 export const addHotelComment = async (hid, { rating, comment }) => {
   try {
@@ -310,6 +318,17 @@ export const getRoomsByHotel = async (hid) => {
     }
 };
 
+export const getReservationsByRoom = async (rid) => {
+  try {
+    return await apiClient.get(`/reservations/listReserByRoom/${rid}`
+    );
+  } catch (e) {
+    return {
+      error: true,
+      e
+    };
+  }
+};
 export const getClientsHost = async () => { 
     try {
         return await apiClient.get(`/hotels/clients`)

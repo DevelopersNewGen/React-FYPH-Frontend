@@ -14,7 +14,7 @@ export default function HotelCard({ hotel }) {
   const navigate = useNavigate();
 
   const images = hotel?.images?.length > 0 ? hotel.images : [
-    "https://via.placeholder.com/345x180?text=Sin+imagen"
+    "https://via.placeholder.com/345x220?text=Sin+imagen"
   ];
 
   const handlePrev = () => {
@@ -29,30 +29,57 @@ export default function HotelCard({ hotel }) {
     navigate(`/hotels/detalles/${hotel.id || hotel._id || hotel.hid}`);
   };
 
-  if (!hotel || Object.keys(hotel).length === 0) {
-    return null;
-  }
+  if (!hotel || Object.keys(hotel).length === 0) return null;
 
   return (
     <Card 
-      sx={{ maxWidth: 345, cursor: 'pointer', transition: 'transform 0.3s ease', ':hover': { transform: 'scale(1.03)', boxShadow: 6 } }}
+      sx={{ 
+        maxWidth: 345, 
+        cursor: 'pointer', 
+        transition: 'transform 0.3s ease', 
+        ':hover': { transform: 'scale(1.03)', boxShadow: 6 } 
+      }}
       onClick={handleDetails}
       elevation={3}
     >
-      <Box sx={{ position: "relative" }}>
+      <Box
+        sx={{
+          position: "relative",
+          width: "100%",
+          height: 220,
+          overflow: "hidden",
+          background: "#222",
+          borderTopLeftRadius: 4,
+          borderTopRightRadius: 4,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
+        }}
+      >
         <img
           src={images[current]}
           alt={`Hotel ${hotel.name || "Sin nombre"} imagen ${current + 1}`}
-          height="180"
-          width="100%"
-          style={{ objectFit: "cover", borderTopLeftRadius: 4, borderTopRightRadius: 4 }}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            borderTopLeftRadius: 4,
+            borderTopRightRadius: 4,
+            background: "#111",
+            display: "block"
+          }}
+          draggable={false}
         />
         {images.length > 1 && (
           <>
-            <IconButton onClick={e => { e.stopPropagation(); handlePrev() }} sx={{ position: "absolute", top: "40%", left: 0, backgroundColor: 'rgba(255,255,255,0.7)' }}>
+            <IconButton onClick={e => { e.stopPropagation(); handlePrev(); }}
+              sx={{ position: "absolute", top: "40%", left: 0, backgroundColor: 'rgba(255,255,255,0.7)' }}
+            >
               <ArrowBackIosIcon fontSize="small" />
             </IconButton>
-            <IconButton onClick={e => { e.stopPropagation(); handleNext() }} sx={{ position: "absolute", top: "40%", right: 0, backgroundColor: 'rgba(255,255,255,0.7)' }}>
+            <IconButton onClick={e => { e.stopPropagation(); handleNext(); }}
+              sx={{ position: "absolute", top: "40%", right: 0, backgroundColor: 'rgba(255,255,255,0.7)' }}
+            >
               <ArrowForwardIosIcon fontSize="small" />
             </IconButton>
           </>
@@ -73,8 +100,11 @@ export default function HotelCard({ hotel }) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" onClick={e => { e.stopPropagation(); handleDetails() }}>Ver detalles</Button>
+        <Button size="small" onClick={e => { e.stopPropagation(); handleDetails(); }}>
+          Ver detalles
+        </Button>
       </CardActions>
     </Card>
-  )
+  );
 }
+

@@ -13,13 +13,11 @@ export const HotelDetailsPage = () => {
   const [refetchKey, setRefetchKey] = useState(0);
   const { role } = useUser();
 
-  
   const { hotel, loading, error } = useHotelDetails(hid, refetchKey);
 
-  
   const handleSuccess = () => {
     setEditing(false);
-    setRefetchKey(k => k + 1); 
+    setRefetchKey(k => k + 1);
   };
 
   if (loading) return <p className="loading">Cargando detalles del hotel...</p>;

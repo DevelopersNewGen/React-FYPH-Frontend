@@ -53,7 +53,6 @@ export const useUser = () => {
     setIsLoading(true);
     try {
       const response = await updateUserService(data);
-
       if (response?.error) throw response.e;
 
       const localUser = JSON.parse(localStorage.getItem("user"));
@@ -119,8 +118,7 @@ export const useUser = () => {
 
       localStorage.setItem("user", JSON.stringify(""));
       toast.success(response?.data?.msg || "Usuario eliminado correctamente");
-
-      navigate("/auth"); // Redirige a login o página pública
+      navigate("/auth");
     } catch (e) {
       toast.error(
         "Error al eliminar el usuario: " +

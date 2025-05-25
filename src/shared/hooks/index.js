@@ -1,11 +1,11 @@
 export { useRegister } from "./useRegister.jsx";
 export { useLogin } from "./useLogin.jsx"; 
 export { logout } from "./useLogout.jsx";
-export {useUserDetails} from "./useUserDetails.jsx"
-export { useUser} from "./useUser.jsx"
-export { useUserAdmin} from "./useUserAdmin.jsx"
-export { useRoomAdd } from "./useRoomAdd.jsx"
-export { useRooms } from "./useRoom.jsx"
-export { useRoomDetails } from "./useRoomDetails.jsx"
-export { useRoomUpdate } from "./useRoomUpdate.jsx"
-export	{ useUserHost} from "./useUserHost.jsx"
+export { useUserDetails } from "./useUserDetails.jsx";
+export { useUser } from "./useUser.jsx";
+export { useUserAdmin } from "./useUserAdmin.jsx";
+export { useUserHost } from "./useUserHost.jsx";
+export { useRoomAdd } from "./useRoomAdd.jsx";
+export { useRooms } from "./useRoom.jsx";
+export { useRoomDetails } from "./useRoomDetails.jsx";
+export { useRoomUpdate } from "./useRoomUpdate.jsx";

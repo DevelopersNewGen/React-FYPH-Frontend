@@ -21,18 +21,18 @@ import {
 } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { useNavigate } from "react-router-dom";
-import { getHosts } from "../../services/api"; // <-- IMPORTANTE
+import { getHosts } from "../../services/api";
 
 export const FormAddHotel = () => {
   const { addHotel, loading, success, error } = useHotelAdd();
   const [services, setServices] = useState([{ type: "", description: "", price: "" }]);
   const [imagesPreview, setImagesPreview] = useState([]);
-  const [hosts, setHosts] = useState([]); // Estado para hosts
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [hosts, setHosts] = useState([]);
   const formRef = useRef();
   const navigate = useNavigate();
   const theme = useTheme();
 
-  // Obtiene todos los hosts al montar el componente
   useEffect(() => {
     getHosts().then(setHosts);
   }, []);
@@ -44,22 +44,26 @@ export const FormAddHotel = () => {
   };
 
   const addService = () => setServices([...services, { type: "", description: "", price: "" }]);
-  const removeService = (idx) => setServices(services.length > 1 ? services.filter((_, i) => i !== idx) : services);
+
+  const removeService = (idx) => {
+    if (services.length > 1) {
+      setServices(services.filter((_, i) => i !== idx));
+    }
+  };
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
+    setSelectedFiles(files);
     setImagesPreview(files.map((file) => URL.createObjectURL(file)));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const form = e.target;
-    const images = form.images.files;
-
     const hostValue = form.host.value;
 
     if (!hostValue) return alert("Selecciona un Host.");
-    if (!images.length) return alert("Debes subir al menos una imagen.");
+    if (!selectedFiles.length) return alert("Debes subir al menos una imagen.");
 
     const servicesFiltered = services.filter((s) => s.type && s.description && s.price);
     if (servicesFiltered.length === 0) return alert("Debes ingresar al menos un servicio.");
@@ -70,11 +74,13 @@ export const FormAddHotel = () => {
       address: form.address.value,
       telephone: form.telephone.value,
       host: hostValue,
-      images: images,
-      services: servicesFiltered,
+      images: selectedFiles,
+      services: servicesFiltered
     });
+
     formRef.current.reset();
     setImagesPreview([]);
+    setSelectedFiles([]);
     setServices([{ type: "", description: "", price: "" }]);
   };
 
@@ -95,12 +101,9 @@ export const FormAddHotel = () => {
           width: "100%",
           p: { xs: 2, sm: 4 },
           borderRadius: 5,
-          background: theme.palette.mode === "dark"
-            ? "rgba(30,30,30,0.98)"
-            : "#fff",
+          background: theme.palette.mode === "dark" ? "rgba(30,30,30,0.98)" : "#fff",
           boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.17)",
-          transition: "box-shadow 0.3s",
-          position: "relative",
+          position: "relative"
         }}
       >
         <IconButton
@@ -109,94 +112,34 @@ export const FormAddHotel = () => {
             position: "absolute",
             top: 16,
             left: 16,
-            color: "primary.main",
-            bgcolor: "transparent",
-            fontWeight: 600,
-            fontSize: 16,
-            px: 1.5,
-            py: 1,
-            borderRadius: 2,
-            "&:hover": {
-              backgroundColor: theme.palette.action.hover
-            }
+            color: "primary.main"
           }}
         >
           <ArrowBackIosIcon sx={{ fontSize: 20, mr: 1 }} />
           Regresar
         </IconButton>
+
         <Typography
           variant="h4"
           gutterBottom
-          sx={{
-            textAlign: "center",
-            mt: 3,
-            fontWeight: 700,
-            color: "primary.main",
-            textShadow: theme.palette.mode === "dark" ? "0 2px 12px #111" : "0 1px 4px #ccc"
-          }}
+          sx={{ textAlign: "center", mt: 3, fontWeight: 700, color: "primary.main" }}
         >
           Registrar Hotel
         </Typography>
+
         <form ref={formRef} onSubmit={handleSubmit} autoComplete="off">
           <Stack spacing={3} sx={{ mt: 2 }}>
-            <TextField name="name" label="Nombre" required maxLength={50} fullWidth
-              variant="outlined"
-              InputProps={{
-                sx: {
-                  bgcolor: theme.palette.mode === "dark" ? "#232324" : "#f7f7fa",
-                  borderRadius: 2
-                }
-              }}
-            />
-            <TextField name="description" label="Descripción" required maxLength={500} multiline rows={4} fullWidth
-              variant="outlined"
-              InputProps={{
-                sx: {
-                  bgcolor: theme.palette.mode === "dark" ? "#232324" : "#f7f7fa",
-                  borderRadius: 2
-                }
-              }}
-            />
-            <TextField name="address" label="Dirección" required maxLength={100} fullWidth
-              variant="outlined"
-              InputProps={{
-                sx: {
-                  bgcolor: theme.palette.mode === "dark" ? "#232324" : "#f7f7fa",
-                  borderRadius: 2
-                }
-              }}
-            />
-            <TextField
-              name="telephone"
-              label="Teléfono"
-              required
-              maxLength={8}
-              fullWidth
-              variant="outlined"
-              inputProps={{ pattern: "[0-9]{8}" }}
-              InputProps={{
-                sx: {
-                  bgcolor: theme.palette.mode === "dark" ? "#232324" : "#f7f7fa",
-                  borderRadius: 2
-                }
-              }}
-            />
+            <TextField name="name" label="Nombre" required fullWidth />
+            <TextField name="description" label="Descripción" required multiline rows={4} fullWidth />
+            <TextField name="address" label="Dirección" required fullWidth />
+            <TextField name="telephone" label="Teléfono" required fullWidth inputProps={{ pattern: "[0-9]{8}" }} />
 
-            {/* SELECT DE HOSTS */}
             <FormControl fullWidth>
               <InputLabel>Host</InputLabel>
-              <Select name="host" required
-                sx={{
-                  bgcolor: theme.palette.mode === "dark" ? "#232324" : "#f7f7fa",
-                  borderRadius: 2
-                }}
-                defaultValue=""
-              >
+              <Select name="host" required defaultValue="">
                 <MenuItem value="">Selecciona un Host</MenuItem>
-                {hosts.length > 0 && hosts.map((h) => (
-                  <MenuItem key={h._id} value={h._id}>
-                    {h.name} ({h.email})
-                  </MenuItem>
+                {hosts.map((h) => (
+                  <MenuItem key={h._id} value={h._id}>{h.name} ({h.email})</MenuItem>
                 ))}
               </Select>
               <FormHelperText>Selecciona un Host</FormHelperText>
@@ -222,6 +165,7 @@ export const FormAddHotel = () => {
                 <img key={i} src={src} alt="Preview" height={60} style={{ borderRadius: 8 }} />
               ))}
             </Box>
+
             <Divider />
             <Stack spacing={2}>
               {services.map((service, idx) => (
@@ -233,14 +177,6 @@ export const FormAddHotel = () => {
                       value={service.type}
                       onChange={(e) => handleServiceChange(idx, "type", e.target.value)}
                       fullWidth
-                      variant="outlined"
-                      InputProps={{
-                        sx: {
-                          minWidth: 150,
-                          bgcolor: theme.palette.mode === "dark" ? "#232324" : "#f7f7fa",
-                          borderRadius: 2
-                        }
-                      }}
                     >
                       <MenuItem value="Hotel">Hotel</MenuItem>
                       <MenuItem value="Singleroom">Simple</MenuItem>
@@ -256,13 +192,6 @@ export const FormAddHotel = () => {
                       value={service.description}
                       onChange={(e) => handleServiceChange(idx, "description", e.target.value)}
                       fullWidth
-                      variant="outlined"
-                      InputProps={{
-                        sx: {
-                          bgcolor: theme.palette.mode === "dark" ? "#232324" : "#f7f7fa",
-                          borderRadius: 2
-                        }
-                      }}
                     />
                   </Grid>
                   <Grid item xs={2}>
@@ -271,23 +200,17 @@ export const FormAddHotel = () => {
                       value={service.price}
                       onChange={(e) => handleServiceChange(idx, "price", e.target.value)}
                       fullWidth
-                      variant="outlined"
                       InputProps={{
-                        startAdornment: <InputAdornment position="start">Q</InputAdornment>,
-                        sx: {
-                          bgcolor: theme.palette.mode === "dark" ? "#232324" : "#f7f7fa",
-                          borderRadius: 2
-                        }
+                        startAdornment: <InputAdornment position="start">Q</InputAdornment>
                       }}
                     />
                   </Grid>
-                  <Grid item xs={2} sx={{ display: "flex", alignItems: "center" }}>
+                  <Grid item xs={2}>
                     <Button
                       variant="outlined"
                       color="error"
                       onClick={() => removeService(idx)}
                       disabled={services.length === 1}
-                      fullWidth
                     >
                       Eliminar
                     </Button>
@@ -298,8 +221,10 @@ export const FormAddHotel = () => {
                 + Agregar Servicio
               </Button>
             </Stack>
+
             {error && <Typography color="error">{error}</Typography>}
             {success && <Typography color="success.main">{success}</Typography>}
+
             <Button
               type="submit"
               variant="contained"
@@ -307,14 +232,6 @@ export const FormAddHotel = () => {
               fullWidth
               disabled={loading}
               startIcon={loading && <CircularProgress size={20} />}
-              sx={{
-                fontWeight: 700,
-                fontSize: 18,
-                borderRadius: 2,
-                boxShadow: theme.palette.mode === "dark"
-                  ? "0 4px 16px rgba(33,150,243,0.10)"
-                  : "0 4px 16px rgba(33,150,243,0.18)"
-              }}
             >
               {loading ? "Guardando..." : "Registrar Hotel"}
             </Button>
@@ -324,3 +241,4 @@ export const FormAddHotel = () => {
     </Box>
   );
 };
+

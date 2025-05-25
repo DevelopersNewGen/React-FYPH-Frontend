@@ -1,13 +1,20 @@
-import React, { useState } from "react";
-import { Box, Typography, IconButton, Button, TextField } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import {
+  Box,
+  Typography,
+  IconButton,
+  Button,
+  TextField,
+  Rating
+} from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { useNavigate } from "react-router-dom";
-import { useUser } from "../../shared/hooks";
+import { useUser } from "../../shared/hooks/useUser";
 import { useDeleteHotel } from "../../shared/hooks/useDeleteHotel";
 import { useHotelComment } from "../../shared/hooks/useHotelComment";
-import Rating from "@mui/material/Rating";
-import { getRoomsByHotel } from "../../services/api";
+import { getHotelById, findUserById } from "../../services/api";
+import "../../pages/hotelPage/Hotel.css";
 
 export default function CardDetails({ hotel, onEdit, onDelete }) {
   const [currentImage, setCurrentImage] = useState(0);
@@ -32,6 +39,45 @@ export default function CardDetails({ hotel, onEdit, onDelete }) {
     setError: setErrorComment,
     setSuccess: setSuccessComment
   } = useHotelComment();
+
+  const [comments, setComments] = useState([]);
+  const [loadingComments, setLoadingComments] = useState(false);
+
+  const fetchComments = async () => {
+    setLoadingComments(true);
+    try {
+      const res = await getHotelById(hotel._id || hotel.id || hotel.hid);
+      const hotelData = res.hotel || res;
+      let ratings = hotelData.ratings || [];
+
+      const ratingsWithUser = await Promise.all(
+        ratings.map(async (c) => {
+          let userName = "Usuario";
+          try {
+            if (c.user) {
+              const userRes = await findUserById(c.user);
+              userName = userRes?.user?.name || userRes?.name || userRes?.user?.email || "Usuario";
+            }
+          } catch {}
+          return { ...c, userName };
+        })
+      );
+      setComments(ratingsWithUser);
+    } catch (err) {
+      setComments([]);
+      console.error("Error al obtener comentarios:", err);
+    } finally {
+      setLoadingComments(false);
+    }
+  };
+
+  useEffect(() => {
+    if (hotel) fetchComments();
+  }, [hotel]);
+
+  useEffect(() => {
+    if (successComment) fetchComments();
+  }, [successComment]);
 
   const hotelHostId =
     typeof hotel.host === "string"
@@ -65,11 +111,29 @@ export default function CardDetails({ hotel, onEdit, onDelete }) {
       setErrorComment("La calificación es obligatoria");
       return;
     }
-    const res = await commentHotel(hotel._id || hotel.id || hotel.hid, { rating, comment });
-    if (res.success) {
-      setComment("");
-      setRating(0);
-      setShowCommentForm(false);
+
+    let userId = user?._id || user?.id;
+    if (!userId) {
+      setErrorComment("No se encontró el usuario. Inicia sesión nuevamente.");
+      return;
+    }
+    if (typeof userId === "object" && userId.$oid) userId = userId.$oid;
+
+    try {
+      const res = await commentHotel(hotel._id || hotel.id || hotel.hid, {
+        rating,
+        comment,
+        user: userId
+      });
+      if (res.success) {
+        setComment("");
+        setRating(0);
+        setShowCommentForm(false);
+      } else if (res.error) {
+        setErrorComment(res.error);
+      }
+    } catch (err) {
+      setErrorComment("Error inesperado al enviar el comentario.");
     }
   };
 
@@ -82,8 +146,7 @@ export default function CardDetails({ hotel, onEdit, onDelete }) {
     "https://i.ibb.co/ysVFF2X/burned3.jpg",
   ];
 
-  const images =
-    hotel.images && hotel.images.length > 0 ? hotel.images : fallbackImages;
+  const images = hotel.images && hotel.images.length > 0 ? hotel.images : fallbackImages;
 
   const handlePrev = () => {
     setCurrentImage((prev) => (prev === 0 ? images.length - 1 : prev - 1));
@@ -94,187 +157,64 @@ export default function CardDetails({ hotel, onEdit, onDelete }) {
   };
 
   return (
-    <Box
-      className="card-details"
-      sx={{
-        maxWidth: 600,
-        width: "90vw",
-        minHeight: 640,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "transparent",
-      }}
-    >
-      <Box
-        sx={{
-          maxWidth: 600,
-          width: "100%",
-          padding: "1rem",
-          backgroundColor: "#fff",
-          borderRadius: 3,
-          boxShadow: 3,
-          color: "#000",
-          position: "relative",
-        }}
-      >
-        <IconButton
-          onClick={() => navigate(-1)}
-          sx={{
-            position: "absolute",
-            top: 16,
-            left: 16,
-            backgroundColor: "#f5f5f5",
-            zIndex: 100,
-            "&:hover": { backgroundColor: "#e0e0e0" },
-          }}
-        >
+    <Box className="card-details">
+      <Box className="card-details-inner">
+        <IconButton onClick={() => navigate(-1)} className="card-details-back-btn">
           <ArrowBackIosIcon sx={{ fontSize: 20 }} />
         </IconButton>
 
-        <Typography
-          variant="h5"
-          component="h1"
-          gutterBottom
-          sx={{
-            fontWeight: "bold",
-            color: "#000",
-            mb: 2,
-            textAlign: "center"
-          }}
-        >
+        <Typography variant="h5" component="h1" gutterBottom sx={{ fontWeight: "bold", color: "#000", mb: 2, textAlign: "center" }}>
           {hotel.name}
         </Typography>
 
-        <Box
-          sx={{
-            position: "relative",
-            width: "100%",
-            height: 300,
-            mb: 3,
-            borderRadius: 2,
-            overflow: "hidden",
-          }}
-        >
+        <Box className="card-details-img-box">
           {images.length > 0 ? (
             <>
               <img
                 src={images[currentImage]}
                 alt={`Imagen ${currentImage + 1} de hotel ${hotel.name}`}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  borderRadius: 8,
-                  userSelect: "none",
-                  filter: "brightness(0.7) contrast(1.2) saturate(0.7)",
-                }}
+                className="card-details-img"
                 draggable={false}
               />
               {images.length > 1 && (
                 <>
-                  <IconButton
-                    onClick={handlePrev}
-                    sx={{
-                      position: "absolute",
-                      top: "50%",
-                      left: 4,
-                      transform: "translateY(-50%)",
-                      backgroundColor: "rgba(255,255,255,0.8)",
-                      "&:hover": { backgroundColor: "rgba(255,255,255,1)" },
-                      zIndex: 10,
-                    }}
-                    aria-label="Imagen anterior"
-                  >
+                  <IconButton onClick={handlePrev} className="card-details-carousel-btn left" aria-label="Imagen anterior">
                     <ArrowBackIosIcon />
                   </IconButton>
-                  <IconButton
-                    onClick={handleNext}
-                    sx={{
-                      position: "absolute",
-                      top: "50%",
-                      right: 4,
-                      transform: "translateY(-50%)",
-                      backgroundColor: "rgba(255,255,255,0.8)",
-                      "&:hover": { backgroundColor: "rgba(255,255,255,1)" },
-                      zIndex: 10,
-                    }}
-                    aria-label="Imagen siguiente"
-                  >
+                  <IconButton onClick={handleNext} className="card-details-carousel-btn right" aria-label="Imagen siguiente">
                     <ArrowForwardIosIcon />
                   </IconButton>
                 </>
               )}
-              <Box
-                sx={{
-                  position: "absolute",
-                  bottom: 8,
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "center",
-                  gap: 1,
-                }}
-              >
+              <Box className="card-details-carousel-dots">
                 {images.map((_, idx) => (
                   <Box
                     key={idx}
                     onClick={() => setCurrentImage(idx)}
-                    sx={{
-                      width: 10,
-                      height: 10,
-                      borderRadius: "50%",
-                      bgcolor:
-                        idx === currentImage ? "primary.main" : "grey.400",
-                      cursor: "pointer",
-                      transition: "background-color 0.3s ease",
-                    }}
+                    className={`card-details-carousel-dot${idx === currentImage ? " active" : ""}`}
                   />
                 ))}
               </Box>
             </>
           ) : (
-            <Box
-              sx={{
-                width: "100%",
-                height: "100%",
-                bgcolor: "#eee",
-                borderRadius: 8,
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Typography sx={{ color: "#000" }}>
-                No hay imágenes disponibles
-              </Typography>
+            <Box sx={{ width: "100%", height: "100%", bgcolor: "#eee", borderRadius: 8, display: "flex", justifyContent: "center", alignItems: "center" }}>
+              <Typography sx={{ color: "#000" }}>No hay imágenes disponibles</Typography>
             </Box>
           )}
         </Box>
 
-        <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold", color: "#000" }}>
-          Ubicación
-        </Typography>
-        <Typography paragraph sx={{ color: "#000" }}>
-          {hotel.address || hotel.location || "No especificado"}
-        </Typography>
+        <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold", color: "#000" }}>Ubicación</Typography>
+        <Typography paragraph sx={{ color: "#000" }}>{hotel.address || hotel.location || "No especificado"}</Typography>
 
-        <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold", color: "#000" }}>
-          Descripción
-        </Typography>
-        <Typography paragraph sx={{ color: "#000" }}>
-          {hotel.description || "Sin descripción disponible."}
-        </Typography>
+        <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold", color: "#000" }}>Descripción</Typography>
+        <Typography paragraph sx={{ color: "#000" }}>{hotel.description || "Sin descripción disponible."}</Typography>
 
-        <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold", color: "#000" }}>
-          Servicios
-        </Typography>
+        <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold", color: "#000" }}>Servicios</Typography>
         {hotel.services && hotel.services.length > 0 ? (
           <ul>
             {hotel.services.map((service, idx) => (
               <li key={idx}>
-                <Typography sx={{ color: "#000" }}>
-                  {`${service.type}: ${service.description} - Precio: Q${service.price}`}
-                </Typography>
+                <Typography sx={{ color: "#000" }}>{`${service.type}: ${service.description} - Precio: Q${service.price}`}</Typography>
               </li>
             ))}
           </ul>
@@ -282,95 +222,79 @@ export default function CardDetails({ hotel, onEdit, onDelete }) {
           <Typography sx={{ color: "#000" }}>No hay servicios listados.</Typography>
         )}
 
-        <Typography variant="h6" gutterBottom sx={{ mt: 3, fontWeight: "bold", color: "#000" }}>
-          Precio por noche
-        </Typography>
-        <Typography variant="body1" sx={{ fontWeight: "bold", color: "#000" }}>
-          Q{hotel.pricePerNight || "N/A"}
-        </Typography>
+        <Typography variant="h6" gutterBottom sx={{ mt: 3, fontWeight: "bold", color: "#000" }}>Precio por noche</Typography>
+        <Typography variant="body1" sx={{ fontWeight: "bold", color: "#000" }}>Q{hotel.pricePerNight || "N/A"}</Typography>
 
-        {/* Botón para mostrar/ocultar el form de comentario */}
-        <Button
-          variant="outlined"
-          sx={{ mt: 2 }}
-          onClick={() => setShowCommentForm((prev) => !prev)}
-        >
-          {showCommentForm ? "Cerrar comentario" : "Agregar comentario/calificación"}
-        </Button>
-
-        {/* Formulario de comentario/calificación */}
-        {showCommentForm && (
-          <Box
-            component="form"
-            onSubmit={handleSubmitComment}
-            sx={{ mt: 2, p: 2, border: "1px solid #ddd", borderRadius: 2, maxWidth: 400 }}
-          >
-            <Typography variant="h6" sx={{ mb: 1 }}>Califica este hotel</Typography>
-            <Rating
-              name="hotel-rating"
-              value={rating}
-              onChange={(e, newValue) => setRating(newValue)}
-              precision={1}
-            />
-            <TextField
-              label="Comentario"
-              multiline
-              minRows={2}
-              value={comment}
-              onChange={e => setComment(e.target.value)}
-              fullWidth
-              sx={{ my: 2 }}
-            />
-            {errorComment && <Typography color="error">{errorComment}</Typography>}
-            {successComment && <Typography color="success.main">{successComment}</Typography>}
-            <Button type="submit" variant="contained" disabled={loadingComment}>
-              {loadingComment ? "Enviando..." : "Enviar"}
+        {user && (
+          <>
+            <Button variant="outlined" sx={{ mt: 2 }} onClick={() => setShowCommentForm((prev) => !prev)}>
+              {showCommentForm ? "Cerrar comentario" : "Agregar comentario/calificación"}
             </Button>
-          </Box>
+
+            {showCommentForm && (
+              <Box component="form" onSubmit={handleSubmitComment} sx={{ mt: 2, p: 2, border: "1px solid #ddd", borderRadius: 2, maxWidth: 400 }}>
+                <Typography variant="h6" sx={{ mb: 1 }}>Califica este hotel</Typography>
+                <Rating name="hotel-rating" value={rating} onChange={(e, newValue) => setRating(newValue)} precision={1} />
+                <TextField
+                  label="Comentario"
+                  multiline
+                  minRows={2}
+                  value={comment}
+                  onChange={e => setComment(e.target.value)}
+                  fullWidth
+                  sx={{ my: 2 }}
+                />
+                {errorComment && <Typography color="error">{errorComment}</Typography>}
+                {successComment && <Typography color="success.main">{successComment}</Typography>}
+                <Button type="submit" variant="contained" disabled={loadingComment}>
+                  {loadingComment ? "Enviando..." : "Enviar"}
+                </Button>
+              </Box>
+            )}
+          </>
         )}
 
-        {/* Botón para ver habitaciones */}
-        <Button
-          variant="contained"
-          color="primary"
-          sx={{ mt: 2, mb: 2 }}
-          onClick={() => navigate(`/hoteles/${hotel._id || hotel.id || hotel.hid}/habitaciones`)}
-        >
+        <Button variant="contained" color="primary" sx={{ mt: 2, mb: 2 }} onClick={() => navigate(`/hoteles/${hotel._id || hotel.id || hotel.hid}/habitaciones`)}>
           Ver habitaciones
         </Button>
 
         {puedeEditarOEliminar && (
           <Box sx={{ display: "flex", gap: 2, justifyContent: "center", mt: 4 }}>
-            <Button
-              variant="contained"
-              color="warning"
-              sx={{ fontWeight: 700, minWidth: 120, borderRadius: 2 }}
-              onClick={handleEditHotel}
-            >
+            <Button variant="contained" color="warning" sx={{ fontWeight: 700, minWidth: 120, borderRadius: 2 }} onClick={handleEditHotel}>
               Editar
             </Button>
-            <Button
-              variant="contained"
-              color="error"
-              sx={{ fontWeight: 700, minWidth: 120, borderRadius: 2 }}
-              onClick={handleDeleteHotel}
-              disabled={loadingDelete}
-            >
+            <Button variant="contained" color="error" sx={{ fontWeight: 700, minWidth: 120, borderRadius: 2 }} onClick={handleDeleteHotel} disabled={loadingDelete}>
               Eliminar
             </Button>
           </Box>
         )}
 
-        {errorDelete && (
-          <Typography color="error" sx={{ mt: 2, textAlign: "center" }}>
-            {errorDelete}
-          </Typography>
-        )}
-        {successDelete && (
-          <Typography color="success.main" sx={{ mt: 2, textAlign: "center" }}>
-            {successDelete}
-          </Typography>
-        )}
+        {errorDelete && <Typography color="error" sx={{ mt: 2, textAlign: "center" }}>{errorDelete}</Typography>}
+        {successDelete && <Typography color="success.main" sx={{ mt: 2, textAlign: "center" }}>{successDelete}</Typography>}
+
+        <Box sx={{ mt: 5 }}>
+          <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>Comentarios</Typography>
+          {loadingComments ? (
+            <Typography sx={{ color: "#888" }}>Cargando comentarios...</Typography>
+          ) : comments.length === 0 ? (
+            <Typography sx={{ color: "#888" }}>No hay comentarios aún.</Typography>
+          ) : (
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+              {comments.map((c, idx) => (
+                <Box key={idx} sx={{ border: "1px solid #eee", borderRadius: 2, p: 2, mb: 1, background: "#fafafa" }}>
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
+                    <Typography sx={{ fontWeight: "bold", color: "#1976d2" }}>{c.userName}</Typography>
+                    <Rating value={c.rating || c.ratings || c.value || 0} readOnly size="small" sx={{ ml: 1 }} />
+                    <Typography sx={{ color: "#888", fontSize: 13, ml: 2 }}>
+                      {c.createdAt || c.date ? new Date(c.createdAt || c.date).toLocaleString() : ""}
+                    </Typography>
+                  </Box>
+                  <Typography sx={{ color: "#222" }}>{c.comment || c.comentario || ""}</Typography>
+                </Box>
+              ))}
+            </Box>
+          )}
+        </Box>
       </Box>
     </Box>
   );

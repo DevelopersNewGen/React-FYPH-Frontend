@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 
 import {
@@ -13,10 +13,6 @@ export const useUserAdmin = () => {
     const [users, setUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [user, setUser] = useState(null)
-
-    useEffect(() => {
-        loadUsers();
-    }, []);
 
     const loadUsers = async () => {
         setIsLoading(true);
@@ -93,6 +89,7 @@ export const useUserAdmin = () => {
         handleDelete,
         handleCreate,
         getUserById,
-        user
+        user,
+        loadUsers
     };
 }

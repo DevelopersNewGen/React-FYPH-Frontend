@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
 import { Card, Box, TextField, CardContent, Avatar, List, ListItem, ListItemText, Divider, Typography, Button } from '@mui/material'
 import { PasswordForm } from './PasswordForm'
-import { useUser } from '../../shared/hooks'
+import { useUser, useUserAdmin } from '../../shared/hooks'
 import EditIcon from '@mui/icons-material/Edit';
 import { validateUsername, validateUsernameMessage } from '../../shared/validators/validateUsername'
 import { validateEmail, validateEmailMessage } from '../../shared/validators/validateEmail'
@@ -16,7 +17,10 @@ export const UserDetails = ({user, isAdmin, deleteUser}) => {
   });
   const [errors, setErrors] = useState({ name: '', email: '' });
   const { updatePassword, updateProfilePicture, updateUser } = useUser();
+  const { handleSave, handleDelete } = useUserAdmin();
   const fileInputRef = useRef();
+  const { uid } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setForm({
@@ -42,7 +46,12 @@ export const UserDetails = ({user, isAdmin, deleteUser}) => {
   const handleEditClick = () => {
 
     if (editMode) {
-      updateUser(form)
+      if(isAdmin) {
+        handleSave(uid, form);
+      }else {
+        updateUser(form)
+      }
+      
     }
     setEditMode(!editMode);
   };
@@ -63,11 +72,19 @@ export const UserDetails = ({user, isAdmin, deleteUser}) => {
   };
 
   const handleDeleteUser = async () => {
-    const confirmDelete = window.confirm('¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.');
-    if (confirmDelete) {
-      await deleteUser();
-      window.location.reload();
+    if (isAdmin) {
+      await handleDelete(uid);
+      navigate('/user');
     }
+
+    if (!isAdmin) {
+      const confirmDelete = window.confirm('¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.');
+
+      if (confirmDelete) {
+        await deleteUser();
+        navigate('/');
+      }
+    } 
   }
 
   return (
@@ -96,31 +113,33 @@ export const UserDetails = ({user, isAdmin, deleteUser}) => {
                 src={user?.img || ''}
                 sx={{ width: 120, height: 120 }}
               />
-              <Box
-                sx={{
-                  position: 'absolute',
-                  bottom: 8,
-                  right: 8,
-                  bgcolor: 'white',
-                  borderRadius: '50%',
-                  p: 0.5,
-                  boxShadow: 1,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}
-                onClick={handleAvatarEditClick}
-              >
-                <EditIcon fontSize="small" color="action" />
-                <input
-                  type="file"
-                  accept="image/*"
-                  ref={fileInputRef}
-                  style={{ display: 'none' }}
-                  onChange={handleFileChange}
-                />
-              </Box>
+              {!isAdmin && (
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    bottom: 8,
+                    right: 8,
+                    bgcolor: 'white',
+                    borderRadius: '50%',
+                    p: 0.5,
+                    boxShadow: 1,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                  onClick={handleAvatarEditClick}
+                >
+                  <EditIcon fontSize="small" color="action" />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    ref={fileInputRef}
+                    style={{ display: 'none' }}
+                    onChange={handleFileChange}
+                  />
+                </Box>
+              )}
             </Box>
             <TextField
               label="Nombre"

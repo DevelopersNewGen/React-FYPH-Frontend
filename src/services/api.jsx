@@ -176,3 +176,15 @@ export const updateProfilePicture = async (data) => {
         };
     }
 };
+
+
+export const getClientsHost = async () => { 
+    try {
+        return await apiClient.get(`/hotels/clients`)
+    } catch (e) {
+       return {
+            error: true,
+            e
+        };  
+    }
+}

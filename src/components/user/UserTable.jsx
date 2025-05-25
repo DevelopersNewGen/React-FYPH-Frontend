@@ -4,11 +4,11 @@ import { DataGrid } from '@mui/x-data-grid';
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-const columns = (handleButtonClick) => [
+const columns = (handleButtonClick, isHost) => [
     { 
         field: 'id', 
         headerName: 'ID', 
-        width: 90 
+        width: 200 
     },
     {
         field: 'name',
@@ -45,6 +45,7 @@ const columns = (handleButtonClick) => [
                 color="primary"
                 size="small"
                 onClick={() => handleButtonClick(params.row.id)}
+                disabled={isHost}
             >
                 Editar
             </Button>
@@ -53,16 +54,15 @@ const columns = (handleButtonClick) => [
 ];
 
 
-export const UserTable = ({users}) => {
+export const UserTable = ({users, isHost}) => {
     const navigate = useNavigate(); 
 
     const handleButtonClick = (id) => {
-        console.log("ID enviado:", id);
         navigate(`/userDetails/${id}`); 
     };
 
     const rows = users.map(user => ({
-        id: user.uid,
+        id: user.uid || user.id,
         name: user.name,
         email: user.email,
         role: user.role,
@@ -73,7 +73,7 @@ export const UserTable = ({users}) => {
         <Box sx={{ height: 400, width: '100%' }}>
         <DataGrid
             rows={rows}
-            columns={columns(handleButtonClick)}
+            columns={columns(handleButtonClick, isHost)}
             initialState={{
             pagination: {
                 paginationModel: {

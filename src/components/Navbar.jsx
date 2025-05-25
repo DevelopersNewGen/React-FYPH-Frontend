@@ -30,7 +30,7 @@ const settings = [
   { icon: LogoutIcon, text: "Cerrar sesion" }
 ];
 
-export const ResponsiveAppBar = ({ role }) => {
+export const ResponsiveAppBar = ({role}) => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const navigate = useNavigate();
   const { isLogged, logout } = useUserDetails();
@@ -61,6 +61,7 @@ export const ResponsiveAppBar = ({ role }) => {
     } else if (setting.text === "Ayuda") {
       navigate("/help")
     }
+
     setAnchorElUser(null);
   };
 
@@ -106,6 +107,7 @@ export const ResponsiveAppBar = ({ role }) => {
             FYPH
           </Typography>
           
+
           {isLogged ? (
             <>
               {role === "CLIENT_ROLE" ? (

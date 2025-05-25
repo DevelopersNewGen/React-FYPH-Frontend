@@ -4,85 +4,85 @@ import { DataGrid } from '@mui/x-data-grid';
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-const columns = (handleButtonClick) => [
-    { 
-        field: 'id', 
-        headerName: 'ID', 
-        width: 90 
-    },
-    {
-        field: 'name',
-        headerName: 'Name',
-        width: 150,
-        editable: true,
-    },
-    {
-        field: 'email',
-        headerName: 'Email',
-        width: 150,
-        editable: true,
-    },
-    {
-        field: 'role',
-        headerName: 'Role',
-        width: 150,
-        editable: true,
-    },
-    {
-        field: 'status',
-        headerName: 'Status',
-        description: 'This column has a value getter and is not sortable.',
-        sortable: false,
-        width: 150,
-    },
-    {
-        field: 'actions',
-        headerName: 'Actions',
-        width: 150,
-        renderCell: (params) => (
-            <Button
-                variant="contained"
-                color="primary"
-                size="small"
-                onClick={() => handleButtonClick(params.row.id)}
-            >
-                Editar
-            </Button>
-        ),
-    },
+const columns = (handleButtonClick, isHost) => [
+  { 
+    field: 'id', 
+    headerName: 'ID', 
+    width: 200 
+  },
+  {
+    field: 'name',
+    headerName: 'Nombre',
+    width: 150,
+    editable: true,
+  },
+  {
+    field: 'email',
+    headerName: 'Email',
+    width: 200,
+    editable: true,
+  },
+  {
+    field: 'role',
+    headerName: 'Rol',
+    width: 130,
+    editable: true,
+  },
+  {
+    field: 'status',
+    headerName: 'Estado',
+    sortable: false,
+    width: 130,
+  },
+  {
+    field: 'actions',
+    headerName: 'Acciones',
+    width: 150,
+    renderCell: (params) => (
+      <Button
+        variant="contained"
+        color="primary"
+        size="small"
+        onClick={() => handleButtonClick(params.row.id)}
+        disabled={isHost}
+      >
+        Editar
+      </Button>
+    ),
+  },
 ];
 
+export const UserTable = ({ users, isHost = false }) => {
+  const navigate = useNavigate();
 
-export const UserTable = ({users}) => {
-    const navigate = useNavigate(); // Mueve useNavigate dentro del componente funcional
+  const handleButtonClick = (id) => {
+    const route = isHost ? `/userDetails/${id}` : `/userDetailsAdmin/${id}`;
+    navigate(route);
+  };
 
-    const handleButtonClick = (id) => {
-        console.log("ID enviado:", id);
-        navigate(`/userDetailsAdmin/${id}`); // Usa navigate aquí
-    };
+  const rows = users.map(user => ({
+    id: user.uid || user.id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    status: user.status,
+  }));
 
-    const rows = users.map(user => ({
-        id: user.uid,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        status: user.status
-    }));
-
-    return (
-        <Box sx={{ height: 400, width: '100%' }}>
-        <DataGrid
-            rows={rows}
-            columns={columns(handleButtonClick)}
-            initialState={{
-            pagination: {
-                paginationModel: {
-                pageSize: 5,
-                },
+  return (
+    <Box sx={{ height: 400, width: '100%' }}>
+      <DataGrid
+        rows={rows}
+        columns={columns(handleButtonClick, isHost)}
+        initialState={{
+          pagination: {
+            paginationModel: {
+              pageSize: 5,
             },
-            }}
-            pageSizeOptions={[5]}
-        />
-        </Box>
-    );
-}
+          },
+        }}
+        pageSizeOptions={[5]}
+      />
+    </Box>
+  );
+};
+

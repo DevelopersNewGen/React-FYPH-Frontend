@@ -2,42 +2,32 @@ import axios from 'axios';
 
 const apiClient = axios.create({
     baseURL: "http://127.0.0.1:3000/FYPH/v1",
-    timeout: 3000,
-    httpsAgent: false
+    timeout: 3000
 });
-
 
 apiClient.interceptors.request.use(
     (config) => {
         const userDetails = localStorage.getItem("user");
-
         if (userDetails) {
             try {
                 const parsedUser = JSON.parse(userDetails);
                 if (parsedUser?.token) {
                     config.headers.Authorization = `Bearer ${parsedUser.token}`;
-                    console.log("Token agregado al header:", parsedUser.token); 
                 }
             } catch (err) {
                 console.warn("Error al leer el token:", err);
             }
         }
-
         return config;
     },
-    (error) => {
-        return Promise.reject(error);
-    }
+    (error) => Promise.reject(error)
 );
 
 export const register = async (data) => {
     try {
         return await apiClient.post("/auth/register", data);
     } catch (e) {
-        return {
-            error: true,
-            e
-        };
+        return { error: true, e };
     }
 };
 
@@ -45,190 +35,161 @@ export const login = async (data) => {
     try {
         return await apiClient.post('/auth/login', data);
     } catch (e) {
-        return {
-            error: true,
-            e
-        };
+        return { error: true, e };
     }
 };
 
-export const findUserById = async (uid) =>{
+export const findUserById = async (uid) => {
     try {
         return await apiClient.get(`/users/findUser/${uid}`);
     } catch (e) {
-       return {
-            error: true,
-            e
-        }; 
+        return { error: true, e };
     }
-}
+};
 
 export const getClients = async () => {
     try {
-        return await apiClient.get(`/users`)
+        return await apiClient.get(`/users`);
     } catch (e) {
-       return {
-            error: true,
-            e
-        };  
+        return { error: true, e };
     }
-}
+};
 
 export const deleteUserAdmin = async (uid) => {
     try {
-        return await apiClient.delete(`/users/deleteUserAdmin/${uid}`)
+        return await apiClient.delete(`/users/deleteUserAdmin/${uid}`);
     } catch (e) {
-       return {
-            error: true,
-            e
-        };  
+        return { error: true, e };
     }
-}
+};
 
 export const updateUserAdmin = async (uid, data) => {
     try {
-        return await apiClient.put(`/users/updateUserAdmin/${uid}`, data)
+        return await apiClient.put(`/users/updateUserAdmin/${uid}`, data);
     } catch (e) {
-       return {
-            error: true,
-            e
-        };  
+        return { error: true, e };
     }
-} 
+};
 
-export const createUser = async (uid, data) => {
+export const createUser = async (data) => {
     try {
-        return await apiClient.put(`/users/createUser`, data)
+        return await apiClient.put(`/users/createUser`, data);
     } catch (e) {
-       return {
-            error: true,
-            e
-        };  
+        return { error: true, e };
     }
-}  
+};
 
 export const getUser = async () => {
     try {
-        return await apiClient.get(`/users/getUser`)
+        return await apiClient.get(`/users/getUser`);
     } catch (e) {
-       return {
-            error: true,
-            e
-        };  
+        return { error: true, e };
     }
-}
+};
 
 export const getTopHotels = async (limit = 5) => {
-  try {
-    const response = await apiClient.get(`/reports/getTopHotels`, { params: { limit } });
-    return response.data;
-  } catch (error) {
-    return { success: false, error };
-  }
+    try {
+        const response = await apiClient.get(`/reports/getTopHotels`, { params: { limit } });
+        return response.data;
+    } catch (error) {
+        return { success: false, error };
+    }
 };
 
 export const getHotelReservations = async (hid) => {
-  try {
-    const response = await apiClient.get(`/reports/getHotelReservations/${hid}`);
-    return response.data;
-  } catch (error) {
-    return { success: false, error };
-  }
+    try {
+        const response = await apiClient.get(`/reports/getHotelReservations/${hid}`);
+        return response.data;
+    } catch (error) {
+        return { success: false, error };
+    }
 };
- export const getEvents = async () => {
-  try {
-    const response = await apiClient.get("/events/");
+
+export const getEvents = async () => {
+    try {
+        return await apiClient.get("/events/");
+    } catch (e) {
+        return { error: true, e };
+    }
+};
 
 export const getRooms = async () => {
     try {
         return await apiClient.get('/rooms/getRooms');
-
-export const getUserById = async (uid) => {
-    try {
-        return await apiClient.get(`/users/findUser/${uid}`)
-
     } catch (e) {
-        return {
-            error: true,
-            e
-
-        };
+        return { error: true, e };
     }
 };
+
+export const getUserById = findUserById;
 
 export const getRoomById = async (rid) => {
     try {
         return await apiClient.get(`/rooms/getRoomById/${rid}`);
-
-        }
+    } catch (e) {
+        return { error: true, e };
     }
-}
+};
 
 export const updatePassword = async (data) => {
     try {
         return await apiClient.patch('/users/updatePassword', data);
     } catch (e) {
-        return {
-            error: true,
-            e
-        };
+        return { error: true, e };
     }
 };
 
 export const createRoom = async (formData) => {
     try {
         return await apiClient.post('/rooms/createRoom', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
+            headers: { 'Content-Type': 'multipart/form-data' }
         });
-      
+    } catch (e) {
+        return { error: true, e };
+    }
+};
+
 export const updateUser = async (data) => {
     try {
         return await apiClient.put('/users/updateUser', data);
-
     } catch (e) {
-        return {
-            error: true,
-            e
-        };
+        return { error: true, e };
     }
 };
 
 export const updateRoom = async (rid, data) => {
     try {
-        return await apiClient.put(`/rooms/updateRoom/${rid}`, data); 
+        return await apiClient.put(`/rooms/updateRoom/${rid}`, data);
+    } catch (e) {
+        return { error: true, e };
+    }
+};
 
 export const deleteUser = async () => {
     try {
         return await apiClient.delete(`/users/deleteUserClient`);
-
     } catch (e) {
-        return {
-            error: true,
-            e
-        };
+        return { error: true, e };
     }
-
 };
 
 export const updateRoomImages = async (rid, formData) => {
     try {
         return await apiClient.patch(`/rooms/updateImages/${rid}`, formData, {
-}
+            headers: { 'Content-Type': 'multipart/form-data' }
+        });
+    } catch (e) {
+        return { error: true, e };
+    }
+};
 
 export const updateProfilePicture = async (data) => {
     try {
-        return await apiClient.patch('/users/updateProfilePicture', data, { 
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
+        return await apiClient.patch('/users/updateProfilePicture', data, {
+            headers: { 'Content-Type': 'multipart/form-data' }
         });
     } catch (e) {
-        return {
-            error: true,
-            e
-        };
+        return { error: true, e };
     }
 };
 
@@ -236,157 +197,134 @@ export const filterRooms = async (params) => {
     try {
         return await apiClient.get('/rooms/filterRooms', { params });
     } catch (e) {
-        return {
-            error: true,
-            e
-        };
+        return { error: true, e };
     }
 };
 
 export const getHosts = async () => {
-  try {
-    const response = await apiClient.get("/users");
-    console.log('Respuesta de /users:', response.data);
-    const allUsers = response.data.users || [];
-    return allUsers.filter(user => user.role === "HOST_ROLE");
-  } catch (error) {
-    return [];
-  }
+    try {
+        const response = await apiClient.get("/users");
+        const allUsers = response.data.users || [];
+        return allUsers.filter(user => user.role === "HOST_ROLE");
+    } catch (error) {
+        return [];
+    }
 };
 
-
 export const getHotels = async () => {
-  try {
-    const response = await apiClient.get("/hotels/")
-    return response.data
-  } catch (error) {
-    throw error
-  }
-}
+    try {
+        const response = await apiClient.get("/hotels/");
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
 
 export const getHotelById = async (hotelId) => {
-  try {
-    const response = await apiClient.get(`/hotels/findHotel/${hotelId}`)
-    return response.data
-  } catch (error) {
-    throw error
-  }
-}
+    try {
+        const response = await apiClient.get(`/hotels/findHotel/${hotelId}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
 
 export const createHotel = async (formData) => {
-  try {
-    const response = await apiClient.post("/hotels/createHotel", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data"
-      }
-    });
-    return response.data;
-  } catch (error) {
-    throw new Error(error.response?.data?.msg || "Error al crear el hotel");
-  }
+    try {
+        const response = await apiClient.post("/hotels/createHotel", formData, {
+            headers: { "Content-Type": "multipart/form-data" }
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.msg || "Error al crear el hotel");
+    }
 };
 
 export const updateHotel = async (hid, data) => {
-  try {
-    const response = await apiClient.put(`/hotels/updateHotel/${hid}`, data);
-
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
+    try {
+        const response = await apiClient.put(`/hotels/updateHotel/${hid}`, data);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
 };
-  
+
 export const createEvent = async (data) => {
-  try {
-    return await apiClient.post("/events/createEvent", data, {
-      headers: { "Content-Type": "multipart/form-data" }
-    });
-  } catch (e) {
-    return {
-      error: true,
-      e
-    };
-  }
+    try {
+        return await apiClient.post("/events/createEvent", data, {
+            headers: { "Content-Type": "multipart/form-data" }
+        });
+    } catch (e) {
+        return { error: true, e };
+    }
 };
-
 
 export const updateEvent = async (eid, data) => {
-  try {
-    return await apiClient.put(`/events/editEvent/${eid}`, data);
-  } catch (e) {
-    return {
-      error: true,
-      e
-    };
-  }
+    try {
+        return await apiClient.put(`/events/editEvent/${eid}`, data);
+    } catch (e) {
+        return { error: true, e };
+    }
 };
 
 export const deleteEvent = async (eid) => {
-  try {
-    return await apiClient.delete(`/events/deleteEvent/${eid}`);
-
-export const deleteHotel = async (hid) => {
-  try {
-    const response = await apiClient.delete(`/hotels/deleteHotel/${hid}`);
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
+    try {
+        return await apiClient.delete(`/events/deleteEvent/${eid}`);
+    } catch (e) {
+        return { error: true, e };
+    }
 };
 
-export async function addHotelComment(hid, data) {
-  const token = localStorage.getItem("token"); 
-  return await apiClient.patch(`/hotels/addComment/${hid}`, data);
-}
+export const deleteHotel = async (hid) => {
+    try {
+        const response = await apiClient.delete(`/hotels/deleteHotel/${hid}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const addHotelComment = async (hid, { rating, comment }) => {
+    try {
+        const response = await apiClient.patch(`/hotels/addComment/${hid}`, { rating, comment });
+        return response.data;
+    } catch (error) {
+        if (error.response?.data?.msg) {
+            return { success: false, msg: error.response.data.msg };
+        }
+        return { success: false, msg: "Error de conexión o desconocido" };
+    }
+};
 
 export const createReservation = async (rid, reservationData) => {
     try {
         return await apiClient.post(`/reservations/createReser/${rid}`, reservationData);
-
-export const addHotelComment = async (hid, { rating, comment }) => {
-  try {
-    const response = await apiClient.patch(`/hotels/addComment/${hid}`, {
-      rating,
-      comment,
-    });
-    return response.data;
-  } catch (error) {
-    if (error.response && error.response.data && error.response.data.msg) {
-      return { success: false, msg: error.response.data.msg };
+    } catch (e) {
+        return { error: true, e };
     }
-    return { success: false, msg: "Error de conexión o desconocido" };
-  }
 };
 
 export const getRoomsByHotel = async (hid) => {
     try {
         return await apiClient.get(`/hotels/getRoomsByHotel/${hid}`);
     } catch (e) {
-        return {
-            error: true,
-            e
-        };
+        return { error: true, e };
     }
 };
 
 export const getReservationsByRoom = async (rid) => {
-  try {
-    return await apiClient.get(`/reservations/listReserByRoom/${rid}`
-    );
-  } catch (e) {
-    return {
-      error: true,
-      e
-    };
-  }
-};
-export const getClientsHost = async () => { 
     try {
-        return await apiClient.get(`/hotels/clients`)
+        return await apiClient.get(`/reservations/listReserByRoom/${rid}`);
     } catch (e) {
-       return {
-            error: true,
-            e
-        };  
+        return { error: true, e };
     }
-}
+};
+
+export const getClientsHost = async () => {
+    try {
+        return await apiClient.get(`/hotels/clients`);
+    } catch (e) {
+        return { error: true, e };
+    }
+};
+

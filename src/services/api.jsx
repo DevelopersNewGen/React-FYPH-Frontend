@@ -281,3 +281,22 @@ export const getRoomsByHotel = async (hid) => {
 };
 
 
+export const getTopHotels = async (limit = 5) => {
+  try {
+    const response = await apiClient.get(`/report/getTopHotels`, { params: { limit } });
+    return response.data;
+  } catch (error) {
+    return { success: false, error };
+  }
+};
+
+export const getHotelReservations = async (hid) => {
+  try {
+    const response = await apiClient.get(`/report/getHotelReservations/${hid}`);
+    return response.data;
+  } catch (error) {
+    return { success: false, error };
+  }
+};
+
+

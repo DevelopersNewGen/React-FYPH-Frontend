@@ -9,6 +9,7 @@ import { HotelPage } from "./pages/hotelPage/hotelPage.jsx";
 import { HotelDetailsPage } from "./pages/hotelPage/HotelDetailsPage.jsx";
 import { HotelAddPage } from "./pages/hotelPage/HotelAddPage.jsx";
 import RoomCardByHotel from "./pages/room/RoomCardByHotel";
+import ReportPage from "./pages/report/ReportPage"; // <-- Importa la page
 
 export const routes = [
   { path: "/*", element: <DashboardPage /> },
@@ -16,11 +17,12 @@ export const routes = [
   { path: "/auth", element: <AuthPage /> },
   { path: "/hotels", element: <HotelPage /> },
   { path: "/hotels/detalles/:hid", element: <HotelDetailsPage /> },
-  {path: "/profile", element: <ProfilePage/>},
+  { path: "/profile", element: <ProfilePage/>},
   { path: "/hotels/add", element: <HotelAddPage /> },
   { path: '/habitaciones', element: <RoomPage /> },
   { path: '/habitaciones/detalles/:rid', element: <RoomDetails /> },
   { path: '/habitaciones/agregar', element: <RoomAddPage /> },
-  { path: "/hoteles/:hid/habitaciones", element: <RoomCardByHotel /> }
+  { path: "/hoteles/:hid/habitaciones", element: <RoomCardByHotel /> },
+  { path: "/Estadisticas", element: <ReportPage /> } // <-- Ruta para Estadísticas
 ];
 

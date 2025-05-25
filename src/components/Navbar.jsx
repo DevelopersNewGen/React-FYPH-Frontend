@@ -47,6 +47,9 @@ export const ResponsiveAppBar = ({ role }) => {
     navigate("/habitaciones");
       } else if (page === "Eventos") {
       navigate("/eventos");
+      } else if (page === "Estadisticas") {
+    navigate("/Estadisticas");
+      
     }
 
   };

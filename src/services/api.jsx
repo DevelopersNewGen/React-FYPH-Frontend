@@ -118,13 +118,22 @@ export const getUser = async () => {
     }
 }
 
-export const listHotelsWithReservationCount = async () => {
+
+
+export const getTopHotels = async (limit = 5) => {
   try {
-    return await apiClient.get('/reports/getTopHotels');
-  } catch (e) {
-    return {
-      error: true,
-      e
-    };
+    const response = await apiClient.get(`/reports/getTopHotels`, { params: { limit } });
+    return response.data;
+  } catch (error) {
+    return { success: false, error };
+  }
+};
+
+export const getHotelReservations = async (hid) => {
+  try {
+    const response = await apiClient.get(`/reports/getHotelReservations/${hid}`);
+    return response.data;
+  } catch (error) {
+    return { success: false, error };
   }
 };

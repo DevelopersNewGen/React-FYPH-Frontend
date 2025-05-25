@@ -39,8 +39,9 @@ export const ResponsiveAppBar = ({role}) => {
   const handlePages = (page) => { // accion de links de navbar
     if (page === "Usuarios") {
       navigate("/user")
-    } else if (page === "Estadisticas") {
-      navigate("/report")
+    }  else if (page === "Estadisticas") {
+    navigate("/Estadisticas");
+      
     }
   };
 

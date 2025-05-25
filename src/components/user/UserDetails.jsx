@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Card, Box, TextField, CardContent, Avatar, List, ListItem, ListItemText, Divider, Typography, Button } from '@mui/material'
 import { PasswordForm } from './PasswordForm'
 import { useUser } from '../../shared/hooks'
+import EditIcon from '@mui/icons-material/Edit';
+import { validateUsername, validateUsernameMessage } from '../../shared/validators/validateUsername'
+import { validateEmail, validateEmailMessage } from '../../shared/validators/validateEmail'
 
-export const UserDetails = ({user, isAdmin}) => {
+export const UserDetails = ({user, isAdmin, deleteUser}) => {
   const [activeView, setActiveView] = useState('perfil');
   const [editMode, setEditMode] = useState(false);
   const [editPassword, setEditPassword] = useState(user);
@@ -11,7 +14,9 @@ export const UserDetails = ({user, isAdmin}) => {
     name: user?.name || '',
     email: user?.email || ''
   });
-  const { updatePassword } = useUser();
+  const [errors, setErrors] = useState({ name: '', email: '' });
+  const { updatePassword, updateProfilePicture, updateUser } = useUser();
+  const fileInputRef = useRef();
 
   useEffect(() => {
     setForm({
@@ -21,16 +26,50 @@ export const UserDetails = ({user, isAdmin}) => {
   }, [user]);
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
+
+    let errorMsg = '';
+    if (name === 'name' && !validateUsername(value)) {
+      errorMsg = validateUsernameMessage;
+    }
+    if (name === 'email' && !validateEmail(value)) {
+      errorMsg = validateEmailMessage;
+    }
+    setErrors(prev => ({ ...prev, [name]: errorMsg }));
   };
 
   const handleEditClick = () => {
+
+    if (editMode) {
+      updateUser(form)
+    }
     setEditMode(!editMode);
   };
 
   const handleEditPassword = () => {
     setEditPassword(!editPassword);
   }
+
+  const handleAvatarEditClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      updateProfilePicture(file);
+    }
+  };
+
+  const handleDeleteUser = async () => {
+    const confirmDelete = window.confirm('¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.');
+    if (confirmDelete) {
+      await deleteUser();
+      window.location.reload();
+    }
+  }
+
   return (
     <Card sx={{ minWidth: 1250, mx: 'auto', mt: 6, minHeight: 500, display: 'flex' }}>
       <Box sx={{ width: 220, bgcolor: '#f5f5f5', borderRight: '1px solid #e0e0e0', display: 'flex', flexDirection: 'column', alignItems: 'center', py: 4 }}>
@@ -52,10 +91,37 @@ export const UserDetails = ({user, isAdmin}) => {
       <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
         {activeView === 'perfil' && (
           <>
-            <Avatar
-              src={user?.img || ''}
-              sx={{ width: 120, height: 120, mb: 3 }}
-            />
+            <Box sx={{ position: 'relative', display: 'inline-block', mb: 3 }}>
+              <Avatar
+                src={user?.img || ''}
+                sx={{ width: 120, height: 120 }}
+              />
+              <Box
+                sx={{
+                  position: 'absolute',
+                  bottom: 8,
+                  right: 8,
+                  bgcolor: 'white',
+                  borderRadius: '50%',
+                  p: 0.5,
+                  boxShadow: 1,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+                onClick={handleAvatarEditClick}
+              >
+                <EditIcon fontSize="small" color="action" />
+                <input
+                  type="file"
+                  accept="image/*"
+                  ref={fileInputRef}
+                  style={{ display: 'none' }}
+                  onChange={handleFileChange}
+                />
+              </Box>
+            </Box>
             <TextField
               label="Nombre"
               name="name"
@@ -65,6 +131,8 @@ export const UserDetails = ({user, isAdmin}) => {
               margin="dense"
               sx={{ maxWidth: 350, mb: 2 }}
               disabled={!editMode}
+              error={!!errors.name}
+              helperText={errors.name}
             />
             <TextField
               label="Email"
@@ -75,11 +143,18 @@ export const UserDetails = ({user, isAdmin}) => {
               margin="dense"
               sx={{ maxWidth: 350, mb: 2 }}
               disabled={!editMode}
+              error={!!errors.email}
+              helperText={errors.email}
             />
             <Button 
               onClick={handleEditClick}
             >
               {editMode ? 'Guardar' : 'Editar'}
+            </Button>
+            <Button
+              onClick={handleDeleteUser}
+            >
+              Eliminar usuario
             </Button>
             {!isAdmin && (
               <Button 
@@ -88,8 +163,6 @@ export const UserDetails = ({user, isAdmin}) => {
                 {editPassword ? 'Cancelar' : 'Cambiar contraseña'}
               </Button>)
             }
-            
-
             {editPassword && (
               <PasswordForm
                 onSubmit={async (data) => {
@@ -102,12 +175,33 @@ export const UserDetails = ({user, isAdmin}) => {
         )}
 
         {activeView === 'historial' && (
-          <Typography variant="body1">Aquí va el historial del usuario.</Typography>
+          <> 
+            {user.reservations.map((reservation) => (
+              <Box key={reservation.id} sx={{ mb: 2, p: 2, border: '1px solid #e0e0e0', borderRadius: 1, width: '100%', display: 'flex', flexDirection: 'column' }}>
+                <Typography variant="body1">habitacion: {reservation.room.numRoom}</Typography>
+                <Typography variant="body1">Hotel: {reservation.room.hotel.name}</Typography>
+                <Typography variant="body1">Fecha de entrada: {reservation.startDate ? reservation.startDate.slice(0, 10) : ''}</Typography>
+                <Typography variant="body1">Fecha de salida: {reservation.exitDate ? reservation.exitDate.slice(0, 10): " "}</Typography>
+                <Typography variant="body1">Estado: {reservation.status ? 'Activa' : 'Pasada'}</Typography>
+              </Box>
+            ))}
+          </>
         )}
 
         {activeView === 'reservaciones' && (
-          <Typography variant="body1">Aquí van las reservaciones del usuario.</Typography>
-        )}
+          <> 
+            {user.reservations
+              .filter(reservation => reservation.status)
+              .map((reservation) => (
+              <Box key={reservation.id} sx={{ mb: 2, p: 2, border: '1px solid #e0e0e0', borderRadius: 1, width: '100%', display: 'flex', flexDirection: 'column' }}>
+                <Typography variant="body1">habitacion: {reservation.room.numRoom}</Typography>
+                <Typography variant="body1">Hotel: {reservation.room.hotel.name}</Typography>
+                <Typography variant="body1">Fecha de entrada: {reservation.startDate ? reservation.startDate.slice(0, 10) : ''}</Typography>
+                <Typography variant="body1">Fecha de salida: {reservation.exitDate ? reservation.exitDate.slice(0, 10): " "}</Typography>
+                <Typography variant="body1">Estado: {reservation.status ? 'Activa' : ''}</Typography>
+              </Box>
+            ))}
+          </>        )}
       </CardContent>
     </Card>
   )

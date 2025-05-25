@@ -139,3 +139,40 @@ export const updatePassword = async (data) => {
         };
     }
 };
+
+export const updateUser = async (data) => {
+    try {
+        return await apiClient.put('/users/updateUser', data);
+    } catch (e) {
+        return {
+            error: true,
+            e
+        };
+    }
+};
+
+export const deleteUser = async () => {
+    try {
+        return await apiClient.delete(`/users/deleteUserClient`);
+    } catch (e) {
+        return {
+            error: true,
+            e
+        };
+    }
+}
+
+export const updateProfilePicture = async (data) => {
+    try {
+        return await apiClient.patch('/users/updateProfilePicture', data, { 
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+    } catch (e) {
+        return {
+            error: true,
+            e
+        };
+    }
+};

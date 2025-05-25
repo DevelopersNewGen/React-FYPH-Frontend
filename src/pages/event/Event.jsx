@@ -21,7 +21,7 @@ const Event = () => {
         <div
           style={{
             display: "flex",
-            justifyContent: "center",
+            justifyContent: "space-between",
             alignItems: "center",
             gap: 16,
             marginBottom: 16,
@@ -42,12 +42,10 @@ const Event = () => {
               ))}
             </select>
           </div>
-          {role === "ADMIN_ROLE" && (
-            <AddEventButton
-              role={role}
-              onClick={() => navigate("/eventos/nuevo")}
-            />
-          )}
+          <AddEventButton
+            role={role}
+            onClick={() => navigate("/eventos/nuevo")}
+          />
         </div>
         {loading ? (
           <div>Cargando eventos...</div>

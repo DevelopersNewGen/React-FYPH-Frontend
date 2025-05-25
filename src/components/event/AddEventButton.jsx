@@ -2,8 +2,7 @@ import React from "react";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import Button from "@mui/material/Button";
 
-const AddEventButton = ({ role, onClick }) => {
-  if (role !== "ADMIN_ROLE") return null;
+const AddEventButton = ({ onClick }) => {
   return (
     <Button
       variant="contained"

@@ -49,15 +49,12 @@ export function EventDetailContent({
             <AttachMoneyIcon fontSize="small" /> <b>Costo:</b>{" "}
             {evento.cost ? `$${evento.cost}` : "Gratis"}
           </p>
-          {/* Botones debajo de costo */}
-          {role === "ADMIN_ROLE" && (
-            <EventActions
-              event={evento}
-              onEventUpdated={onEventUpdated}
-              onEventDeleted={onEventDeleted}
-              role={role}
-            />
-          )}
+          <EventActions
+            event={evento}
+            onEventUpdated={onEventUpdated}
+            onEventDeleted={onEventDeleted}
+            role={role}
+          />
         </div>
       </div>
       <div className="event-right">

@@ -131,7 +131,9 @@ export const getUser = async () => {
   
 export const createEvent = async (data) => {
   try {
-    return await apiClient.post("/events/createEvent", data);
+    return await apiClient.post("/events/createEvent", data, {
+      headers: { "Content-Type": "multipart/form-data" }
+    });
   } catch (e) {
     return {
       error: true,
@@ -139,6 +141,7 @@ export const createEvent = async (data) => {
     };
   }
 };
+
 
 export const updateEvent = async (eid, data) => {
   try {

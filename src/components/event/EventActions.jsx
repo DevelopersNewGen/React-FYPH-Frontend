@@ -47,8 +47,6 @@ export default function EventActions({ event, onEventUpdated, onEventDeleted, ro
     }
   };
 
-  if (role !== "ADMIN_ROLE") return null;
-
   return (
     <>
       <div className="event-actions-buttons">

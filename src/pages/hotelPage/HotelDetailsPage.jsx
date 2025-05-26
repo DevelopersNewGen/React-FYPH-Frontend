@@ -13,10 +13,8 @@ export const HotelDetailsPage = () => {
   const [editing, setEditing] = useState(false);
   const [refetchKey, setRefetchKey] = useState(0);
 
-  
   const { hotel, loading, error } = useHotelDetails(hid, refetchKey);
 
-  
   const handleSuccess = () => {
     setEditing(false);
     setRefetchKey(k => k + 1); 

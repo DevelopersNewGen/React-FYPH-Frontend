@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { useHotelEdit } from "../../shared/hooks/useHotelEdit";
 import {
   Box, TextField, Button, Typography, CircularProgress, Stack, Paper
 } from "@mui/material";
 
-export default function EditHotel({ hotel, onClose, onSuccess, setRefetchKey }) {
-  const [form, setForm] = useState({
+function useEditHotelForm(hotel, onSuccess, onClose) {
+  const [form, setForm] = React.useState({
     name: hotel?.name || "",
     description: hotel?.description || "",
     address: hotel?.address || "",
@@ -18,17 +18,40 @@ export default function EditHotel({ hotel, onClose, onSuccess, setRefetchKey }) 
   };
 
   const handleSubmit = async e => {
-  e.preventDefault();
-  setError("");
-  setSuccess("");
-  const hotelId = hotel._id || hotel.id || hotel.hid;
-  if (!hotelId) {
-    setError("No se encontró el ID del hotel.");
-    return;
-  }
-  const res = await editHotel(hotelId, form); 
-  if (res && res.success && onSuccess) onSuccess();
-};
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+    const hotelId = hotel._id || hotel.id || hotel.hid;
+    if (!hotelId) {
+      setError("No se encontró el ID del hotel.");
+      return;
+    }
+    const res = await editHotel(hotelId, form);
+    if (res && res.success && onSuccess) onSuccess();
+  };
+
+  return {
+    form,
+    handleChange,
+    handleSubmit,
+    loading,
+    error,
+    success,
+    setError,
+    setSuccess,
+    onClose
+  };
+}
+
+export default function EditHotel({ hotel, onClose, onSuccess, setRefetchKey }) {
+  const {
+    form,
+    handleChange,
+    handleSubmit,
+    loading,
+    error,
+    success
+  } = useEditHotelForm(hotel, onSuccess, onClose);
 
   return (
     <Paper elevation={6} sx={{ p: 4, borderRadius: 3, width: 400, ml: 4 }}>

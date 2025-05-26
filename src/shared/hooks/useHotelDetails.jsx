@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { getHotelById } from "../../services/index.js"
 
-export const useHotelDetails = (hotelId) => {
+export const useHotelDetails = (hotelId, refetchKey = 0) => {
   const [hotel, setHotel] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -19,7 +19,7 @@ export const useHotelDetails = (hotelId) => {
       }
     }
     fetchHotel()
-  }, [hotelId])
+  }, [hotelId, refetchKey]) 
 
   return { hotel, loading, error }
 }

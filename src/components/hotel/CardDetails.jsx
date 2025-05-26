@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box, Typography, IconButton, Button } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -7,11 +7,10 @@ import { useUser } from "../../shared/hooks/useUser";
 import { useDeleteHotel } from "../../shared/hooks/useDeleteHotel";
 import "../../pages/hotelPage/Hotel.css";
 
-export default function CardDetails({ hotel, onEdit, onDelete }) {
-    const [currentImage, setCurrentImage] = useState(0);
+function useCardDetails(hotel, onEdit, onDelete) {
+    const [currentImage, setCurrentImage] = React.useState(0);
     const { role, user, isLoading } = useUser();
     const navigate = useNavigate();
-
     const {
         removeHotel,
         loading: loadingDelete,
@@ -43,9 +42,6 @@ export default function CardDetails({ hotel, onEdit, onDelete }) {
         }
     };
 
-    if (!hotel) return null;
-    if (isLoading) return <div>Cargando usuario...</div>;
-
     const fallbackImages = [
         "https://i.ibb.co/CKXHZcB/burned1.jpg",
         "https://i.ibb.co/FxPSYFq/burned2.jpg",
@@ -62,6 +58,48 @@ export default function CardDetails({ hotel, onEdit, onDelete }) {
     const handleNext = () => {
         setCurrentImage((prev) => (prev === images.length - 1 ? 0 : prev + 1));
     };
+
+    return {
+        currentImage,
+        setCurrentImage,
+        role,
+        user,
+        isLoading,
+        removeHotel,
+        loadingDelete,
+        errorDelete,
+        successDelete,
+        puedeEditarOEliminar,
+        handleEditHotel,
+        handleDeleteHotel,
+        images,
+        handlePrev,
+        handleNext,
+        navigate
+    };
+}
+
+export default function CardDetails({ hotel, onEdit, onDelete }) {
+    const {
+        currentImage,
+        setCurrentImage,
+        role,
+        user,
+        isLoading,
+        loadingDelete,
+        errorDelete,
+        successDelete,
+        puedeEditarOEliminar,
+        handleEditHotel,
+        handleDeleteHotel,
+        images,
+        handlePrev,
+        handleNext,
+        navigate
+    } = useCardDetails(hotel, onEdit, onDelete);
+
+    if (!hotel) return null;
+    if (isLoading) return <div>Cargando usuario...</div>;
 
     return (
         <Box
@@ -192,8 +230,7 @@ export default function CardDetails({ hotel, onEdit, onDelete }) {
                     Ver habitaciones
                 </Button>
 
-                {/* Mueve los botones de editar/eliminar/historial aquí, al final */}
-                <Box sx={{ flexGrow: 1 }} /> {/* Empuja los botones hacia abajo */}
+                <Box sx={{ flexGrow: 1 }} />
                 {puedeEditarOEliminar && (
                     <Box sx={{ display: "flex", gap: 2, justifyContent: "center", mt: 8 }}>
                         <Button

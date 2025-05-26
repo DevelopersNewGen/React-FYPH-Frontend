@@ -67,7 +67,7 @@ export const DashboardPage = () => {
         </div>
 
       ) : (
-        <div style={{ padding: '1rem' }}>
+        <div style={{ padding: '1rem', marginTop: '80px' }}>
           {role === 'ADMIN_ROLE' && (
             <div
               style={{
@@ -141,6 +141,6 @@ export const DashboardPage = () => {
           )}
         </div>
       )}
-    </>
-  );
+    </>
+  );
 };

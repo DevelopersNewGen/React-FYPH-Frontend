@@ -20,9 +20,9 @@ import HistoryIcon from '@mui/icons-material/History';
 import LogoutIcon from '@mui/icons-material/Logout';
 import '../assets/navbar.css';
 
-const pagesAdmin = ['Hoteles', 'Usuarios', 'Solicitudes', 'Estadisticas', 'Eventos'];
+const pagesAdmin = ['Usuarios', 'Solicitudes', 'Estadisticas', 'Eventos'];
 const pagesHost = ['Reservaciones', 'Usuarios', 'Habitaciones', 'Servicios'];
-const pagesUser = ['Hoteles', 'Eventos'];
+const pagesUser = ['Eventos'];
 
 const settings = [
   { icon: MiscellaneousServicesIcon, text: 'Perfil' },
@@ -60,7 +60,6 @@ export const ResponsiveAppBar = ({ role }) => {
 
   const handlePages = (page) => {
     const routes = {
-      Hoteles: '/hotels',
       Usuarios: '/user',
       Solicitudes: '/solicitudes',
       Estadisticas: '/estadisticas',

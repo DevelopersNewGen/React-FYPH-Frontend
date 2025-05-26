@@ -117,9 +117,12 @@ export default function CreateEventForm() {
   };
 
   return (
-    <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-      <Paper elevation={4} sx={{ p: 4, borderRadius: 3, maxWidth: 500 }}>
-        <Typography variant="h5" mb={2} align="center" fontWeight={600}>
+    <Box className="section-container" sx={{ marginTop: "280px" }}>
+      <video className="section-bg" autoPlay loop muted>
+        <source src="https://res.cloudinary.com/daherc5uz/video/upload/v1748216098/ywxwfilf1ajkt1eiiiw7.mp4" type="video/mp4" />
+      </video>
+      <Paper className="section-form" elevation={4} sx={{ p: 4, borderRadius: 3, maxWidth: 500 }}>
+        <Typography className="section-title" variant="h5" mb={2} align="center" fontWeight={600}>
           Crear Evento
         </Typography>
         <form onSubmit={handleSubmit} encType="multipart/form-data">
@@ -129,6 +132,7 @@ export default function CreateEventForm() {
             fullWidth
             required
             margin="normal"
+            className="section-input"
             value={form.name}
             onChange={handleChange}
             error={!!errors.name}
@@ -140,6 +144,7 @@ export default function CreateEventForm() {
             fullWidth
             required
             margin="normal"
+            className="section-input"
             multiline
             minRows={2}
             value={form.description}
@@ -155,6 +160,7 @@ export default function CreateEventForm() {
               fullWidth
               required
               margin="normal"
+              className="section-input"
               InputLabelProps={{ shrink: true }}
               value={form.date}
               onChange={handleChange}
@@ -168,6 +174,7 @@ export default function CreateEventForm() {
               fullWidth
               required
               margin="normal"
+              className="section-input"
               InputLabelProps={{ shrink: true }}
               inputProps={{ step: 300 }}
               value={form.time}
@@ -182,6 +189,7 @@ export default function CreateEventForm() {
             fullWidth
             required
             margin="normal"
+            className="section-input"
             value={form.location}
             onChange={handleChange}
             error={!!errors.location}
@@ -194,6 +202,7 @@ export default function CreateEventForm() {
             fullWidth
             required
             margin="normal"
+            className="section-input"
             value={form.category}
             onChange={handleChange}
             error={!!errors.category}
@@ -211,6 +220,7 @@ export default function CreateEventForm() {
             type="number"
             fullWidth
             margin="normal"
+            className="section-input"
             value={form.cost}
             onChange={handleChange}
             error={!!errors.cost}
@@ -220,6 +230,7 @@ export default function CreateEventForm() {
           <Button
             variant="outlined"
             component="label"
+            className="section-button"
             fullWidth
             sx={{
               mt: 2,
@@ -234,6 +245,7 @@ export default function CreateEventForm() {
               type="file"
               hidden
               multiple
+              className="section-input"
               accept="image/*"
               onChange={handleImageChange}
             />
@@ -257,6 +269,7 @@ export default function CreateEventForm() {
             variant="contained"
             color="primary"
             fullWidth
+            className="section-button"
             sx={{ mt: 2 }}
             disabled={isLoading}
           >
@@ -264,6 +277,6 @@ export default function CreateEventForm() {
           </Button>
         </form>
       </Paper>
-    </Box>
-  );
+    </Box>
+  );
 }

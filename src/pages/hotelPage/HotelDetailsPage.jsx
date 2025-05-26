@@ -26,7 +26,7 @@ export const HotelDetailsPage = () => {
   if (error) return <p className="error">{error}</p>;
 
   return (
-    <div className="hotel-page-container" style={{ marginTop: "80px" }}>
+    <div className="hotel-page-container" style={{ marginTop: 0 }}>
       <ResponsiveAppBar role={role} />
       <header className="hotel-header">
         <h1>Detalle del Hotel</h1>
@@ -35,9 +35,10 @@ export const HotelDetailsPage = () => {
       <div style={{
         display: "flex",
         justifyContent: "center",
-        alignItems: "flex-start",
+        alignItems: "center", 
         gap: "2rem",
-        marginTop: 32
+        minHeight: "80vh", 
+        marginTop: 0 
       }}>
         {hotel && (
           <>

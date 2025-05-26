@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useUser } from "../../shared/hooks/useUser";
 import { useDeleteHotel } from "../../shared/hooks/useDeleteHotel";
 import { useHotelComment } from "../../shared/hooks/useHotelComment";
-import { getRoomsByHotel, getHotelById, findUserById } from "../../services/api";
+import { getRoomsByHotel, getHotelById, getUserById } from "../../services/api";
 import "../../pages/hotelPage/Hotel.css";
 
 export default function CardDetails({ hotel, onEdit, onDelete }) {
@@ -48,7 +48,7 @@ export default function CardDetails({ hotel, onEdit, onDelete }) {
                     let userName = "Usuario";
                     try {
                         if (c.user) {
-                            const userRes = await findUserById(c.user);
+                            const userRes = await getUserById(c.user);
                             userName = userRes?.user?.name || userRes?.name || userRes?.user?.email || "Usuario";
                         }
                     } catch { }

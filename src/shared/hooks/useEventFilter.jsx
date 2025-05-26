@@ -8,19 +8,19 @@ export function useEventFilter() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
 
- useEffect(() => {
-  const fetchEvents = async () => {
-    try {
-      const data = await getEvents();
-      setEvents(data.data?.events || []);
-    } catch (error) {
-      setEvents([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-  fetchEvents();
-}, []);
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const data = await getEvents();
+        setEvents(data.events || []);
+      } catch (error) {
+        setEvents([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchEvents();
+  }, []);
 
   const eventosFiltrados = useMemo(() => {
     if (filter === "todos") return events;

@@ -72,7 +72,7 @@ export const UserDetails = ({ user, isAdmin = false, deleteUser }) => {
   };
 
   return (
-    <Card sx={{ minWidth: 1250, mx: 'auto', mt: 6, minHeight: 500, display: 'flex' }}>
+    <Card sx={{ maxWidth: 800, mx: 'auto', mt: 6, minHeight: 400, display: 'flex' }}>
       <Box sx={{ width: 220, bgcolor: '#f5f5f5', borderRight: '1px solid #e0e0e0', display: 'flex', flexDirection: 'column', alignItems: 'center', py: 4 }}>
         <Typography variant="h6" sx={{ mb: 2 }}>Menú</Typography>
         <List sx={{ width: '100%' }}>

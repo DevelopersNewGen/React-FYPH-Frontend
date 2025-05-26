@@ -13,6 +13,7 @@ apiClient.interceptors.request.use(
                 const parsedUser = JSON.parse(userDetails);
                 if (parsedUser?.token) {
                     config.headers.Authorization = `Bearer ${parsedUser.token}`;
+                    console.log("Token agregado al header:", parsedUser.token); 
                 }
             } catch (err) {
                 console.warn("Error al leer el token:", err);
@@ -149,25 +150,9 @@ export const createRoom = async (formData) => {
     }
 };
 
-export const updateUser = async (data) => {
-    try {
-        return await apiClient.put('/users/updateUser', data);
-    } catch (e) {
-        return { error: true, e };
-    }
-};
-
 export const updateRoom = async (rid, data) => {
     try {
-        return await apiClient.put(`/rooms/updateRoom/${rid}`, data);
-    } catch (e) {
-        return { error: true, e };
-    }
-};
-
-export const deleteUser = async () => {
-    try {
-        return await apiClient.delete(`/users/deleteUserClient`);
+        return await apiClient.put(`/rooms/updateRoom/${rid}`, data); 
     } catch (e) {
         return { error: true, e };
     }
@@ -176,16 +161,6 @@ export const deleteUser = async () => {
 export const updateRoomImages = async (rid, formData) => {
     try {
         return await apiClient.patch(`/rooms/updateImages/${rid}`, formData, {
-            headers: { 'Content-Type': 'multipart/form-data' }
-        });
-    } catch (e) {
-        return { error: true, e };
-    }
-};
-
-export const updateProfilePicture = async (data) => {
-    try {
-        return await apiClient.patch('/users/updateProfilePicture', data, {
             headers: { 'Content-Type': 'multipart/form-data' }
         });
     } catch (e) {
@@ -249,32 +224,6 @@ export const updateHotel = async (hid, data) => {
     }
 };
 
-export const createEvent = async (data) => {
-    try {
-        return await apiClient.post("/events/createEvent", data, {
-            headers: { "Content-Type": "multipart/form-data" }
-        });
-    } catch (e) {
-        return { error: true, e };
-    }
-};
-
-export const updateEvent = async (eid, data) => {
-    try {
-        return await apiClient.put(`/events/editEvent/${eid}`, data);
-    } catch (e) {
-        return { error: true, e };
-    }
-};
-
-export const deleteEvent = async (eid) => {
-    try {
-        return await apiClient.delete(`/events/deleteEvent/${eid}`);
-    } catch (e) {
-        return { error: true, e };
-    }
-};
-
 export const deleteHotel = async (hid) => {
     try {
         const response = await apiClient.delete(`/hotels/deleteHotel/${hid}`);
@@ -296,14 +245,6 @@ export const addHotelComment = async (hid, { rating, comment }) => {
     }
 };
 
-export const createReservation = async (rid, reservationData) => {
-    try {
-        return await apiClient.post(`/reservations/createReser/${rid}`, reservationData);
-    } catch (e) {
-        return { error: true, e };
-    }
-};
-
 export const getRoomsByHotel = async (hid) => {
     try {
         return await apiClient.get(`/hotels/getRoomsByHotel/${hid}`);
@@ -312,9 +253,85 @@ export const getRoomsByHotel = async (hid) => {
     }
 };
 
+export const createReservation = async (rid, reservationData) => {
+    try {
+        return await apiClient.post(`/reservations/createReser/${rid}`, reservationData);
+    } catch (e) {
+        return { error: true, e };
+    }
+};
+
 export const getReservationsByRoom = async (rid) => {
     try {
         return await apiClient.get(`/reservations/listReserByRoom/${rid}`);
+    } catch (e) {
+        return { error: true, e };
+    }
+};
+
+export const getReservationById = async (rid) => {
+    try {
+        return await apiClient.get(`/reservations/listReser/${rid}`);
+    } catch (e) {
+        return { error: true, e };
+    }
+}
+
+export const deleteReservation = async (rid) => {
+    try {
+        return await apiClient.delete(`/reservations/deleteReser/${rid}`);
+    } catch (e) {
+        return { error: true, e };
+    }
+}
+
+export const getReservationByUser = async () => {
+    try {
+        return await apiClient.get(`/users/getReservations`)
+    } catch (e) {
+        return { error: true, e };
+    }
+}
+
+export const getReservationByHotel = async (hid) => {
+    try{
+        return await apiClient.get(`/hotels/getReservations/${hid}`)
+    }catch (e){
+        return{ error: true, e }
+    }
+};
+
+export const updateProfilePicture = async (data) => {
+    try {
+        return await apiClient.patch('/users/updateProfilePicture', data, {
+            headers: { 'Content-Type': 'multipart/form-data' }
+        });
+    } catch (e) {
+        return { error: true, e };
+    }
+};
+
+export const createEvent = async (data) => {
+    try {
+        return await apiClient.post("/events/createEvent", data, {
+            headers: { "Content-Type": "multipart/form-data" }
+        });
+    } catch (e) {
+        return { error: true, e };
+    }
+};
+
+export const updateEvent = async (eid, data) => {
+    try {
+        return await apiClient.put(`/events/editEvent/${eid}`, data);
+    } catch (e) {
+        return { error: true, e };
+    }
+};
+
+export const deleteEvent = async (eid) => {
+    try {
+        return await apiClient.delete(`/events/deleteEvent/${eid}`);
     } catch (e) {
         return { error: true, e };
     }

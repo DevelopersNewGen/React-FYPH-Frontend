@@ -84,3 +84,15 @@ html, body, #root {
   object-fit: cover;
   display: block;
 }
+
+.res-list-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  width: 100%;
+  justify-items: center;
+  box-sizing: border-box;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  
+}

@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Box, Button, TextField, Typography, Paper } from '@mui/material';
 import Link from '@mui/joy/Link';
@@ -129,4 +130,12 @@ export const Login = ({switchAuthHandler} ) => {
       </Paper>
     </Box>
   );
+<<<<<<< HEAD
 };
+=======
+};
+
+Login.propTypes = {
+  switchAuthHandler: PropTypes.func.isRequired,
+};
+>>>>>>> room-module

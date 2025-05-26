@@ -14,7 +14,7 @@ export default function HotelCard({ hotel }) {
   const navigate = useNavigate();
 
   const images = hotel?.images?.length > 0 ? hotel.images : [
-    "https://via.placeholder.com/345x220?text=Sin+imagen"
+    "https://via.placeholder.com/345x180?text=Sin+imagen"
   ];
 
   const handlePrev = () => {

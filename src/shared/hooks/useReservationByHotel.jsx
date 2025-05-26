@@ -1,31 +1,31 @@
-import { useState, useEffect } from 'react';
-import toast from 'react-hot-toast';
-import { listHotelsWithReservationCount } from '../../services/api';
+import { useState, useEffect, useCallback } from 'react'
+import toast from 'react-hot-toast'
+import { getReservationByHotel } from '../../services'
 
-export const useReservationByHotel = (limit = 10) => {
-  const [labels, setLabels] = useState([]);
-  const [values, setValues] = useState([]);
-  const [loading, setLoading] = useState(true);
+export const useReservationByHotel = (hid) =>{
+    const [reservations, setReservations] = useState([]);
+    const [isFetching, setIsFetching] = useState(false);
 
-  useEffect(() => {
-    const fetchHotels = async () => {
-      setLoading(true);
-      const res = await listHotelsWithReservationCount(limit);
-      if (res.error) {
-        const msg = res.e?.response?.data?.message
-          || 'Error al obtener la lista de hoteles';
-        toast.error(msg);
-        setLoading(false);
-        return;
-      }
-      const hotels = res.data.hotels || [];
-      setLabels(hotels.map(h => h.hotel));
-      setValues(hotels.map(h => h.numReservaciones));
-      setLoading(false);
+    const fetchReservations = useCallback(async () => {
+        if (!hid) return;
+        setIsFetching(true);
+        const res = await getReservationByHotel(hid);
+        if (res.error) {
+        toast.error(res.e?.response?.data?.message || 'Error al cargar reservaciones');
+        } else {
+        setReservations(res.data.reservations);
+        }
+
+        setIsFetching(false);
+    }, [hid]);
+
+    useEffect(() => {
+        fetchReservations();
+    }, [fetchReservations]);
+
+    return {
+        reservations,     
+        isFetching,       
+        refresh: fetchReservations 
     };
-
-    fetchHotels();
-  }, [limit]);
-
-  return { labels, values, loading };
-};
+}

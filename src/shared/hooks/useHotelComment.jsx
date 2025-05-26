@@ -1,4 +1,4 @@
-import { useState } from "react";
+  import { useState } from "react";
 import { addHotelComment } from "../../services/api"; 
 
 export function useHotelComment() {
@@ -15,6 +15,9 @@ export function useHotelComment() {
       if (res.success) {
         setSuccess("Comentario y calificación enviados correctamente");
         return { success: true, data: res };
+      } else {
+        setError(res.msg || "No se pudo enviar el comentario");
+        return { success: false, error: res.msg || "No se pudo enviar el comentario" };
       }
     } catch (err) {
       setError(err?.response?.data?.msg || "Error al enviar el comentario");

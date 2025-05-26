@@ -1,3 +1,4 @@
+
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
@@ -58,7 +59,7 @@ export const UserTable = ({users, isHost}) => {
     const navigate = useNavigate(); 
 
     const handleButtonClick = (id) => {
-       navigate(`/userDetails/${id}`); 
+        navigate(`/userDetails/${id}`); 
     };
 
     const rows = users.map(user => ({

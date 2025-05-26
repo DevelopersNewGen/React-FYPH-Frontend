@@ -6,6 +6,7 @@ import { useUser } from "../../shared/hooks";
 export const ProfilePage = () => {
   const { user, role, deleteUser } = useUser();
 
+  console.log(user)
   return (
     <div>
       <ResponsiveAppBar role={role} />

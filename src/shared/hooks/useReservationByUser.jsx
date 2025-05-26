@@ -1,31 +1,31 @@
 import { useState, useEffect, useCallback } from 'react';
 import toast from 'react-hot-toast';
-import { getReservationsByRoom } from '../../services/api';
+import { getReservationByUser } from '../../services/api';
 
-export const useReservationsByRoom = (rid) => {
+export const useReservationByUser = () => {
     const [reservations, setReservations] = useState([]);
     const [isFetching, setIsFetching] = useState(false);
 
     const fetchReservations = useCallback(async () => {
-        if (!rid) return;
         setIsFetching(true);
-        const res = await getReservationsByRoom(rid);
+        const res = await getReservationByUser();
+
         if (res.error) {
-        toast.error(res.e?.response?.data?.message || 'Error al cargar reservaciones');
+            toast.error(res.e?.response?.data?.message || 'Error al cargar reservaciones');
         } else {
-        setReservations(res.data.reservations);
+            setReservations(res.data.reservations || []);
         }
 
         setIsFetching(false);
-    }, [rid]);
+    }, []);
 
     useEffect(() => {
         fetchReservations();
     }, [fetchReservations]);
 
     return {
-        reservations,     
-        isFetching,       
-        refresh: fetchReservations 
+        reservations,
+        isFetching,
+        refresh: fetchReservations,
     };
 };

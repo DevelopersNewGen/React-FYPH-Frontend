@@ -14,6 +14,9 @@ import Event from "./pages/event/Event";
 import EventDetail from "./pages/event/EventDetail";
 import CreateEventPage from "./pages/event/CreateEventPage";
 import ReportPage from "./pages/report/ReportPage";
+import ReserAddPage from "./pages/reservation/ReservationAdd"
+import ReservationCardByRoom from "./pages/reservation/ReservationCardByRoom.jsx"
+import ReservationCardByHotel from "./pages/reservation/ReservationCardByHotel.jsx"
 
 export const routes = [
   { path: "/*", element: <DashboardPage /> },
@@ -31,6 +34,10 @@ export const routes = [
   { path: "/eventos", element: <Event /> },
   { path: "/eventos/:eid", element: <EventDetail /> },
   { path: "/eventos/nuevo", element: <CreateEventPage /> },
-  { path: "/Estadisticas", element: <ReportPage /> }
+  { path: "/Estadisticas", element: <ReportPage /> },
+  { path: "/reservas/agregar/:rid", element: <ReserAddPage />},
+  { path: "/reservacion/:rid", element: <ReserAddPage />},
+  { path: "/reservaciones/habitacion/:rid", element:<ReservationCardByRoom />},
+  { path: "/reservaciones/hotel/:hid", element:<ReservationCardByHotel/>}
 ];
 

@@ -1,0 +1,50 @@
+/* .navbar-appbar {
+  background-color: #006494 !important;
+}
+
+
+.navbar-login-link {
+  font-family: 'Monospace', monospace;
+  color: #f2f2f2 !important;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.navbar-login-link:hover {
+  color: #f2f2f2 !important;
+  text-decoration: none !important;
+  text-shadow: 0 2px 6px rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
+  cursor: pointer;
+} */
+
+
+.navbar-login-link {
+  font-family: 'Monospace', monospace;
+  color: #f2f2f2 !important;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.navbar-login-link:hover {
+  text-shadow: 0 2px 6px rgba(255, 255, 255, 0.4);
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  background-color: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+}
+
+.navbar-page-button {
+  transition: all 0.3s ease;
+  border-radius: 10px;
+}
+
+.navbar-page-button:hover {
+  transform: translateY(-3px) scale(1.05);
+  background-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}

@@ -15,6 +15,8 @@ import {
 
 import {useRegister} from "../../shared/hooks"
 
+import "../../assets/style.css";
+
 
 export const Register = ({ switchAuthHandler }) => {
   const { register, isLoading } = useRegister();
@@ -94,15 +96,13 @@ export const Register = ({ switchAuthHandler }) => {
 
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <Paper elevation={3} sx={{ p: 4, minWidth: 320 }}>
-        <Typography variant="h5" mb={2} align="center">
+    <Box className="section-container">
+      <video className="section-bg" autoPlay loop muted>
+        <source src="https://res.cloudinary.com/daherc5uz/video/upload/v1748216098/ywxwfilf1ajkt1eiiiw7.mp4" type="video/mp4" />
+      </video>
+
+      <Paper className="section-form" elevation={3} sx={{ p: 4, minWidth: 320 }}>
+        <Typography className="section-title"  variant="h5" mb={2} align="center">
           Crear cuenta
         </Typography>
         <form onSubmit={handleRegister}>
@@ -112,6 +112,7 @@ export const Register = ({ switchAuthHandler }) => {
             fullWidth
             required
             margin="normal"
+            className={formState.email.showError ?  "section-input custom-error" : "section-input"}
             value={formState.email.value}
             onChange={(e) => handleInputValueChange(e.target.value, "email")}
             onBlur={(e) => handleInputValidationOnBlur(e.target.value, "email")}
@@ -123,6 +124,7 @@ export const Register = ({ switchAuthHandler }) => {
             fullWidth
             required
             margin="normal"
+            className={formState.username.showError ?  "section-input custom-error" : "section-input"}
             value={formState.username.value}
             onChange={(e) => handleInputValueChange(e.target.value, "username")}
             onBlur={(e) => handleInputValidationOnBlur(e.target.value, "username")}
@@ -135,6 +137,7 @@ export const Register = ({ switchAuthHandler }) => {
             fullWidth
             required
             margin="normal"
+             className={formState.password.showError ?  "section-input custom-error" : "section-input"}
             value={formState.password.value}
             onChange={(e) => handleInputValueChange(e.target.value, "password")}
             onBlur={(e) => handleInputValidationOnBlur(e.target.value, "password")}
@@ -147,6 +150,7 @@ export const Register = ({ switchAuthHandler }) => {
             fullWidth
             required
             margin="normal"
+             className={formState.passwordConfirm.showError ?  "section-input custom-error" : "section-input"}
             value={formState.passwordConfirm.value}
             onChange={(e) => handleInputValueChange(e.target.value, "passwordConfirm")}
             onBlur={(e) => handleInputValidationOnBlur(e.target.value, "passwordConfirm")}
@@ -157,6 +161,7 @@ export const Register = ({ switchAuthHandler }) => {
             type="submit"
             variant="contained"
             color="primary"
+            className="glass-button"
             fullWidth
             disabled={isSubmitDisabled}
             sx={{ mt: 2 }}
@@ -169,6 +174,7 @@ export const Register = ({ switchAuthHandler }) => {
           disabled={false}
           underline="always"
           variant="plain"
+          className="section-link"
           onClick={switchAuthHandler}
           sx={{ display: "block", mt: 2, textAlign: "center" }}
         >

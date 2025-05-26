@@ -18,6 +18,7 @@ import AdbIcon from '@mui/icons-material/Adb';
 import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices';
 import HistoryIcon from '@mui/icons-material/History';
 import LogoutIcon from '@mui/icons-material/Logout';
+import '../assets/navbar.css';
 
 const pagesAdmin = ['Hoteles', 'Usuarios', 'Solicitudes', 'Estadisticas', 'Eventos'];
 const pagesHost = ['Reservaciones', 'Usuarios', 'Habitaciones', 'Servicios'];
@@ -81,15 +82,16 @@ export const ResponsiveAppBar = ({ role }) => {
       : pagesUser;
 
   return (
-    <AppBar position="fixed">
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+    <AppBar position="fixed" className="navbar-appbar">
+      <Container maxWidth="xl" className="navbar-container">
+        <Toolbar disableGutters className="navbar-toolbar">
+          <img src="/logo.svg" alt="Logo" style={{ height: 40 }} className="navbar-logo" />
           <Typography
             variant="h6"
             noWrap
             component="a"
             href="/"
+            className="navbar-title desktop"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -109,6 +111,7 @@ export const ResponsiveAppBar = ({ role }) => {
             noWrap
             component="a"
             href="/"
+            className="navbar-title desktop"
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
@@ -130,6 +133,7 @@ export const ResponsiveAppBar = ({ role }) => {
                   <Button
                     key={page}
                     onClick={() => handlePages(page)}
+                    className="navbar-page-button"
                     sx={{ my: 2, color: 'white', display: 'block' }}
                   >
                     {page}
@@ -170,6 +174,7 @@ export const ResponsiveAppBar = ({ role }) => {
                 noWrap
                 component="a"
                 href="/auth"
+                className="navbar-login-link"
                 sx={{
                   mr: 2,
                   display: { xs: 'none', md: 'flex' },

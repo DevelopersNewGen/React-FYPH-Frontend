@@ -6,8 +6,9 @@ body, #root {
 }
 
 .event-page-wrapper {
-  min-height: calc(100vh - 64px);
-  padding-top: 80px;
+  padding-top: 160px;
+  padding-bottom: 160px;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -17,6 +18,7 @@ body, #root {
   width: 100vw;
   box-sizing: border-box;
 }
+
 
 .event-filter {
   margin-bottom: 0.5rem;
@@ -67,5 +69,25 @@ body, #root {
   .event-select {
     min-width: 120px;
     font-size: 0.95rem;
+  }
+}
+
+
+
+@media (max-width: 1280px) {
+  .event-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 960px) {
+  .event-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .event-list {
+    grid-template-columns: repeat(1, 1fr);
   }
 }

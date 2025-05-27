@@ -18,8 +18,7 @@ const AddEventButton = ({ onClick }) => {
         boxShadow: "0 2px 8px rgba(0,0,0,0.10)",
         textTransform: "none",
         "&:hover": { background: "#005f86" },
-        marginLeft: 2,
-        fontSize: "1rem"
+        fontSize: "1rem",
       }}
       onClick={onClick}
     >

@@ -20,11 +20,18 @@ const Event = () => {
       <div className="event-page-wrapper">
         <div
           style={{
+            position: "fixed",
+            top: 80,
+            left: "50%",
+            transform: "translateX(-50%)",
+            zIndex: 1000,
             display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            gap: 16,
-            marginBottom: 16,
+            gap: 12,
+            flexWrap: "wrap",
+            background: "#fff",
+            padding: "0.5rem 1rem",
+            borderRadius: "2rem",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
           }}
         >
           <div className="event-filter">
@@ -42,11 +49,9 @@ const Event = () => {
               ))}
             </select>
           </div>
-          <AddEventButton
-            role={role}
-            onClick={() => navigate("/eventos/nuevo")}
-          />
+          <AddEventButton onClick={() => navigate("/eventos/nuevo")} />
         </div>
+
         {loading ? (
           <div>Cargando eventos...</div>
         ) : role === "ADMIN_ROLE" ? (

@@ -15,7 +15,6 @@ apiClient.interceptors.request.use(
                 const parsedUser = JSON.parse(userDetails);
                 if (parsedUser?.token) {
                     config.headers.Authorization = `Bearer ${parsedUser.token}`;
-                    console.log("Token agregado al header:", parsedUser.token);
                 }
             } catch (err) {
                 console.warn("Error al leer el token:", err);

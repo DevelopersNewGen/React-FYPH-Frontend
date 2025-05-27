@@ -15,19 +15,19 @@ const columns = (handleButtonClick, isHost) => [
         field: 'name',
         headerName: 'Name',
         width: 150,
-        editable: true,
+        editable: false,
     },
     {
         field: 'email',
         headerName: 'Email',
         width: 150,
-        editable: true,
+        editable: false,
     },
     {
         field: 'role',
         headerName: 'Role',
         width: 150,
-        editable: true,
+        editable: false,
     },
     {
         field: 'status',

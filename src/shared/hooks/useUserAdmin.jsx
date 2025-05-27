@@ -9,16 +9,20 @@ import {
   getUserById as fetchUserById
 } from "../../services";
 
-export const useUserAdmin = () => {
+export const useUserAdmin = (isAdmin) => {
   const [users, setUsers] = useState([]);
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    loadUsers();
-  }, []);
+    if (isAdmin) {
+      loadUsers();
+    }
+  }, [isAdmin]);
 
   const loadUsers = async () => {
+    if (!isAdmin) return;
+
     setIsLoading(true);
     try {
       const data = await fetchClients();
@@ -31,6 +35,8 @@ export const useUserAdmin = () => {
   };
 
   const handleSave = async (uid, userData) => {
+    if (!isAdmin) return;
+
     setIsLoading(true);
     try {
       await updateUserAdmin(uid, userData);
@@ -46,6 +52,8 @@ export const useUserAdmin = () => {
   };
 
   const handleDelete = async (uid) => {
+    if (!isAdmin) return;
+
     const confirm = window.confirm("¿Estás seguro de eliminar este usuario?");
     if (!confirm) return;
 
@@ -62,6 +70,8 @@ export const useUserAdmin = () => {
   };
 
   const handleCreate = async (userData) => {
+    if (!isAdmin) return;
+
     setIsLoading(true);
     try {
       await createUser(userData);
@@ -75,6 +85,8 @@ export const useUserAdmin = () => {
   };
 
   const getUserById = async (id) => {
+    if (!isAdmin) return;
+
     setIsLoading(true);
     try {
       const data = await fetchUserById(id);

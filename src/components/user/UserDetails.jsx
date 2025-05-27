@@ -17,7 +17,7 @@ export const UserDetails = ({user, isAdmin, deleteUser}) => {
   });
   const [errors, setErrors] = useState({ name: '', email: '' });
   const { updatePassword, updateProfilePicture, updateUser } = useUser();
-  const { handleSave, handleDelete } = useUserAdmin();
+  const { handleSave, handleDelete } = useUserAdmin(isAdmin);
   const fileInputRef = useRef();
   const { uid } = useParams();
   const navigate = useNavigate();

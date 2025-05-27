@@ -388,3 +388,12 @@ export const getHotelReservations = async (hid) => {
         return { success: false, error };
     }
 };
+
+export const fetchReservationBillBlob = async (rid) => {
+  try {
+    const response = await apiClient.get(`/bills/generate/${rid}`, {responseType: 'blob'});
+    return response.data;
+  } catch (error) {
+    return { success: false, error };
+  }
+};

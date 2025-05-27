@@ -13,15 +13,12 @@ export const useReservationAdd = () => {
     setReservationId(null);
 
     try {
-      console.log('Creando reservación para habitación:', rid);
       const response = await createReservation(rid, formData);
-      console.log('Respuesta de la API:', response);
       
       if (response?.error) {
         throw new Error(response.e?.response?.data?.message || 'Error al crear la reservación');
       }
 
-      // Extracción del ID de la reservación (4 métodos compatibles)
       const newReservationId = response?.id || 
                              response?.data?.id || 
                              response?.reservation?.id ||
@@ -30,8 +27,6 @@ export const useReservationAdd = () => {
       if (!newReservationId) {
         throw new Error('No se recibió el ID de reservación en la respuesta');
       }
-
-      console.log('Reservación creada con ID:', newReservationId);
       setReservationId(newReservationId);
       setIsSuccess(true);
       return newReservationId;

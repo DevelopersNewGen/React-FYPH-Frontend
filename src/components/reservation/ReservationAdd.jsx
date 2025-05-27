@@ -10,7 +10,7 @@ import isWithinInterval from 'date-fns/isWithinInterval';
 
 export default function ReservationAdd() {
     const { rid } = useParams();
-    const navigate = useNavigate(); // Hook para navegación
+    const navigate = useNavigate(); 
     const { handleAddReservation, isLoading, isSuccess, reservationId } = useReservationAdd();
     const { reservations, isFetching } = useReservationsByRoom(rid);
     const { pdfUrl, isLoading: isBillLoading, error: billError } = useReservationBill(reservationId);
@@ -29,7 +29,6 @@ export default function ReservationAdd() {
         await handleAddReservation(rid, form);
     };
 
-    // Función para redirigir a /hotels
     const handleBackToDashBoard = () => {
         navigate('/');
     };

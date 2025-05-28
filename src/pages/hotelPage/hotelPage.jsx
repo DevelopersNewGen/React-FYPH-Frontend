@@ -7,11 +7,11 @@ import { useUser } from '../../shared/hooks';
 export const HotelPage = () => {
   const { role } = useUser();
   return (
-    <div className="hotel-page-container">
+    <div >
        <ResponsiveAppBar role={role} />
       <header className="hotel-header">
         <h1>Registrar Hotel</h1>
-      </header>
+      </header>x
       <FormAddHotel />
     </div>
   );

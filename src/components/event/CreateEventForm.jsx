@@ -8,7 +8,7 @@ import {
   Typography,
   CircularProgress,
 } from "@mui/material";
-import { useCreateEvent } from "../../shared/hooks"; 
+import { useCreateEvent } from "../../shared/hooks";
 import imageCompression from "browser-image-compression";
 import {
   validateEventName,
@@ -117,9 +117,12 @@ export default function CreateEventForm() {
   };
 
   return (
-    <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-      <Paper elevation={4} sx={{ p: 4, borderRadius: 3, maxWidth: 500 }}>
-        <Typography variant="h5" mb={2} align="center" fontWeight={600}>
+    <Box className="section-container" sx={{ marginTop: 40, width: "1000px" }}>
+      <video className="section-bg" autoPlay loop muted>
+        <source src="https://res.cloudinary.com/daherc5uz/video/upload/v1748216098/ywxwfilf1ajkt1eiiiw7.mp4" type="video/mp4" />
+      </video>
+      <Paper className="section-form" elevation={4} sx={{ p: 4, borderRadius: 3, maxWidth: 500 }}>
+        <Typography className="section-title" variant="h5" mb={2} align="center" fontWeight={600}>
           Crear Evento
         </Typography>
         <form onSubmit={handleSubmit} encType="multipart/form-data">
@@ -129,6 +132,7 @@ export default function CreateEventForm() {
             fullWidth
             required
             margin="normal"
+            className="section-input"
             value={form.name}
             onChange={handleChange}
             error={!!errors.name}
@@ -142,6 +146,7 @@ export default function CreateEventForm() {
             margin="normal"
             multiline
             minRows={2}
+            className="section-input"
             value={form.description}
             onChange={handleChange}
             error={!!errors.description}
@@ -155,6 +160,7 @@ export default function CreateEventForm() {
               fullWidth
               required
               margin="normal"
+              className="section-input"
               InputLabelProps={{ shrink: true }}
               value={form.date}
               onChange={handleChange}
@@ -168,6 +174,7 @@ export default function CreateEventForm() {
               fullWidth
               required
               margin="normal"
+              className="section-input"
               InputLabelProps={{ shrink: true }}
               inputProps={{ step: 300 }}
               value={form.time}
@@ -182,6 +189,7 @@ export default function CreateEventForm() {
             fullWidth
             required
             margin="normal"
+            className="section-input"
             value={form.location}
             onChange={handleChange}
             error={!!errors.location}
@@ -194,13 +202,14 @@ export default function CreateEventForm() {
             fullWidth
             required
             margin="normal"
+            className="section-input"
             value={form.category}
             onChange={handleChange}
             error={!!errors.category}
             helperText={errors.category}
           >
             {CATEGORIES.map((cat) => (
-              <MenuItem key={cat.value} value={cat.value}>
+              <MenuItem  key={cat.value} value={cat.value}>
                 {cat.label}
               </MenuItem>
             ))}
@@ -211,6 +220,7 @@ export default function CreateEventForm() {
             type="number"
             fullWidth
             margin="normal"
+            className="section-input"
             value={form.cost}
             onChange={handleChange}
             error={!!errors.cost}
@@ -221,6 +231,7 @@ export default function CreateEventForm() {
             variant="outlined"
             component="label"
             fullWidth
+            className="section-button"
             sx={{
               mt: 2,
               mb: 1,
@@ -235,6 +246,7 @@ export default function CreateEventForm() {
               hidden
               multiple
               accept="image/*"
+
               onChange={handleImageChange}
             />
           </Button>
@@ -246,7 +258,7 @@ export default function CreateEventForm() {
           {images.length > 0 && (
             <Box sx={{ mt: 1 }}>
               {images.map((img, i) => (
-                <Typography key={i} variant="caption">
+                <Typography className="section-title" key={i} variant="caption">
                   {img.name}
                 </Typography>
               ))}
@@ -257,6 +269,7 @@ export default function CreateEventForm() {
             variant="contained"
             color="primary"
             fullWidth
+            className="section-button"
             sx={{ mt: 2 }}
             disabled={isLoading}
           >

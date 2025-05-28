@@ -40,20 +40,21 @@ export function EventCard({ eid, name, category, images, date, time, location, c
     <Card
       className="event-card"
       sx={{
-        maxWidth: 350,
-        minWidth: 350,
-        width: 350,
-        minHeight: 350,
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        marginBottom: 2,
+        maxWidth: 300,
+    minWidth: 280,
+    width: 280,
+    minHeight: 320,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    marginBottom: 2,
+
       }}
     >
       <div style={{ position: "relative" }}>
         <CardMedia
           component="img"
-          height="180"
+          height="150"
           image={mostrarImagen}
           alt={name}
         />

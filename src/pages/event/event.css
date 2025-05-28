@@ -73,7 +73,6 @@ body, #root {
 }
 
 
-
 @media (max-width: 1280px) {
   .event-list {
     grid-template-columns: repeat(3, 1fr);

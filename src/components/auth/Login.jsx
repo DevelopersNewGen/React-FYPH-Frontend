@@ -6,9 +6,9 @@ import {
   validateEmail,
   validateEmailMessage,
 } from "../../shared/validators";
-import {useLogin} from "../../shared/hooks"
+import { useLogin } from "../../shared/hooks"
 
-export const Login = ({switchAuthHandler} ) => {
+export const Login = ({ switchAuthHandler }) => {
   const { login, isLoading } = useLogin();
 
   const [formState, setFormState] = useState({
@@ -65,15 +65,13 @@ export const Login = ({switchAuthHandler} ) => {
     isLoading || !formState.email.isValid || !formState.password.isValid;
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <Paper elevation={3} sx={{ p: 4, minWidth: 320 }}>
-        <Typography variant="h5" mb={2} align="center">
+    <Box className="section-container">
+      <video className="section-bg" autoPlay loop muted>
+        <source src="https://res.cloudinary.com/daherc5uz/video/upload/v1748216098/ywxwfilf1ajkt1eiiiw7.mp4" type="video/mp4" />
+      </video>
+
+      <Paper className="section-form" elevation={3} sx={{ p: 4, minWidth: 320 }}>
+        <Typography className="section-title" variant="h5" mb={2} align="center">
           Iniciar Sesión
         </Typography>
         <form >
@@ -84,18 +82,20 @@ export const Login = ({switchAuthHandler} ) => {
             required
             margin="normal"
             variant="outlined"
+            className="section-input"
             value={formState.email.value}
             onChange={e => handleInputValueChange(e.target.value, "email")}
             autoFocus
             helperText={validateEmailMessage}
             onBlur={e => handleInputValidationOnBlur(e.target.value, "email")}
-          />  
+          />
           <TextField
             label="Contraseña"
             type="password"
             fullWidth
             required
             margin="normal"
+            className="section-input"
             value={formState.password.value}
             onChange={e => handleInputValueChange(e.target.value, "password")}
             onBlur={e => handleInputValidationOnBlur(e.target.value, "password")}
@@ -105,6 +105,7 @@ export const Login = ({switchAuthHandler} ) => {
             variant="contained"
             color="primary"
             fullWidth
+            className="section-button"
             sx={{ mt: 2 }}
             onClick={handleLogin}
             disabled={isSubmitDisabled}
@@ -113,13 +114,15 @@ export const Login = ({switchAuthHandler} ) => {
           </Button>
         </form>
         <Link
-            color="primary"
-            disabled={false}
-            underline="always"
-            variant="plain"
-            onClick={switchAuthHandler} 
+          color="primary"
+          disabled={false}
+          underline="always"
+          variant="plain"
+          className="section-link"
+          onClick={switchAuthHandler}
+          sx={{ display: "block", mt: 2, textAlign: "center" }}
         >
-            Registrate
+          Registrate
         </Link>
       </Paper>
     </Box>

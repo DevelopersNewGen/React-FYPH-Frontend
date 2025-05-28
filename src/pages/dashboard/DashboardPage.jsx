@@ -53,7 +53,7 @@ export const DashboardPage = () => {
       <ResponsiveAppBar role={role} />
 
       {!role ? (
-        <div style={{ padding: '2rem', textAlign: 'center', marginTop: '100px' }}>
+        <div style={{ padding: '2rem', textAlign: 'center', marginTop: '300px' }}>
           <h1 style={{ fontSize: '2.5rem', marginBottom: '1.5rem' }}>
             Debes iniciar sesión para ver los hoteles
           </h1>
@@ -67,7 +67,7 @@ export const DashboardPage = () => {
         </div>
 
       ) : (
-        <div style={{ padding: '1rem', marginTop: '80px' }}>
+        <div style={{ padding: '1rem', marginTop: '600px' }}>
           {role === 'ADMIN_ROLE' && (
             <div
               style={{
@@ -99,7 +99,7 @@ export const DashboardPage = () => {
               marginTop: '0'
             }}
           >
-            <h1 style={{ margin: 0, fontSize: '2.5rem', textAlign: 'center' }}>
+            <h1 style={{ margin: 0, fontSize: '2.5rem', textAlign: 'center'}}>
               Hoteles disponibles
             </h1>
           </div>

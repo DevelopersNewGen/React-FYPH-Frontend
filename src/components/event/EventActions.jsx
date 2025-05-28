@@ -8,7 +8,7 @@ import {
   TextField,
   Box,
 } from "@mui/material";
-import { useEventActions } from "../../shared/hooks"; 
+import { useEventActions } from "../../shared/hooks";
 
 export default function EventActions({ event, onEventUpdated, onEventDeleted, role }) {
   const { handleUpdateEvent, handleDeleteEvent, loading } = useEventActions();
@@ -54,26 +54,50 @@ export default function EventActions({ event, onEventUpdated, onEventDeleted, ro
         <Button size="small" color="error" onClick={handleDelete}>Eliminar</Button>
       </div>
 
-      <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        maxWidth="sm"
+        fullWidth
+        PaperProps={{
+          sx: {
+            backgroundColor: "rgba(255, 255, 255, 0.1)",
+            backdropFilter: "blur(10px)",
+            borderRadius: 3,
+            border: "1px solid rgba(255, 255, 255, 0.5)",
+            maxHeight: "80vh",
+            color: "white",
+            overflow: "auto",
+            scrollbarWidth: "none", // Firefox
+            "&::-webkit-scrollbar": { display: "none" }, // Chrome/Safari
+          },
+        }}
+      >
         <DialogTitle>Editar Evento</DialogTitle>
         <form onSubmit={handleEditSubmit}>
-          <DialogContent>
-            <TextField label="Nombre" name="name" fullWidth margin="dense" value={editData.name} onChange={handleEditChange} />
-            <TextField label="Descripción" name="description" fullWidth margin="dense" value={editData.description} onChange={handleEditChange} />
-            <TextField label="Fecha" name="date" type="date" fullWidth margin="dense" value={editData.date} onChange={handleEditChange} InputLabelProps={{ shrink: true }} />
-            <TextField label="Hora" name="time" type="time" fullWidth margin="dense" value={editData.time} onChange={handleEditChange} InputLabelProps={{ shrink: true }} />
-            <TextField label="Ubicación" name="location" fullWidth margin="dense" value={editData.location} onChange={handleEditChange} />
-            <TextField label="Categoría" name="category" fullWidth margin="dense" value={editData.category} onChange={handleEditChange} />
-            <TextField label="Costo" name="cost" type="number" fullWidth margin="dense" value={editData.cost} onChange={handleEditChange} />
-          </DialogContent>
+          <DialogContent
+            sx={{
+              overflow: "hidden",
+              scrollbarWidth: "none",
+              "&::-webkit-scrollbar": { display: "none" },
+            }}
+          >
+              <TextField label="Nombre" name="name" fullWidth margin="dense" value={editData.name} className="section-input" onChange={handleEditChange} />
+              <TextField label="Descripción" name="description" fullWidth margin="dense" value={editData.description} className="section-input" onChange={handleEditChange} />
+              <TextField label="Fecha" name="date" type="date" fullWidth margin="dense" value={editData.date} className="section-input" onChange={handleEditChange} InputLabelProps={{ shrink: true }} />
+              <TextField label="Hora" name="time" type="time" fullWidth margin="dense" value={editData.time} className="section-input" onChange={handleEditChange} InputLabelProps={{ shrink: true }} />
+              <TextField label="Ubicación" name="location" fullWidth margin="dense" value={editData.location} className="section-input" onChange={handleEditChange} />
+              <TextField label="Categoría" name="category" fullWidth margin="dense" value={editData.category} className="section-input" onChange={handleEditChange} />
+              <TextField label="Costo" name="cost" type="number" fullWidth margin="dense" value={editData.cost} className="section-input" onChange={handleEditChange} />
+            </DialogContent>
 
-          <DialogActions sx={{ justifyContent: "space-between", px: 3 }}>
-            <Button color="error" onClick={handleDelete}>Eliminar</Button>
-            <Box sx={{ display: "flex", gap: 2 }}>
-              <Button onClick={handleClose}>Cancelar</Button>
-              <Button type="submit" disabled={loading}>Guardar</Button>
-            </Box>
-          </DialogActions>
+            <DialogActions sx={{ justifyContent: "space-between", px: 3 }}>
+              <Button className="section-button" color="error" onClick={handleDelete}>Eliminar</Button>
+              <Box sx={{ display: "flex", gap: 2 }}>
+                <Button  className="section-button" onClick={handleClose}>Cancelar</Button>
+                <Button  className="section-button" type="submit" disabled={loading}>Guardar</Button>
+              </Box>
+            </DialogActions>
         </form>
       </Dialog>
     </>

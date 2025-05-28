@@ -35,7 +35,7 @@ export default function RoomCardByHotel() {
   return (
     <>
       <ResponsiveAppBar role={role} />
-      <Box className="room-page-container" sx={{ paddingTop: { xs: 10, md: 12 } }}>
+      <Box className="room-page-container" sx={{ paddingTop: "500px" }}>
         <Typography variant="h3" className="room-header" gutterBottom>
           Habitaciones del hotel
         </Typography>

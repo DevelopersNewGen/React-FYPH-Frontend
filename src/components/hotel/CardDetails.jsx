@@ -51,13 +51,16 @@ function useCardDetails(hotel, onEdit, onDelete) {
     const images =
         hotel.images && hotel.images.length > 0 ? hotel.images : fallbackImages;
 
-    const handlePrev = () => {
-        setCurrentImage((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-    };
+    // Carrusel automático cada 3 segundos
+    React.useEffect(() => {
+        if (images.length <= 1) return;
 
-    const handleNext = () => {
-        setCurrentImage((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-    };
+        const interval = setInterval(() => {
+            setCurrentImage((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+        }, 3000); // 3 segundos
+
+        return () => clearInterval(interval);
+    }, [images]);
 
     return {
         currentImage,
@@ -73,8 +76,6 @@ function useCardDetails(hotel, onEdit, onDelete) {
         handleEditHotel,
         handleDeleteHotel,
         images,
-        handlePrev,
-        handleNext,
         navigate
     };
 }
@@ -93,8 +94,6 @@ export default function CardDetails({ hotel, onEdit, onDelete }) {
         handleEditHotel,
         handleDeleteHotel,
         images,
-        handlePrev,
-        handleNext,
         navigate
     } = useCardDetails(hotel, onEdit, onDelete);
 
@@ -105,7 +104,7 @@ export default function CardDetails({ hotel, onEdit, onDelete }) {
         <Box
             className="card-details"
             sx={{
-                marginTop: "300px",
+                marginTop: "400px",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "flex-start",
@@ -115,7 +114,7 @@ export default function CardDetails({ hotel, onEdit, onDelete }) {
             <Box className="card-details-inner">
                 <IconButton
                     onClick={() => navigate(-1)}
-                    className="card-details-back-btn"
+                    className="section-button"
                 >
                     <ArrowBackIosIcon sx={{ fontSize: 20 }} />
                 </IconButton>
@@ -145,31 +144,8 @@ export default function CardDetails({ hotel, onEdit, onDelete }) {
                             />
                             {images.length > 1 && (
                                 <>
-                                    <IconButton
-                                        onClick={handlePrev}
-                                        className="card-details-carousel-btn left"
-                                        aria-label="Imagen anterior"
-                                    >
-                                        <ArrowBackIosIcon />
-                                    </IconButton>
-                                    <IconButton
-                                        onClick={handleNext}
-                                        className="card-details-carousel-btn right"
-                                        aria-label="Imagen siguiente"
-                                    >
-                                        <ArrowForwardIosIcon />
-                                    </IconButton>
                                 </>
                             )}
-                            <Box className="card-details-carousel-dots">
-                                {images.map((_, idx) => (
-                                    <Box
-                                        key={idx}
-                                        onClick={() => setCurrentImage(idx)}
-                                        className={`card-details-carousel-dot${idx === currentImage ? " active" : ""}`}
-                                    />
-                                ))}
-                            </Box>
                         </>
                     ) : (
                         <Box

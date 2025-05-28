@@ -3,7 +3,7 @@ import { useHotelAdd } from "../../shared/hooks/useHotelAdd";
 import { useNavigate } from "react-router-dom";
 import { validateAddHotelFields } from "../../shared/validators/validateAddHotels";
 import useFormAddHotelLogic from "../../shared/hooks/useFormAddHotel";
-import "../../pages/hotelPage/Hotel.css";
+import "../../assets/style.css"
 
 export const FormAddHotel = () => {
   const { addHotel, loading, success, error } = useHotelAdd();
@@ -82,14 +82,17 @@ export const FormAddHotel = () => {
 
   return (
     <div className="formaddhotel-bg">
+      <video className="section-bg" autoPlay loop muted>
+        <source src="https://res.cloudinary.com/daherc5uz/video/upload/v1748216098/ywxwfilf1ajkt1eiiiw7.mp4" type="video/mp4" />
+      </video>
       <div className="formaddhotel-container">
         <button
           onClick={() => navigate("/dashboard")}
-          className="formaddhotel-back"
+          className="section-button"
         >
-          {"< Regresar"}
+          {"Regresar"}
         </button>
-        <h2 className="formaddhotel-title">
+        <h2 className="section-title">
           Registrar Hotel
         </h2>
         <form ref={formRef} onSubmit={handleSubmit} autoComplete="off">
@@ -125,22 +128,23 @@ export const FormAddHotel = () => {
       className="formaddhotel-input"
     />
 
-    <div>
+    <div className="formaddhotel-fields">
       <select
         name="host"
         required
         value={hostValue}
         onChange={e => setHostValue(e.target.value)}
-        className="formaddhotel-select"
+        className="formaddhotel-input"
+
       >
-        <option value="">Selecciona un Host</option>
+        <option  value="">Selecciona un Host</option>
         {hosts.map((h) => (
           <option key={h.uid} value={h.uid}>
             {h.name} ({h.email})
           </option>
         ))}
       </select>
-      <div className="formaddhotel-select-desc">Selecciona un Host</div>
+      <div className="section-title">Selecciona un Host</div>
     </div>
     <input
       id="images"
@@ -172,7 +176,7 @@ export const FormAddHotel = () => {
       ))}
     </div>
     <hr className="formaddhotel-divider" />
-    <div className="formaddhotel-services">
+    <div >
       <label className="formaddhotel-services-label">Servicios</label>
       {services.map((service) => (
         <div key={service.id} className="formaddhotel-service-row">
@@ -180,7 +184,7 @@ export const FormAddHotel = () => {
             value={service.type || ""}
             onChange={e => handleServiceChange(service.id, "type", e.target.value)}
             required
-            className="formaddhotel-service-type"
+            className="formaddhotel-input"
           >
             <option value="">Tipo</option>
             <option value="Hotel">Hotel</option>
@@ -197,7 +201,7 @@ export const FormAddHotel = () => {
             maxLength={100}
             required
             onChange={e => handleServiceChange(service.id, "description", e.target.value)}
-            className="formaddhotel-service-desc"
+            className="formaddhotel-input"
           />
           <input
             type="text"
@@ -206,13 +210,13 @@ export const FormAddHotel = () => {
             maxLength={10}
             required
             onChange={e => handleServiceChange(service.id, "price", e.target.value)}
-            className="formaddhotel-service-price"
+            className="formaddhotel-input"
           />
           <button
             type="button"
             onClick={() => removeService(service.id)}
             disabled={services.length === 1}
-            className="formaddhotel-service-remove"
+            className="section-button"
           >
             Eliminar
           </button>
@@ -221,7 +225,7 @@ export const FormAddHotel = () => {
       <button
         type="button"
         onClick={addService}
-        className="formaddhotel-service-add"
+        className="section-button"
       >
         + Agregar Servicio
       </button>
@@ -231,7 +235,7 @@ export const FormAddHotel = () => {
     <button
       type="submit"
       disabled={loading}
-      className="formaddhotel-submit"
+      className="section-button "
     >
       {loading ? "Guardando..." : "Registrar Hotel"}
     </button>

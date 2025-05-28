@@ -17,6 +17,7 @@ import ReportPage from "./pages/report/ReportPage";
 import ReserAddPage from "./pages/reservation/ReservationAdd"
 import ReservationCardByRoom from "./pages/reservation/ReservationCardByRoom.jsx"
 import ReservationCardByHotel from "./pages/reservation/ReservationCardByHotel.jsx"
+import ReservationTablePage from "./pages/reservation/ReservationTable.jsx";
 
 export const routes = [
   { path: "/*", element: <DashboardPage /> },
@@ -38,6 +39,7 @@ export const routes = [
   { path: "/reservas/agregar/:rid", element: <ReserAddPage />},
   { path: "/reservacion/:rid", element: <ReserAddPage />},
   { path: "/reservaciones/habitacion/:rid", element:<ReservationCardByRoom />},
-  { path: "/reservaciones/hotel/:hid", element:<ReservationCardByHotel/>}
+  { path: "/reservaciones/hotel/:hid", element:<ReservationCardByHotel/>},
+  { path: "/reservaciones", element:<ReservationTablePage />}
 ];
 

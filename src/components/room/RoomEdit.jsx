@@ -71,22 +71,30 @@ export default function RoomEdit({ roomData, onClose, hideImages, onlyImages }) 
           borderRadius: 3,
           border: "1px solid rgba(255, 255, 255, 0.5)",
           maxHeight: "80vh",
-          color: "white",
+          color: "white !important",
           overflowY: "auto",
-          scrollbarWidth: "none",
-          "&::-webkit-scrollbar": { display: "none" },
           animation: "fadeIn 0.3s ease",
-          "@keyframes fadeIn": {
-            from: { opacity: 0 },
-            to: { opacity: 1 },
-            zIndex: (theme) => theme.zIndex.modal + 1000
-          },
-        },
-      }}
-    >
-      <DialogTitle sx={{ fontWeight: "bold" }}>Editar habitación</DialogTitle>
+          gap: 4,
+          p: 4,
+          maxWidth: "1000px",
+          mx: "auto",
+          alignItems: "flex-start",
+          display: "flex",
+          flexDirection: "column",
 
-      <DialogContent>
+          // Ocultar scroll pero mantener funcionalidad
+  scrollbarWidth: "none", // Firefox
+  "&::-webkit-scrollbar": {
+    display: "none",       // Chrome, Safari
+  },
+
+  "@keyframes fadeIn": {
+    from: { opacity: 0 },
+    to: { opacity: 1 },
+  },
+}
+      }}
+    > <DialogContent>
         <RoomAdd
           initialData={roomData}
           onSubmit={onSubmit}

@@ -15,7 +15,6 @@ import {
   Typography as MuiTypography,
   Paper
 } from '@mui/material';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIos';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { useRoomAdd } from '../../shared/hooks/useRoomAdd';
@@ -120,20 +119,22 @@ export default function RoomAdd({ initialData, onSubmit, isEdit, onCancel, hideI
         <source src="https://res.cloudinary.com/daherc5uz/video/upload/v1748216098/ywxwfilf1ajkt1eiiiw7.mp4" type="video/mp4" />
       </video>
 
-      <Paper className="section-form" elevation={4} sx={{ p: 4, borderRadius: 3, maxWidth: 500, mx: "auto" }}>
-        <Box>
-          <IconButton onClick={() => navigate(-1)}>
-            <ArrowBackIosNewIcon />
-          </IconButton>
-        </Box>
-
-        <Typography className="section-title" variant="h5" align="center" mb={2}>
-          {onlyImages
-            ? 'Editar imagen de habitación'
-            : isEdit
-            ? 'Editar Habitación'
-            : 'Agregar Habitación'}
-        </Typography>
+      <Paper className="section-form" elevation={4} sx={{
+        p: 4, borderRadius: 3, maxWidth: 900,
+        mx: "auto",
+        display: "flex",
+        gap: 4,
+        alignItems: "flex-start",
+      }}>
+        <Box sx={{ minWidth: 250 }}>
+    
+    <Typography className="section-title" variant="h5" align="center" mb={2}>
+      {onlyImages
+        ? "Editar imagen de habitación"
+        : isEdit
+        }
+    </Typography>
+  </Box>
 
         <form onSubmit={handleSubmit} autoComplete="off">
           {onlyImages ? (

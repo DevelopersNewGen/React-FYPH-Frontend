@@ -323,6 +323,14 @@ export const getReservationByHotel = async (hid) => {
     }
 };
 
+export const getReservationsByHost = async () => {
+    try {
+        return await apiClient.get(`/reservations/reservationsByHost`);
+    } catch (e) {
+        return { error: true, e };
+    }
+}
+
 // EVENTS
 
  export const getEvents = async () => {

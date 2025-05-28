@@ -5,7 +5,12 @@ import { useUser, useUserAdmin, useUserHost } from '../../shared/hooks';
 
 export const UserPage = () => {
   const { role } = useUser();
-  const { users, loadUsers } = useUserAdmin();
+  let isAdmin = false
+
+  if(role === "ADMIN_ROLE") {
+    isAdmin = true;
+  }
+  const { users, loadUsers } = useUserAdmin(isAdmin);
   const { clients, loadClients } = useUserHost();
 
   useEffect(() => {

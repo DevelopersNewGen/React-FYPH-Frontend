@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom';
 export const UserDetailPage = () => {
     const {uid} = useParams()
     const {role} = useUser()
-    const {user, getUserById} = useUserAdmin()             
+    const {user, getUserById} = useUserAdmin(true)             
 
     useEffect(() => {
         if (uid) {

@@ -1,58 +1,38 @@
-
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-const columns = (handleButtonClick, isHost) => [
-    { 
-        field: 'id', 
-        headerName: 'ID', 
-        width: 200 
-    },
-    {
-        field: 'name',
-        headerName: 'Name',
-        width: 150,
-        editable: false,
-    },
-    {
-        field: 'email',
-        headerName: 'Email',
-        width: 150,
-        editable: false,
-    },
-    {
-        field: 'role',
-        headerName: 'Role',
-        width: 150,
-        editable: false,
-    },
-    {
-        field: 'status',
-        headerName: 'Status',
-        description: 'This column has a value getter and is not sortable.',
-        sortable: false,
-        width: 150,
-    },
-    {
-        field: 'actions',
-        headerName: 'Actions',
-        width: 150,
-        renderCell: (params) => (
-            <Button
-                variant="contained"
-                color="primary"
-                size="small"
-                onClick={() => handleButtonClick(params.row.id)}
-                disabled={isHost}
-            >
-                Editar
-            </Button>
-        ),
-    },
-];
+const columns = (handleButtonClick, isHost) => {
+    const baseColumns = [
+        { field: 'id', headerName: 'ID', width: 200 },
+        { field: 'name', headerName: 'Name', width: 150, editable: false },
+        { field: 'email', headerName: 'Email', width: 150, editable: false },
+        { field: 'role', headerName: 'Role', width: 150, editable: false },
+        { field: 'status', headerName: 'Status', description: 'This column has a value getter and is not sortable.', sortable: false, width: 150 },
+    ];
+
+    if (!isHost) {
+        baseColumns.push({
+            field: 'actions',
+            headerName: 'Actions',
+            width: 150,
+            renderCell: (params) => (
+                <Button
+                    variant="contained"
+                    color="primary"
+                    size="small"
+                    onClick={() => handleButtonClick(params.row.id)}
+                >
+                    Editar
+                </Button>
+            ),
+        });
+    }
+
+    return baseColumns;
+};
 
 
 export const UserTable = ({users, isHost}) => {

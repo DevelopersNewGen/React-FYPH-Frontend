@@ -7,7 +7,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { validateUsername, validateUsernameMessage } from '../../shared/validators/validateUsername'
 import { validateEmail, validateEmailMessage } from '../../shared/validators/validateEmail'
 
-export const UserDetails = ({user, isAdmin, deleteUser}) => {
+export const UserDetails = ({ user, isAdmin, deleteUser }) => {
   const [activeView, setActiveView] = useState('perfil');
   const [editMode, setEditMode] = useState(false);
   const [editPassword, setEditPassword] = useState(user);
@@ -46,12 +46,12 @@ export const UserDetails = ({user, isAdmin, deleteUser}) => {
   const handleEditClick = () => {
 
     if (editMode) {
-      if(isAdmin) {
+      if (isAdmin) {
         handleSave(uid, form);
-      }else {
+      } else {
         updateUser(form)
       }
-      
+
     }
     setEditMode(!editMode);
   };
@@ -84,7 +84,7 @@ export const UserDetails = ({user, isAdmin, deleteUser}) => {
         await deleteUser();
         navigate('/');
       }
-    } 
+    }
   }
 
   return (
@@ -165,7 +165,7 @@ export const UserDetails = ({user, isAdmin, deleteUser}) => {
               error={!!errors.email}
               helperText={errors.email}
             />
-            <Button 
+            <Button
               onClick={handleEditClick}
             >
               {editMode ? 'Guardar' : 'Editar'}
@@ -176,7 +176,7 @@ export const UserDetails = ({user, isAdmin, deleteUser}) => {
               Eliminar usuario
             </Button>
             {!isAdmin && (
-              <Button 
+              <Button
                 onClick={handleEditPassword}
               >
                 {editPassword ? 'Cancelar' : 'Cambiar contraseña'}
@@ -185,48 +185,121 @@ export const UserDetails = ({user, isAdmin, deleteUser}) => {
             {editPassword && (
               <PasswordForm
                 onSubmit={async (data) => {
-                await updatePassword(data);
-                setEditPassword(false); 
-              }}
+                  await updatePassword(data);
+                  setEditPassword(false);
+                }}
               />
             )}
           </>
         )}
 
         {activeView === 'historial' && (
-          <> 
-            {user.reservations.length > 0 ? (user.reservations.map((reservation) => (
-              <Box key={reservation.id} sx={{ mb: 2, p: 2, border: '1px solid #e0e0e0', borderRadius: 1, width: '100%', display: 'flex', flexDirection: 'column' }}>
-                <Typography variant="body1">habitacion: {reservation.room.numRoom}</Typography>
-                <Typography variant="body1">Hotel: {reservation.room.hotel.name}</Typography>
-                <Typography variant="body1">Fecha de entrada: {reservation.startDate ? reservation.startDate.slice(0, 10) : ''}</Typography>
-                <Typography variant="body1">Fecha de salida: {reservation.exitDate ? reservation.exitDate.slice(0, 10): " "}</Typography>
-                <Typography variant="body1">Estado: {reservation.status ? 'Activa' : 'Pasada'}</Typography>
-              </Box>
-            ))) : 
-              <Typography variant="body1" sx={{ color: 'text.secondary' }}> 
-                  No tienes historial de reservaciones.
-              </Typography>}
-          </>
+          <Box
+            sx={{
+              width: '100%',
+              maxWidth: 800,
+              maxHeight: 400,
+              overflowY: 'auto',
+              bgcolor: '#fafafa',
+              border: '1px solid #e0e0e0',
+              borderRadius: 2,
+              boxShadow: 1,
+              p: 2,
+            }}
+          >
+            {user.reservations.length > 0 ? (
+              user.reservations.map((reservation) => (
+                <Card
+                  key={reservation.id}
+                  variant="outlined"
+                  sx={{
+                    mb: 2,
+                    p: 2,
+                    backgroundColor: '#fff',
+                    borderRadius: 2,
+                    boxShadow: 1,
+                  }}
+                >
+                  <Typography variant="subtitle1" fontWeight="bold">
+                    Habitación: {reservation.room.numRoom}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Hotel: {reservation.room.hotel.name}
+                  </Typography>
+                  <Typography variant="body2">
+                    Fecha de entrada: {reservation.startDate?.slice(0, 10) || ''}
+                  </Typography>
+                  <Typography variant="body2">
+                    Fecha de salida: {reservation.exitDate?.slice(0, 10) || ''}
+                  </Typography>
+                  <Typography variant="body2">
+                    Estado:{' '}
+                    <span style={{ color: reservation.status ? '#2e7d32' : '#757575' }}>
+                      {reservation.status ? 'Activa' : 'Pasada'}
+                    </span>
+                  </Typography>
+                </Card>
+              ))
+            ) : (
+              <Typography variant="body1" sx={{ color: 'text.secondary', textAlign: 'center' }}>
+                No tienes historial de reservaciones.
+              </Typography>
+            )}
+          </Box>
         )}
 
         {activeView === 'reservaciones' && (
-          <> 
-            {user.reservations.length > 0 ? (user.reservations
-              .filter(reservation => reservation.status)
-              .map((reservation) => (
-              <Box key={reservation.id} sx={{ mb: 2, p: 2, border: '1px solid #e0e0e0', borderRadius: 1, width: '100%', display: 'flex', flexDirection: 'column' }}>
-                <Typography variant="body1">habitacion: {reservation.room.numRoom}</Typography>
-                <Typography variant="body1">Hotel: {reservation.room.hotel.name}</Typography>
-                <Typography variant="body1">Fecha de entrada: {reservation.startDate ? reservation.startDate.slice(0, 10) : ''}</Typography>
-                <Typography variant="body1">Fecha de salida: {reservation.exitDate ? reservation.exitDate.slice(0, 10): " "}</Typography>
-                <Typography variant="body1">Estado: {reservation.status ? 'Activa' : ''}</Typography>
-              </Box>
-            ))) :  
-              <Typography variant="body1" sx={{ color: 'text.secondary' }}> 
-                  No tienes reservaciones activas.
-              </Typography>}
-          </>        
+          <Box
+            sx={{
+              width: '100%',
+              maxWidth: 800,
+              maxHeight: 400,
+              overflowY: 'auto',
+              bgcolor: '#fafafa',
+              border: '1px solid #e0e0e0',
+              borderRadius: 2,
+              boxShadow: 1,
+              p: 2,
+            }}
+          >
+            {user.reservations.length > 0 && user.reservations.some(res => res.status) ? (
+              user.reservations
+                .filter(reservation => reservation.status)
+                .map((reservation) => (
+                  <Card
+                    key={reservation.id}
+                    variant="outlined"
+                    sx={{
+                      mb: 2,
+                      p: 2,
+                      backgroundColor: '#fff',
+                      borderRadius: 2,
+                      boxShadow: 1,
+                    }}
+                  >
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      Habitación: {reservation.room.numRoom}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Hotel: {reservation.room.hotel.name}
+                    </Typography>
+                    <Typography variant="body2">
+                      Fecha de entrada: {reservation.startDate?.slice(0, 10) || ''}
+                    </Typography>
+                    <Typography variant="body2">
+                      Fecha de salida: {reservation.exitDate?.slice(0, 10) || ''}
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: '#2e7d32' }}>
+                      Estado: Activa
+                    </Typography>
+                  </Card>
+                ))
+            ) : (
+              <Typography variant="body1" sx={{ color: 'text.secondary', textAlign: 'center' }}>
+                No tienes reservaciones activas.
+              </Typography>
+            )}
+          </Box>
         )}
       </CardContent>
     </Card>

@@ -20,9 +20,8 @@ import HistoryIcon from '@mui/icons-material/History';
 import LogoutIcon from '@mui/icons-material/Logout';
 import '../assets/navbar.css';
 
-const pagesAdmin = ['Usuarios', 'Solicitudes', 'Estadisticas', 'Eventos'];
+const pagesAdmin = ['Usuarios', 'Hoteles', 'Estadisticas', 'Eventos'];
 const pagesHost = ['Reservaciones', 'Usuarios', 'Habitaciones', 'Servicios'];
-const pagesUser = ['Eventos'];
 
 const settings = [
   { icon: MiscellaneousServicesIcon, text: 'Perfil' },
@@ -61,7 +60,7 @@ export const ResponsiveAppBar = ({ role }) => {
   const handlePages = (page) => {
     const routes = {
       Usuarios: '/user',
-      Solicitudes: '/solicitudes',
+      Hoteles: '/solicitudes',
       Estadisticas: '/estadisticas',
       Eventos: '/eventos',
       Reservaciones: '/reservaciones',
@@ -78,7 +77,7 @@ export const ResponsiveAppBar = ({ role }) => {
       ? pagesAdmin
       : role === 'HOST_ROLE'
       ? pagesHost
-      : pagesUser;
+      : [];
 
   return (
     <AppBar position="fixed" className="navbar-appbar">

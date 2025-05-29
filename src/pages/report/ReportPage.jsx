@@ -34,7 +34,7 @@ export default function ReportPage() {
       <h2 className="report-title">Top hoteles por número de reservaciones</h2>
       {loading ? <p>Cargando...</p> : <TopHotelsBarChart hotels={topHotels} />}
 
-      <h3 className="report-subtitle">Reservaciones por tipo de habitación</h3>
+      <h3 className="report-title">Reservaciones por tipo de habitación</h3>
       <select
         className="report-select"
         value={selectedHotelId}

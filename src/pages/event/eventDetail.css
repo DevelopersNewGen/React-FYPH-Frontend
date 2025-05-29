@@ -11,6 +11,7 @@
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
   font-family: 'Segoe UI', sans-serif;
   position: relative;
+  margin-top: 150px
 }
 
 .event-left {

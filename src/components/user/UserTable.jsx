@@ -4,6 +4,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { Button, Paper } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
+// Función para definir las columnas de la tabla
 const columns = (handleButtonClick, isHost) => {
     const baseColumns = [
         { field: 'id', headerName: 'ID', width: 200 },
@@ -21,7 +22,16 @@ const columns = (handleButtonClick, isHost) => {
             renderCell: (params) => (
                 <Button
                     variant="contained"
-                    color="primary"
+                    sx={{
+                        backgroundColor: '#1a73e8',
+                        color: 'white',
+                        '&:hover': {
+                            backgroundColor: '#155ab2',
+                        },
+                        borderRadius: '8px',
+                        boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+                        textTransform: 'none',
+                    }}
                     size="small"
                     onClick={() => handleButtonClick(params.row.id)}
                 >
@@ -34,6 +44,7 @@ const columns = (handleButtonClick, isHost) => {
     return baseColumns;
 };
 
+// Componente principal
 export const UserTable = ({ users, isHost }) => {
     const navigate = useNavigate();
 
@@ -51,41 +62,50 @@ export const UserTable = ({ users, isHost }) => {
 
     return (
         <Paper
-            elevation={3}
+            elevation={5}
             sx={{
-                backgroundColor: 'rgba(25, 118, 210, 0.05)', 
-                backdropFilter: 'blur(10px)',
-                border: '1px solid rgb(25, 118, 210)',
-                borderRadius: 3,
+                backgroundColor: '#f5f5f5',
+                borderRadius: 4,
                 p: 2,
-                color: 'white',
                 overflow: 'hidden',
-                marginTop: '20px',
+                boxShadow: '0px 6px 12px rgba(0, 0, 0, 0.15)',
+                marginTop: 10,
             }}
         >
             <Box
                 sx={{
-                    height: 450,
+                    height: 500,
                     width: '100%',
                     '& .MuiDataGrid-root': {
-                        backgroundColor: 'transparent',
-                        color: 'white',
+                        backgroundColor: '#ffffff',
+                        color: '#333',
+                        borderRadius: '8px',
                     },
                     '& .MuiDataGrid-columnHeaders': {
-                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                        backdropFilter: 'blur(8px)',
+                        backgroundColor: '#1a73e8',
+                        color: 'white',
+                        fontSize: '16px',
+                        fontWeight: 'bold',
                     },
+                    '& .MuiDataGrid-columnHeaderTitle': {
+                        color: 'black !important', // Forzamos el color blanco para mejor visibilidad
+                        fontWeight: 'bold',
+                        fontSize: '14px',
+                    },
+
                     '& .MuiDataGrid-cell': {
-                        borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                        borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
+                        fontSize: '14px',
+                    },
+                    '& .MuiDataGrid-row:hover': {
+                        backgroundColor: '#f0f0f0',
                     },
                     '& .MuiDataGrid-footerContainer': {
-                        backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                        backdropFilter: 'blur(8px)',
+                        backgroundColor: '#f5f5f5',
                     },
                     '&::-webkit-scrollbar': {
                         display: 'none',
                     },
-                    scrollbarWidth: 'none',
                 }}
             >
                 <DataGrid
@@ -93,10 +113,10 @@ export const UserTable = ({ users, isHost }) => {
                     columns={columns(handleButtonClick, isHost)}
                     initialState={{
                         pagination: {
-                            paginationModel: { pageSize: 10 }, // Cambié de 5 a 10
+                            paginationModel: { pageSize: 10 },
                         },
                     }}
-                    pageSizeOptions={[5, 10]} // Permite elegir entre 5 y 10 filas por página
+                    pageSizeOptions={[5, 10]}
                 />
             </Box>
         </Paper>

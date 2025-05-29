@@ -52,16 +52,56 @@ export const ReservationTable = () => {
   }));
 
   return (
-    <Box sx={{ height: 500, width: '100%' }}>
-      <DataGrid
-        rows={rows}
-        columns={columns(handleViewClick)}
-        getRowId={(row) => row.rid}
-        initialState={{
-          pagination: { paginationModel: { pageSize: 5 } }
+    <Paper
+      elevation={5}
+      sx={{
+        backgroundColor: '#f5f5f5',
+        borderRadius: 4,
+        p: 2,
+        overflow: 'hidden',
+        boxShadow: '0px 6px 12px rgba(0, 0, 0, 0.15)',
+      }}
+    >
+      <Box
+        sx={{
+          height: 500,
+          width: '100%',
+          '& .MuiDataGrid-root': {
+            backgroundColor: '#ffffff',
+            color: '#333',
+            borderRadius: '8px',
+          },
+          '& .MuiDataGrid-columnHeaders': {
+            backgroundColor: '#1976d2',
+            color: 'white',
+            fontSize: '16px',
+            fontWeight: 'bold',
+          },
+          '& .MuiDataGrid-cell': {
+            borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
+            fontSize: '14px',
+          },
+          '& .MuiDataGrid-row:hover': {
+            backgroundColor: '#f0f0f0',
+          },
+          '& .MuiDataGrid-footerContainer': {
+            backgroundColor: '#f5f5f5',
+          },
+          '&::-webkit-scrollbar': {
+            display: 'none',
+          },
         }}
-        pageSizeOptions={[5, 10, 20]}
-      />
-    </Box>
+      >
+        <DataGrid
+          rows={rows}
+          columns={columns(handleViewClick)}
+          getRowId={(row) => row.rid}
+          initialState={{
+            pagination: { paginationModel: { pageSize: 5 } }
+          }}
+          pageSizeOptions={[5, 10, 20]}
+        />
+      </Box>
+    </Paper>
   );
 };

@@ -6,19 +6,20 @@ const AddEventButton = ({ onClick }) => {
   return (
     <Button
       variant="contained"
-      color="primary"
       startIcon={<AddCircleOutlineIcon />}
       sx={{
-        borderRadius: "2rem",
-        fontWeight: 700,
+        minWidth: "180px",              // Tamaño consistente
+        height: "44px",                 // Altura fija para todos
+        borderRadius: "0.75rem",        // Menos redondo
+        fontWeight: 600,
         px: 3,
-        py: 1,
-        background: "#0077a6",
         color: "#fff",
-        boxShadow: "0 2px 8px rgba(0,0,0,0.10)",
         textTransform: "none",
-        "&:hover": { background: "#005f86" },
+        boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
         fontSize: "1rem",
+        "&:hover": {
+          backgroundColor: "#1976d2",   // Un poco más claro en hover
+        },
       }}
       onClick={onClick}
     >

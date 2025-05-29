@@ -2,9 +2,11 @@ import * as React from 'react';
 import { BarChart } from '@mui/x-charts/BarChart';
 
 const colores = [
-  '#ff6384', '#36a2eb', '#ffce56', '#4bc0c0',
-  '#9966ff', '#f67019', '#00a950', '#d84315',
-  '#5c6bc0', '#c2185b', '#8bc34a', '#009688'
+  '#1b98e0', // azul claro
+  '#13293d', // azul oscuro
+  '#006494', // azul medio
+  '#247ba0', // azul grisáceo
+
 ];
 
 export function HotelsGroupedBarChart({ data }) {

@@ -10,7 +10,6 @@ import {
   MenuItem,
   Select,
   FormControl,
-  IconButton,
   InputLabel as MuiInputLabel,
   Typography as MuiTypography,
   Paper
@@ -48,11 +47,11 @@ export default function RoomAdd({ initialData, onSubmit, isEdit, onCancel, hideI
       setForm(prev => ({
         ...prev,
         ...initialData,
-        images: [] // siempre limpio imágenes al cargar datos iniciales
+        images: []
       }));
     }
     if (onlyImages) {
-      setForm({ images: [] }); // resetea todo si es solo imágenes
+      setForm({ images: [] });
     }
   }, [initialData, onlyImages]);
 
@@ -67,7 +66,6 @@ export default function RoomAdd({ initialData, onSubmit, isEdit, onCancel, hideI
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const newErrors = {};
 
     if (!onlyImages) {
@@ -81,13 +79,11 @@ export default function RoomAdd({ initialData, onSubmit, isEdit, onCancel, hideI
     }
 
     setErrors(newErrors);
-
     if (Object.keys(newErrors).length > 0) return;
 
     const formData = new FormData();
 
     if (onlyImages || form.images?.length > 0) {
-      // Si es solo imágenes, no añado otros campos
       if (!onlyImages) {
         ['numRoom', 'type', 'capacity', 'pricePerDay', 'description', 'hotel'].forEach(key => {
           formData.append(key, form[key]);
@@ -103,7 +99,6 @@ export default function RoomAdd({ initialData, onSubmit, isEdit, onCancel, hideI
         await handleAddRoom(formData);
       }
     } else {
-      // Si no hay imágenes (y no es solo imágenes), envío objeto simple sin imágenes
       const { images, ...data } = form;
       if (onSubmit) {
         await onSubmit(data);
@@ -114,27 +109,39 @@ export default function RoomAdd({ initialData, onSubmit, isEdit, onCancel, hideI
   };
 
   return (
-    <Box className="section-container" sx={{ marginTop: 8, width: "1000px" }}>
+    <Box
+      className="section-container"
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100vh",
+        position: "relative",
+        zIndex: 1,
+        px: 2,
+      }}
+    >
       <video className="section-bg" autoPlay loop muted>
         <source src="https://res.cloudinary.com/daherc5uz/video/upload/v1748216098/ywxwfilf1ajkt1eiiiw7.mp4" type="video/mp4" />
       </video>
 
-      <Paper className="section-form" elevation={4} sx={{
-        p: 4, borderRadius: 3, maxWidth: 900,
-        mx: "auto",
-        display: "flex",
-        gap: 4,
-        alignItems: "flex-start",
-      }}>
-        <Box sx={{ minWidth: 250 }}>
-    
-    <Typography className="section-title" variant="h5" align="center" mb={2}>
-      {onlyImages
-        ? "Editar imagen de habitación"
-        : isEdit
-        }
-    </Typography>
-  </Box>
+      <Paper
+        className="section-form"
+        elevation={4}
+        sx={{
+          p: 4,
+          borderRadius: 3,
+          maxWidth: 900,
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          gap: 4,
+          zIndex: 2,
+        }}
+      >
+        <Typography className="section-title" variant="h5" align="center" mb={2}>
+          {onlyImages ? "Editar imagen de habitación" : isEdit ? "Editar habitación" : "Agregar habitación"}
+        </Typography>
 
         <form onSubmit={handleSubmit} autoComplete="off">
           {onlyImages ? (

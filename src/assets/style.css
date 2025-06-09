@@ -1,0 +1,424 @@
+/* Formularios */
+
+
+.section-title {
+  color: #f2f2f2;
+  text-align: center;
+}
+
+
+.section-container {
+  position: relative;
+  width: 100%;
+  margin-top: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  overflow: hidden;
+}
+
+.section-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+  filter: brightness(0.5);
+}
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.section-form {
+  z-index: 1;
+  backdrop-filter: blur(8px);
+  background-color: transparent !important;
+  border-radius: 1rem;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+  max-width: 500px;
+  width: 100%;
+  animation: fadeSlideUp 0.6s ease-out;
+}
+
+.section-form::-webkit-scrollbar {
+  width: 0;
+  transition: width 0.3s;
+}
+
+.section-form:hover::-webkit-scrollbar {
+  width: 6px;
+}
+
+.section-input .MuiInputBase-root {
+  background-color: rgba(255, 255, 255, 0.055);
+  backdrop-filter: blur(6px);
+  border-radius: 8px;
+  color: #fff;
+}
+
+.section-input input {
+  color: #fff !important;
+}
+
+.section-input label {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.section-input .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.section-input.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #e8f1f2;
+}
+
+.section-input .MuiFormHelperText-root {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.section-input .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: #1976d2;
+}
+
+.section-button {
+  background: rgba(255, 255, 255, 0.15) ;
+  color: #f2f2f2 ;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.section-button:hover {
+  background: #006494 ;
+  color: #f2f2f2;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.5);
+  transform: translateY(-2px);
+}
+
+.section-link {
+  color: #e8f1f2 !important;
+  text-decoration: none !important;
+  text-align: center;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.section-link:hover {
+  color: #1976d2 !important;
+  text-decoration: none !important;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.custom-error .MuiOutlinedInput-notchedOutline {
+  border-color: #e8f1f2 !important;
+}
+
+.custom-error .MuiFormHelperText-root {
+  color: #e8f1f2 !important;
+
+}
+
+
+
+/* CardStyles.css */
+
+.card-wrapper {
+  max-width: 345px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  margin-top: 80px;
+  position: relative;
+  z-index: 1; /* se asegura que quede sobre el navbar si es necesario */
+}
+
+.card-wrapper:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.card-image-container {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  background-color: #222;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  display: block;
+  background-color: #111;
+  transition: transform 0.5s ease;
+}
+
+.card-wrapper:hover .card-image {
+  transform: scale(1.00); /* Efecto sutil de zoom al pasar el mouse */
+}
+
+.card-nav-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(255, 255, 255, 0.85);
+  z-index: 2;
+  border-radius: 50%;
+  padding: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.card-nav-button:hover {
+  background-color: rgba(255, 255, 255, 1);
+}
+
+.card-nav-button.left {
+  left: 8px;
+}
+
+.card-nav-button.right {
+  right: 8px;
+}
+
+.card-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-text {
+  color: var(--text-secondary, #999);
+  margin-bottom: 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* hoteles  */
+
+
+/* formulario hotel especifico */
+.formaddhotel-form {
+  max-width: 700px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Fondo general */
+.formaddhotel-bg {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+/* Contenedor tipo glass */
+.formaddhotel-container {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 3rem 2rem;
+  max-width: 850px;
+  width: 100%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  color: #fff;
+  font-family: 'Roboto', sans-serif;
+  margin-top: 500px;
+}
+
+/* Título 
+.formaddhotel-title {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: #fff;
+}
+*/
+
+
+/* Contenedor para los inputs: centrado vertical y horizontal */
+.formaddhotel-fields {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 1rem;
+}
+
+/* Inputs y textarea más grandes */
+.formaddhotel-select,
+.formaddhotel-service-type,
+.formaddhotel-service-desc,
+.formaddhotel-service-price {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  margin-bottom: 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: border-color 0.2s;
+}
+
+.formaddhotel-select:hover {
+  background: #1976d2;
+  color: #f2f2f2;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.5);
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
+}
+
+.formaddhotel-input {
+  width: 90%;
+  max-width: 600px;
+  display: block;
+  margin: 0 auto;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(4px);
+  font-size: 1rem;
+
+}
+
+.formaddhotel-input option {
+  background-color: #1976d2; /* Fondo oscuro */
+  color: white; /* Texto dorado */
+}
+
+textarea.formaddhotel-input {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.formaddhotel-input::placeholder,
+.formaddhotel-select option {
+  color: #ddd;
+}
+
+Inputs focus
+.formaddhotel-input:focus,
+.formaddhotel-select:focus,
+.formaddhotel-service-type:focus,
+.formaddhotel-service-desc:focus,
+.formaddhotel-service-price:focus {
+  outline: none;
+  border-color: #1976d2;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Label de subir imágenes */
+.formaddhotel-upload-label {
+  display: block;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
+.formaddhotel-upload-btn {
+  background: #1976d2;
+  color: #000;
+  padding: 0.7rem 1.5rem;
+  border-radius: 10px;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.formaddhotel-upload-btn:hover {
+  background: #1976d2;
+}
+
+/* Vista previa de imágenes */
+.formaddhotel-img-preview-list {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.formaddhotel-img-preview-item {
+  position: relative;
+}
+
+.formaddhotel-img-preview {
+  border-radius: 8px;
+  width: 80px;
+  height: 60px;
+  object-fit: cover;
+}
+
+.formaddhotel-img-remove {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #ff0000;
+  border: none;
+  color: white;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Divider */
+.formaddhotel-divider {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  margin: 0.10rem 0;
+}
+
+/* Sección servicios */
+.formaddhotel-services {
+  margin-top: 1rem;
+}
+
+.formaddhotel-service-row {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr auto;
+  gap: 1.5rem;     
+  margin-bottom: 2.5rem; 
+}
+
+/* Errores y éxito */
+.formaddhotel-error {
+  color: #ff6666;
+  margin-bottom: 1rem;
+}
+
+.formaddhotel-success {
+  color: #4caf50;
+  margin-bottom: 1rem;
+}

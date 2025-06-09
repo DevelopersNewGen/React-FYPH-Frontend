@@ -1,0 +1,97 @@
+/* Reset y base para que todo ocupe ancho completo */
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+/* Contenedor principal de la página */
+.room-page-container {
+  max-width: 1200px;          /* Máximo ancho de la página */
+  margin: 0 auto;             /* Centra horizontalmente */
+  padding: 90px 20px 32px;         /* Espaciado alrededor */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+/* Header centrado */
+.room-header {
+  text-align: center;
+  margin-bottom: 24px;
+  width: 100%;
+  padding: 0 10px;
+}
+
+/* Wrapper de las tarjetas */
+.room-card-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+/* Grid de habitaciones */
+.room-list-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  width: 100%;
+  justify-items: center;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1100px) {
+  .room-list-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .room-list-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.room-card-fixed {
+  width: 220px;
+  min-width: 220px;
+  max-width: 220px;
+  height: 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.room-card-img-wrapper {
+  width: 100%;
+  height: 130px;
+  overflow: hidden;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  background: #f5f5f5;
+}
+
+.room-card-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.res-list-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  width: 100%;
+  justify-items: center;
+  box-sizing: border-box;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  
+}
